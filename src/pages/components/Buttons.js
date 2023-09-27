@@ -26,7 +26,11 @@ const ButtonsPage = ({ ...props }) => {
                 Documentation and examples of button styles for actions in forms, dialogs and more with support for
                 multiple sizes, states, and more. To use it, import it such as{" "}
                 <code>import {`{Button}`} from "reactstrap"</code>. Visit the{" "}
-                <a href={"https://reactstrap.github.io/?path=/docs/components-button--button"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://reactstrap.github.io/?path=/docs/components-button--button"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

@@ -7,7 +7,6 @@ import {
   DropdownMenu,
   DropdownToggle,
   Card,
-  
   Modal,
   ModalBody,
   DropdownItem,
@@ -117,7 +116,7 @@ const OrderSales = () => {
   };
 
   useEffect(() => {
-    reset(formData)
+    reset(formData);
   }, [formData]);
 
   // function to load detail data
@@ -137,7 +136,12 @@ const OrderSales = () => {
   // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const { reset, register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   return (
     <React.Fragment>
@@ -430,11 +434,12 @@ const OrderSales = () => {
                       <label className="form-label">Bill</label>
                       <input
                         className="form-control"
-                        {...register('bill', { required: "This field is required" })}
+                        {...register("bill", { required: "This field is required" })}
                         type="text"
                         value={formData.bill}
                         onChange={(e) => setFormData({ ...formData, bill: e.target.value })}
-                        placeholder="Enter bill" />
+                        placeholder="Enter bill"
+                      />
                       {errors.bill && <span className="invalid">{errors.bill.message}</span>}
                     </div>
                   </Col>
@@ -443,11 +448,11 @@ const OrderSales = () => {
                       <label className="form-label">Total</label>
                       <input
                         className="form-control"
-                        {...register('total', { required: "This field is required" })}
+                        {...register("total", { required: "This field is required" })}
                         type="number"
                         value={formData.total}
                         onChange={(e) => setFormData({ ...formData, total: e.target.value })}
-                        />
+                      />
                       {errors.total && <span className="invalid">{errors.total.message}</span>}
                     </div>
                   </Col>

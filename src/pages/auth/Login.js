@@ -32,7 +32,7 @@ const Login = () => {
         window.history.pushState(
           `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`,
           "auth-login",
-          `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`
+          `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`,
         );
         window.location.reload();
       }, 1000);
@@ -44,10 +44,15 @@ const Login = () => {
     }
   };
 
-  const {  register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  return <>
-    <Head title="Login" />
+  return (
+    <>
+      <Head title="Login" />
       <Block className="nk-block-middle nk-auth-body  wide-xs">
         <div className="brand-logo pb-4 text-center">
           <Link to={process.env.PUBLIC_URL + "/"} className="logo-link">
@@ -83,10 +88,11 @@ const Login = () => {
                 <input
                   type="text"
                   id="default-01"
-                  {...register('name', { required: "This field is required" })}
+                  {...register("name", { required: "This field is required" })}
                   defaultValue="info@softnio.com"
                   placeholder="Enter your email address or username"
-                  className="form-control-lg form-control" />
+                  className="form-control-lg form-control"
+                />
                 {errors.name && <span className="invalid">{errors.name.message}</span>}
               </div>
             </div>
@@ -115,10 +121,11 @@ const Login = () => {
                 <input
                   type={passState ? "text" : "password"}
                   id="password"
-                  {...register('passcode', { required: "This field is required" })}
+                  {...register("passcode", { required: "This field is required" })}
                   defaultValue="123456"
                   placeholder="Enter your passcode"
-                  className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`} />
+                  className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`}
+                />
                 {errors.passcode && <span className="invalid">{errors.passcode.message}</span>}
               </div>
             </div>
@@ -163,6 +170,7 @@ const Login = () => {
         </PreviewCard>
       </Block>
       <AuthFooter />
-  </>;
+    </>
+  );
 };
 export default Login;

@@ -7,7 +7,6 @@ import ControlsCarousel from "../../components/partials/carousel/Controls";
 import CaptionsCarousel from "../../components/partials/carousel/Captions";
 import FadeCarousel from "../../components/partials/carousel/Fade";
 
-
 import { Block, BlockHead, BlockHeadContent, BlockTitle, BlockDes, BackTo } from "../../components/block/Block";
 import { PreviewCard, CodeBlock } from "../../components/preview/Preview";
 
@@ -33,7 +32,11 @@ const CarouselPage = ({ ...props }) => {
                   from "reactstrap"
                 </code>
                 . Visit the{" "}
-                <a href={"https://reactstrap.github.io/?path=/docs/components-carousel--carousel"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://reactstrap.github.io/?path=/docs/components-carousel--carousel"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

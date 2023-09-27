@@ -1,14 +1,15 @@
 import React from "react";
-import { Icon} from "../../../../components/Component";
-import icons from "../components/Icons"
+import { Icon } from "../../../../components/Component";
+import icons from "../components/Icons";
 
 const Details = ({ file, toggle, toggleShare, triggerDownload }) => {
-  
   return (
     <React.Fragment>
       <div className="modal-header align-center">
         <div className="nk-file-title">
-          <div className="nk-file-icon"><div className="nk-file-icon-type">{icons[file.icon]}</div></div>
+          <div className="nk-file-icon">
+            <div className="nk-file-icon-type">{icons[file.icon]}</div>
+          </div>
           <div className="nk-file-name">
             <div className="nk-file-name-text">
               <span className="title">{file.name}</span>
@@ -48,11 +49,13 @@ const Details = ({ file, toggle, toggleShare, triggerDownload }) => {
           </div>
           <div className="nk-file-details-row">
             <div className="nk-file-details-col">Starred</div>
-            <div className="nk-file-details-col">{file.starred ? 'Yes' : 'No'}</div>
+            <div className="nk-file-details-col">{file.starred ? "Yes" : "No"}</div>
           </div>
           <div className="nk-file-details-row">
             <div className="nk-file-details-col">Created</div>
-            <div className="nk-file-details-col">{file.time}, {file.date}</div>
+            <div className="nk-file-details-col">
+              {file.time}, {file.date}
+            </div>
           </div>
         </div>
       </div>

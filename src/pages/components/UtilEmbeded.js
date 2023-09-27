@@ -31,8 +31,8 @@ const EmbededPage = ({ ...props }) => {
             <BlockHeadContent>
               <BlockTitle tag="h5">Example</BlockTitle>
               <p>
-                Wrap any embed like an <code>&lt;iframe&gt;</code> in a parent element with{" "}
-                <code>.ratio</code> and an aspect ratio. 
+                Wrap any embed like an <code>&lt;iframe&gt;</code> in a parent element with <code>.ratio</code> and an
+                aspect ratio.
               </p>
             </BlockHeadContent>
           </BlockHead>

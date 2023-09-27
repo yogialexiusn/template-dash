@@ -112,9 +112,7 @@ export const SpecialTable = ({ action, isCompact, data }) => {
                     <div className="tb-tnx-status">
                       <Badge
                         className="badge-dot"
-                        color={
-                          item.status === "Paid" ? "success" : item.status === "Due" ? "warning" : "danger"
-                        }
+                        color={item.status === "Paid" ? "success" : item.status === "Due" ? "warning" : "danger"}
                       >
                         {item.status}
                       </Badge>
@@ -158,9 +156,7 @@ export const SpecialTable = ({ action, isCompact, data }) => {
                     <div className="tb-tnx-status">
                       <Badge
                         className="badge-dot"
-                        color={
-                          item.status === "Paid" ? "success" : item.status === "Due" ? "warning" : "danger"
-                        }
+                        color={item.status === "Paid" ? "success" : item.status === "Due" ? "warning" : "danger"}
                       >
                         {item.status}
                       </Badge>
@@ -266,9 +262,7 @@ export const OrderTable = () => {
                 <span className="tb-odr-status">
                   <Badge
                     className="badge-dot"
-                    color={
-                      item.status === "Complete" ? "success" : item.status === "Pending" ? "warning" : "danger"
-                    }
+                    color={item.status === "Complete" ? "success" : item.status === "Pending" ? "warning" : "danger"}
                   >
                     {item.status}
                   </Badge>

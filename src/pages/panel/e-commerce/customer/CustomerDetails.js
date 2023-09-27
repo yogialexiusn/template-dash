@@ -33,7 +33,7 @@ const CustomerDetails = ({ match }) => {
   const [addNoteText, setAddNoteText] = useState("");
   const navigate = useNavigate();
 
-  const {customerId} = useParams();
+  const { customerId } = useParams();
 
   // grabs the id of the url and loads the corresponding data
   useEffect(() => {
@@ -53,7 +53,7 @@ const CustomerDetails = ({ match }) => {
 
   useEffect(() => {
     sideBar ? document.body.classList.add("toggle-shown") : document.body.classList.remove("toggle-shown");
-  }, [sideBar])
+  }, [sideBar]);
 
   // delete a note
   const deleteNote = (id) => {
@@ -98,12 +98,7 @@ const CustomerDetails = ({ match }) => {
                 </BlockDes>
               </BlockHeadContent>
               <BlockHeadContent>
-                <Button
-                  color="light"
-                  outline
-                  className="bg-white d-none d-sm-inline-flex"
-                  onClick={() => navigate(-1)}
-                >
+                <Button color="light" outline className="bg-white d-none d-sm-inline-flex" onClick={() => navigate(-1)}>
                   <Icon name="arrow-left"></Icon>
                   <span>Back</span>
                 </Button>
@@ -372,7 +367,9 @@ const CustomerDetails = ({ match }) => {
                     <div className="user-card user-card-s2">
                       <UserAvatar className="lg" theme="primary" image={user.image} text={findUpper(user.name)} />
                       <div className="user-info">
-                        <Badge tag="div" className="ucap" pill color="outline-light">{user.role}</Badge>
+                        <Badge tag="div" className="ucap" pill color="outline-light">
+                          {user.role}
+                        </Badge>
                         <h5>{user.name}</h5>
                         <span className="sub-text">{user.email}</span>
                       </div>

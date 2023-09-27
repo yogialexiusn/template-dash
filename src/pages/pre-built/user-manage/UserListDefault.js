@@ -1,10 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown,
-  DropdownItem,
-} from "reactstrap";
+import { DropdownMenu, DropdownToggle, UncontrolledDropdown, DropdownItem } from "reactstrap";
 import {
   Block,
   BlockBetween,
@@ -99,19 +94,19 @@ const UserListDefaultPage = () => {
     setFormData({
       name: "",
       email: "",
-      balance:0,
+      balance: 0,
       phone: "",
       status: "Active",
     });
   };
 
   const closeModal = () => {
-    setModal({ add: false })
+    setModal({ add: false });
     resetForm();
   };
 
   const closeEditModal = () => {
-    setModal({ edit: false })
+    setModal({ edit: false });
     resetForm();
   };
 
@@ -273,12 +268,7 @@ const UserListDefaultPage = () => {
             <DataTableHead className="nk-tb-item">
               <DataTableRow className="nk-tb-col-check">
                 <div className="custom-control custom-control-sm custom-checkbox notext">
-                  <input
-                    type="checkbox"
-                    className="custom-control-input"
-                    onChange={(e) => selectorCheck(e)}
-                    id="uid"
-                  />
+                  <input type="checkbox" className="custom-control-input" onChange={(e) => selectorCheck(e)} id="uid" />
                   <label className="custom-control-label" htmlFor="uid"></label>
                 </div>
               </DataTableRow>
@@ -479,9 +469,22 @@ const UserListDefaultPage = () => {
           </PreviewAltCard>
         </Block>
 
-        <AddModal modal={modal.add} formData={formData} setFormData={setFormData} closeModal={closeModal} onSubmit={onFormSubmit} filterStatus={filterStatus} />
-        <EditModal modal={modal.edit} formData={editFormData} setFormData={setEditFormData} closeModal={closeEditModal} onSubmit={onEditSubmit} filterStatus={filterStatus} />
-        
+        <AddModal
+          modal={modal.add}
+          formData={formData}
+          setFormData={setFormData}
+          closeModal={closeModal}
+          onSubmit={onFormSubmit}
+          filterStatus={filterStatus}
+        />
+        <EditModal
+          modal={modal.edit}
+          formData={editFormData}
+          setFormData={setEditFormData}
+          closeModal={closeEditModal}
+          onSubmit={onEditSubmit}
+          filterStatus={filterStatus}
+        />
       </Content>
     </React.Fragment>
   );

@@ -30,8 +30,8 @@ const FormUpload = () => {
       acceptedFiles.map((file) =>
         Object.assign(file, {
           preview: URL.createObjectURL(file),
-        })
-      )
+        }),
+      ),
     );
   };
 
@@ -69,16 +69,12 @@ const FormUpload = () => {
           </BlockHead>
           <PreviewCard>
             <Row className="g-4">
-            <Col sm="6">
+              <Col sm="6">
                 <div className="form-group">
                   <label className="form-label">Default File Upload</label>
                   <div className="form-control-wrap">
                     <div className="form-file">
-                      <Input
-                        type="file"
-                        id="customFile"
-                        onChange={(e) => setDefaultFiles(e.target.files[0].name)}
-                      />
+                      <Input type="file" id="customFile" onChange={(e) => setDefaultFiles(e.target.files[0].name)} />
                     </div>
                   </div>
                 </div>
@@ -102,7 +98,7 @@ const FormUpload = () => {
           </PreviewCard>
 
           <CodeBlock language="jsx">
-          {`<div className="form-group">
+            {`<div className="form-group">
     <label className="form-label">Multiple File Upload</label>
     <div className="form-control-wrap">
         <div className="form-file">

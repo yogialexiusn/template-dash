@@ -1,20 +1,19 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from "react";
 import { useFileManager, useFileManagerUpdate } from "../components/Context";
 import { Block, Icon, UserAvatar } from "../../../../components/Component";
-import { Nav, NavItem, NavLink, Row, Col, TabContent, TabPane,  Card, Button, Badge, Modal  } from "reactstrap";
-import data from "../Data"
+import { Nav, NavItem, NavLink, Row, Col, TabContent, TabPane, Card, Button, Badge, Modal } from "reactstrap";
+import data from "../Data";
 import { findUpper } from "../../../../utils/Utils";
 import ProfileUpdate from "../modals/ProfileUpdate";
-import classnames from 'classnames';
+import classnames from "classnames";
 
 const Settings = () => {
-  
   const urlParams = new URLSearchParams(window.location.search);
-  let tabValue = urlParams.get('tab') === null ? "general" : urlParams.get('tab').toString();
+  let tabValue = urlParams.get("tab") === null ? "general" : urlParams.get("tab").toString();
 
   const [activeTab, setActiveTab] = useState(tabValue);
-  const {fileManager} = useFileManager();
-  const {fileManagerUpdate} = useFileManagerUpdate();
+  const { fileManager } = useFileManager();
+  const { fileManagerUpdate } = useFileManagerUpdate();
 
   useEffect(() => {
     setActiveTab(tabValue);
@@ -22,7 +21,7 @@ const Settings = () => {
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
-  }
+  };
 
   const [modal, setModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -111,29 +110,36 @@ const Settings = () => {
               <div className="user-plan">
                 <div className="user-plan-info">
                   <div className="user-plan-title">
-                    <Icon name="hard-drive"></Icon> <span>{fileManager.data.plans.find((item) => item.id === fileManager.currentPlan).title} plan</span>
+                    <Icon name="hard-drive"></Icon>{" "}
+                    <span>{fileManager.data.plans.find((item) => item.id === fileManager.currentPlan).title} plan</span>
                   </div>
                   <div className="user-plan-status">
-                  12.47 GB / {fileManager.data.plans.find((item) => item.id === fileManager.currentPlan).memory} GB
+                    12.47 GB / {fileManager.data.plans.find((item) => item.id === fileManager.currentPlan).memory} GB
                   </div>
                 </div>
                 <div className="user-plan-actions">
                   <ul className="btn-toolbar align-center g-4">
                     <li className="order-2 order-sm-1">
-                      <a href="#" className="link link-primary" 
-                      onClick={(ev) => {
-                        ev.preventDefault();
-                        toggle("billing");
-                      }} >
+                      <a
+                        href="#"
+                        className="link link-primary"
+                        onClick={(ev) => {
+                          ev.preventDefault();
+                          toggle("billing");
+                        }}
+                      >
                         See all plans
                       </a>
                     </li>
                     <li className="order-1 order-sm-2">
-                      <a href="#" className="btn btn-sm btn-primary"
-                      onClick={(ev) => {
-                        ev.preventDefault();
-                        toggle("billing");
-                      }} >
+                      <a
+                        href="#"
+                        className="btn btn-sm btn-primary"
+                        onClick={(ev) => {
+                          ev.preventDefault();
+                          toggle("billing");
+                        }}
+                      >
                         Upgrade
                       </a>
                     </li>
@@ -143,7 +149,11 @@ const Settings = () => {
                   <div className="progress progress-md bg-light">
                     <div
                       className="progress-bar"
-                      style={{ width: `${1200 / fileManager.data.plans.find((item) => item.id === fileManager.currentPlan).memory}%` }}
+                      style={{
+                        width: `${
+                          1200 / fileManager.data.plans.find((item) => item.id === fileManager.currentPlan).memory
+                        }%`,
+                      }}
                     ></div>
                   </div>
                 </div>
@@ -303,10 +313,13 @@ const Settings = () => {
                           {fileManager.currentPlan === item.id ? (
                             <Button color="primary">Plan Selected</Button>
                           ) : (
-                            <Button color="light" onClick={(ev) => {
-                              ev.preventDefault();
-                              fileManagerUpdate.currentPlan(item.id);
-                            }}>
+                            <Button
+                              color="light"
+                              onClick={(ev) => {
+                                ev.preventDefault();
+                                fileManagerUpdate.currentPlan(item.id);
+                              }}
+                            >
                               Choose Plan
                             </Button>
                           )}
@@ -324,7 +337,7 @@ const Settings = () => {
         <ProfileUpdate formData={formData} setFormData={setFormData} setModal={setModal}></ProfileUpdate>
       </Modal>
     </>
-  )
-}
+  );
+};
 
-export default Settings
+export default Settings;

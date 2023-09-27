@@ -52,7 +52,9 @@ const Share = ({ file, toggle }) => {
             </div>
             <ul className="nk-file-share-nav">
               <li>
-                <Badge color="outline-gray" className="badge-sm">Can View</Badge>
+                <Badge color="outline-gray" className="badge-sm">
+                  Can View
+                </Badge>
               </li>
             </ul>
           </div>

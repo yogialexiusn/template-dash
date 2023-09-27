@@ -7,14 +7,9 @@ import Layout from "./components/Layout";
 import { BlockTitle } from "../../../components/Component";
 
 const FileManager = () => {
-
   return (
     <Layout>
-      <Body searchBar 
-        title={
-          <BlockTitle page>Home</BlockTitle>
-        }
-      >
+      <Body searchBar title={<BlockTitle page>Home</BlockTitle>}>
         <Home />
       </Body>
     </Layout>

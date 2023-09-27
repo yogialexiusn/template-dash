@@ -7,5 +7,9 @@ export const CustomerContext = createContext();
 export const CustomerProvider = (props) => {
   const [data, setData] = useState(CustomerData);
 
-  return <CustomerContext.Provider value={{ contextData: [data, setData] }}><Outlet /></CustomerContext.Provider>;
+  return (
+    <CustomerContext.Provider value={{ contextData: [data, setData] }}>
+      <Outlet />
+    </CustomerContext.Provider>
+  );
 };

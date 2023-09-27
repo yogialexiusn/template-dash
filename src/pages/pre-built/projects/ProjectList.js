@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import Head from "../../../layout/head/Head";
 import Content from "../../../layout/content/Content";
-import {
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown,
-  Progress,
-  DropdownItem,
-  Badge
-} from "reactstrap";
+import { DropdownMenu, DropdownToggle, UncontrolledDropdown, Progress, DropdownItem, Badge } from "reactstrap";
 import {
   Block,
   BlockHead,
@@ -75,12 +68,12 @@ export const ProjectListPage = () => {
   };
 
   const closeModal = () => {
-    setModal({ add: false })
+    setModal({ add: false });
     resetForm();
   };
 
   const closeEditModal = () => {
-    setModal({ edit: false })
+    setModal({ edit: false });
     resetForm();
   };
 
@@ -503,8 +496,22 @@ export const ProjectListPage = () => {
           </PreviewAltCard>
         </Block>
 
-        <FormModal modal={modal.add} modalType="add" formData={formData} setFormData={setFormData} closeModal={closeModal} onSubmit={onFormSubmit} />
-        <FormModal modal={modal.edit} modalType="edit" formData={editFormData} setFormData={setEditFormData} closeModal={closeEditModal} onSubmit={onEditSubmit} />
+        <FormModal
+          modal={modal.add}
+          modalType="add"
+          formData={formData}
+          setFormData={setFormData}
+          closeModal={closeModal}
+          onSubmit={onFormSubmit}
+        />
+        <FormModal
+          modal={modal.edit}
+          modalType="edit"
+          formData={editFormData}
+          setFormData={setEditFormData}
+          closeModal={closeEditModal}
+          onSubmit={onEditSubmit}
+        />
       </Content>
     </React.Fragment>
   );

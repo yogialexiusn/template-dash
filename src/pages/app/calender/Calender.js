@@ -3,7 +3,7 @@ import Content from "../../../layout/content/Content";
 import Head from "../../../layout/head/Head";
 import CalenderApp from "../../../components/partials/calender/Calender";
 import DatePicker from "react-datepicker";
-import { Modal, ModalBody,  ModalHeader, Button } from "reactstrap";
+import { Modal, ModalBody, ModalHeader, Button } from "reactstrap";
 import {
   Block,
   BlockBetween,
@@ -30,16 +30,21 @@ const Calender = () => {
     startTime: new Date(),
     endTime: new Date(),
     endDate: new Date(),
-    theme:{
+    theme: {
       value: "fc-event-primary",
       label: "Company",
-    }
+    },
   });
   const [theme, settheme] = useState("");
   const toggle = () => {
     setModal(!modal);
   };
-  const { reset, register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const resetForm = () => {
     setFormData({
@@ -49,10 +54,10 @@ const Calender = () => {
       startTime: new Date(),
       endTime: new Date(),
       endDate: new Date(),
-      theme:{
+      theme: {
         value: "fc-event-primary",
         label: "Company",
-      }
+      },
     });
   };
 
@@ -92,7 +97,7 @@ const Calender = () => {
   };
 
   useEffect(() => {
-    reset(formData)
+    reset(formData);
   }, [formData]);
 
   return (
@@ -132,10 +137,11 @@ const Calender = () => {
                     <input
                       type="text"
                       id="event-title"
-                      {...register('title', { required: true })}
+                      {...register("title", { required: true })}
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      className="form-control" />
+                      className="form-control"
+                    />
                     {errors.title && <p className="invalid">This field is required</p>}
                   </div>
                 </div>
@@ -209,9 +215,9 @@ const Calender = () => {
                     <textarea
                       className="form-control"
                       id="event-description"
-                      {...register('description', { required: true })}
+                      {...register("description", { required: true })}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      ></textarea>
+                    ></textarea>
 
                     {errors.description && <p className="invalid">This field is required</p>}
                   </div>

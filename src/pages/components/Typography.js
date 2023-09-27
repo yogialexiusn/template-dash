@@ -11,7 +11,7 @@ import {
   BackTo,
   PreviewTable,
   CodeBlock,
-  PreviewCard
+  PreviewCard,
 } from "../../components/Component";
 import { Row, Col } from "reactstrap";
 
@@ -299,9 +299,7 @@ const Typography = () => {
           </BlockHead>
           <PreviewCard>
             <blockquote className="blockquote text-center">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-              </p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
               <footer className="blockquote-footer">
                 Someone famous in <cite title="Source Title">Source Title</cite>
               </footer>
@@ -309,9 +307,7 @@ const Typography = () => {
           </PreviewCard>
           <PreviewCard>
             <blockquote className="blockquote text-start">
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.
-              </p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
               <footer className="blockquote-footer">
                 Someone famous in <cite title="Source Title">Source Title</cite>
               </footer>
@@ -451,8 +447,7 @@ const Typography = () => {
           <BlockHead>
             <BlockHeadContent>
               <BlockTitle tag="h5">Description list alignment</BlockTitle>
-              <p>
-                Align terms and descriptions horizontally by using Row Col components</p>
+              <p>Align terms and descriptions horizontally by using Row Col components</p>
             </BlockHeadContent>
           </BlockHead>
           <PreviewCard>

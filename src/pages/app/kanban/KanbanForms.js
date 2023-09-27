@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
-import { ModalBody,  Col } from "reactstrap";
+import { ModalBody, Col } from "reactstrap";
 import { Icon, Button, RSelect } from "../../../components/Component";
 import { getDateStructured } from "../../../utils/Utils";
 import { useForm } from "react-hook-form";
@@ -92,13 +92,17 @@ export const KanbanTaskForm = ({ toggle, data, setData, taskToBoard, editTask })
     delete defaultData.task[editTask.id];
 
     defaultData.columns[taskToBoard.id].tasks = defaultData.columns[taskToBoard.id].tasks.filter(
-      (item) => item !== editTask.id
+      (item) => item !== editTask.id,
     );
 
     setData({ ...defaultData });
   };
 
-  const {  register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   return (
     <ModalBody>
       <a
@@ -120,7 +124,7 @@ export const KanbanTaskForm = ({ toggle, data, setData, taskToBoard, editTask })
                 <label className="form-label">Task Title</label>
                 <input
                   type="text"
-                  {...register('title', { required: "This field is required" })}
+                  {...register("title", { required: "This field is required" })}
                   value={formData.title}
                   onChange={(e) =>
                     setFormData({
@@ -128,7 +132,8 @@ export const KanbanTaskForm = ({ toggle, data, setData, taskToBoard, editTask })
                       title: e.target.value,
                     })
                   }
-                  className="form-control" />
+                  className="form-control"
+                />
                 {errors.title && <span className="invalid">{errors.title.message}</span>}
               </div>
             </Col>
@@ -150,7 +155,7 @@ export const KanbanTaskForm = ({ toggle, data, setData, taskToBoard, editTask })
               <div className="form-group">
                 <label className="form-label">Task Description</label>
                 <textarea
-                  {...register('desc', { required: "This field is required" })}
+                  {...register("desc", { required: "This field is required" })}
                   value={formData.desc}
                   onChange={(e) =>
                     setFormData({
@@ -158,7 +163,8 @@ export const KanbanTaskForm = ({ toggle, data, setData, taskToBoard, editTask })
                       desc: e.target.value,
                     })
                   }
-                  className="form-control no-resize" />
+                  className="form-control no-resize"
+                />
                 {errors.desc && <span className="invalid">{errors.desc.message}</span>}
               </div>
             </Col>
@@ -167,7 +173,7 @@ export const KanbanTaskForm = ({ toggle, data, setData, taskToBoard, editTask })
                 <label className="form-label">Task Category</label>
                 <input
                   type="text"
-                  {...register('category', { required: "This field is required" })}
+                  {...register("category", { required: "This field is required" })}
                   value={formData.category}
                   onChange={(e) =>
                     setFormData({
@@ -175,7 +181,8 @@ export const KanbanTaskForm = ({ toggle, data, setData, taskToBoard, editTask })
                       category: e.target.value,
                     })
                   }
-                  className="form-control" />
+                  className="form-control"
+                />
                 {errors.category && <span className="invalid">{errors.category.message}</span>}
               </div>
             </Col>
@@ -291,7 +298,11 @@ export const KanbanBoardForm = ({ toggle, data, setData, editBoard }) => {
     toggle();
   };
 
-  const {  register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   return (
     <ModalBody>
       <a
@@ -313,7 +324,7 @@ export const KanbanBoardForm = ({ toggle, data, setData, editBoard }) => {
                 <label className="form-label">Board Title</label>
                 <input
                   type="text"
-                  {...register('title', { required: "This field is required" })}
+                  {...register("title", { required: "This field is required" })}
                   value={formData.title}
                   onChange={(e) =>
                     setFormData({
@@ -321,7 +332,8 @@ export const KanbanBoardForm = ({ toggle, data, setData, editBoard }) => {
                       title: e.target.value,
                     })
                   }
-                  className="form-control" />
+                  className="form-control"
+                />
                 {errors.title && <span className="invalid">{errors.title.message}</span>}
               </div>
             </Col>

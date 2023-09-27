@@ -1,10 +1,9 @@
 import React from "react";
 import { Icon, RSelect } from "../../../../components/Component";
 import { Button } from "reactstrap";
-import data from "../Data"
+import data from "../Data";
 
 const CreateFolder = ({ toggle }) => {
-
   return (
     <React.Fragment>
       <a
@@ -27,10 +26,7 @@ const CreateFolder = ({ toggle }) => {
             </div>
             <div className="form-group">
               <label className="form-label">Folder Type</label>
-              <RSelect
-                options={data.folderTypes}
-                defaultValue={data.folderTypes[0]}
-              />
+              <RSelect options={data.folderTypes} defaultValue={data.folderTypes[0]} />
             </div>
             <ul className="btn-toolbar g-4 align-center justify-end">
               <li>
@@ -46,10 +42,14 @@ const CreateFolder = ({ toggle }) => {
                 </a>
               </li>
               <li>
-                <Button color="primary" type="submit" onClick={(ev) => {
+                <Button
+                  color="primary"
+                  type="submit"
+                  onClick={(ev) => {
                     ev.preventDefault();
                     toggle();
-                  }}>
+                  }}
+                >
                   Create
                 </Button>
               </li>

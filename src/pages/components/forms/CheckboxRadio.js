@@ -59,12 +59,7 @@ const CheckboxRadio = () => {
               <Col sm="6" md="3">
                 <span className="preview-title overline-title">Checked</span>
                 <div className="custom-control custom-checkbox">
-                  <input
-                    type="checkbox"
-                    className="custom-control-input"
-                    defaultChecked
-                    id="customCheck2"
-                  />
+                  <input type="checkbox" className="custom-control-input" defaultChecked id="customCheck2" />
                   <label className="custom-control-label" htmlFor="customCheck2">
                     Option Label
                   </label>
@@ -85,13 +80,7 @@ const CheckboxRadio = () => {
                 <div className="preview-block">
                   <span className="preview-title overline-title">Check Disabled</span>
                   <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      defaultChecked
-                      disabled
-                      id="customCheck4"
-                    />
+                    <input type="checkbox" className="custom-control-input" defaultChecked disabled id="customCheck4" />
                     <label className="custom-control-label" htmlFor="customCheck4">
                       Option Label
                     </label>
@@ -157,12 +146,7 @@ const CheckboxRadio = () => {
                 <div className="preview-block">
                   <span className="preview-title overline-title">Default</span>
                   <div className="custom-control custom-radio">
-                    <input
-                      type="radio"
-                      id="customRadio1"
-                      name="customRadio"
-                      className="custom-control-input"
-                    />
+                    <input type="radio" id="customRadio1" name="customRadio" className="custom-control-input" />
                     <label className="custom-control-label" htmlFor="customRadio1">
                       Option Label
                     </label>
@@ -227,12 +211,7 @@ const CheckboxRadio = () => {
                   <div className="g-4 align-center flex-wrap">
                     <div className="g">
                       <div className="custom-control custom-control-sm custom-radio">
-                        <input
-                          type="radio"
-                          className="custom-control-input"
-                          name="radioSize"
-                          id="customRadio7"
-                        />
+                        <input type="radio" className="custom-control-input" name="radioSize" id="customRadio7" />
                         <label className="custom-control-label" htmlFor="customRadio7">
                           Option Label
                         </label>
@@ -240,12 +219,7 @@ const CheckboxRadio = () => {
                     </div>
                     <div className="g">
                       <div className="custom-control custom-radio">
-                        <input
-                          type="radio"
-                          className="custom-control-input"
-                          name="radioSize"
-                          id="customRadio6"
-                        />
+                        <input type="radio" className="custom-control-input" name="radioSize" id="customRadio6" />
                         <label className="custom-control-label" htmlFor="customRadio6">
                           Option Label
                         </label>
@@ -253,12 +227,7 @@ const CheckboxRadio = () => {
                     </div>
                     <div className="g">
                       <div className="custom-control custom-control-lg custom-radio">
-                        <input
-                          type="radio"
-                          className="custom-control-input"
-                          name="radioSize"
-                          id="customRadio5"
-                        />
+                        <input type="radio" className="custom-control-input" name="radioSize" id="customRadio5" />
                         <label className="custom-control-label" htmlFor="customRadio5">
                           Option Label
                         </label>
@@ -305,12 +274,7 @@ const CheckboxRadio = () => {
                 <div className="preview-block">
                   <span className="preview-title overline-title">Checked</span>
                   <div className="custom-control custom-switch">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      defaultChecked
-                      id="customSwitch2"
-                    />
+                    <input type="checkbox" className="custom-control-input" defaultChecked id="customSwitch2" />
                     <label className="custom-control-label" htmlFor="customSwitch2">
                       Switch
                     </label>

@@ -1,5 +1,5 @@
-$datatable-collapsed-unfold : $ni-plus-sm !default;
-$datatable-collapsed-fold : $ni-minus-sm !default;
+$datatable-collapsed-unfold: $ni-plus-sm !default;
+$datatable-collapsed-fold: $ni-minus-sm !default;
 
 table.dataTable {
   clear: both;
@@ -26,16 +26,15 @@ div.dataTables_wrapper div.dataTables_length select {
   display: inline-block;
   @extend .custom-select;
 }
-div.dataTables_wrapper div.dataTables_length label{
+div.dataTables_wrapper div.dataTables_length label {
   display: inline-flex;
   align-items: center;
 }
-div.dataTables_wrapper div.dataTables_length span{
-  margin-left: .5rem;
-  margin-right: .5rem;
+div.dataTables_wrapper div.dataTables_length span {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }
 div.dataTables_wrapper div.dataTables_filter {
-
 }
 div.dataTables_wrapper div.dataTables_filter label {
   font-weight: normal;
@@ -46,9 +45,9 @@ div.dataTables_wrapper div.dataTables_filter input {
   @extend .form-control;
 }
 div.dataTables_wrapper div.dataTables_info {
-  padding: .5rem 0;
+  padding: 0.5rem 0;
   white-space: nowrap;
-  font-size: .75rem;
+  font-size: 0.75rem;
 }
 div.dataTables_wrapper div.dataTables_paginate {
   margin: 0;
@@ -73,7 +72,9 @@ div.dataTables_wrapper label {
   margin-bottom: 0;
 }
 
-table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting,
+table.dataTable thead > tr > th.sorting_asc,
+table.dataTable thead > tr > th.sorting_desc,
+table.dataTable thead > tr > th.sorting,
 table.dataTable thead > tr > td.sorting_asc,
 table.dataTable thead > tr > td.sorting_desc,
 table.dataTable thead > tr > td.sorting {
@@ -91,7 +92,8 @@ table.dataTable thead .sorting_desc_disabled {
   cursor: pointer;
   position: relative;
 }
-table.dataTable thead .sorting:before, table.dataTable thead .sorting:after,
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting:after,
 table.dataTable thead .sorting_asc:before,
 table.dataTable thead .sorting_asc:after,
 table.dataTable thead .sorting_desc:before,
@@ -186,7 +188,8 @@ table.table-bordered.dataTable th,
 table.table-bordered.dataTable td {
   border-left-width: 0;
 }
-table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable th:last-child,
+table.table-bordered.dataTable th:last-child,
+table.table-bordered.dataTable th:last-child,
 table.table-bordered.dataTable td:last-child,
 table.table-bordered.dataTable td:last-child {
   border-right-width: 0;
@@ -209,89 +212,88 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:fir
 div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:last-child {
   padding-right: 0;
 }
-@media (min-width:768px){
+@media (min-width: 768px) {
   div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     justify-content: flex-start;
   }
 }
 
-
-table.dataTable.dtr-inline.collapsed>tbody>tr:not(.child)>td:first-child,
-table.dataTable.dtr-inline.collapsed>tbody>tr:not(.child)>th:first-child{
+table.dataTable.dtr-inline.collapsed > tbody > tr:not(.child) > td:first-child,
+table.dataTable.dtr-inline.collapsed > tbody > tr:not(.child) > th:first-child {
   cursor: pointer;
-  &:before{
+  &:before {
     content: $datatable-collapsed-unfold;
     font-family: $nk-dashlite-font;
     margin-right: 0.4rem;
   }
 }
 
-table.dataTable.dtr-inline.collapsed>tbody>tr.parent>td:first-child,
-table.dataTable.dtr-inline.collapsed>tbody>tr.parent>th:first-child{
-  &:before{
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child,
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child {
+  &:before {
     content: $datatable-collapsed-fold;
   }
 }
 
-
-@media (max-width:575px){
-  div.dataTables_wrapper div.dataTables_paginate{
-    ul.pagination{
+@media (max-width: 575px) {
+  div.dataTables_wrapper div.dataTables_paginate {
+    ul.pagination {
       justify-content: flex-start;
-      li:not(.previous):not(.next){
+      li:not(.previous):not(.next) {
         display: none;
       }
-      .page-link{
+      .page-link {
         padding-left: 1rem;
         padding-right: 1rem;
       }
     }
   }
-  div.dataTables_wrapper div.dataTables_info{
+  div.dataTables_wrapper div.dataTables_info {
     text-align: right !important;
   }
 }
 
-.dataTable{
+.dataTable {
   // tr{
   //   white-space: nowrap;
   // }
-  td{
+  td {
     // white-space: nowrap;
-    &:focus{
+    &:focus {
       outline: none;
     }
   }
 }
-.datatable{
-  &-wrap{
+.datatable {
+  &-wrap {
     border: 1px solid $border-light;
     border-radius: $border-radius;
   }
 }
 
-.dtr-details{
+.dtr-details {
   padding-left: 0.25rem;
-  .dtr-title{
+  .dtr-title {
     font-weight: $fw-bold;
     margin-right: 0.25rem;
   }
 }
 
-
 //////
 
-.nk-tb-col-check,.nk-tb-col-tools{
+.nk-tb-col-check,
+.nk-tb-col-tools {
   pointer-events: none;
-  > *{
+  > * {
     pointer-events: auto;
   }
-  &:before,&:after{
+  &:before,
+  &:after {
     display: none !important;
   }
 }
-.nk-tb-col-check{
-  padding-right: .5rem !important;
+.nk-tb-col-check {
+  padding-right: 0.5rem !important;
 }
 
 @import "buttons.bootstrap4";

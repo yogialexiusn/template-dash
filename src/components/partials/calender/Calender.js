@@ -5,7 +5,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import bootstrapPlugin from "@fullcalendar/bootstrap5";
 import DatePicker from "react-datepicker";
-import { Popover, PopoverHeader, PopoverBody, ModalHeader, Modal, ModalBody,  Button } from "reactstrap";
+import { Popover, PopoverHeader, PopoverBody, ModalHeader, Modal, ModalBody, Button } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { Col, Row, RSelect } from "../../Component";
 import { setDateForPicker } from "../../../utils/Utils";
@@ -44,7 +44,12 @@ const CalenderApp = ({ events, onDelete, onEdit }) => {
     updateEvents(events);
   }, [events]);
 
-  const { reset, register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const handleFormSubmit = (formData) => {
     let newEvent = {};
@@ -78,7 +83,7 @@ const CalenderApp = ({ events, onDelete, onEdit }) => {
   };
 
   useEffect(() => {
-    reset(event)
+    reset(event);
   }, [event]);
 
   return (
@@ -162,10 +167,11 @@ const CalenderApp = ({ events, onDelete, onEdit }) => {
                     <input
                       type="text"
                       id="event-title"
-                      {...register('title', { required: true })}
+                      {...register("title", { required: true })}
                       className="form-control"
-                      value={event.title} 
-                      onChange={(e) => updateEvent({ ...event, title: e.target.value })}/>
+                      value={event.title}
+                      onChange={(e) => updateEvent({ ...event, title: e.target.value })}
+                    />
                     {errors.title && <p className="invalid">This field is required</p>}
                   </div>
                 </div>
@@ -239,9 +245,10 @@ const CalenderApp = ({ events, onDelete, onEdit }) => {
                     <textarea
                       className="form-control"
                       id="event-description"
-                      {...register('description', { required: true })}
+                      {...register("description", { required: true })}
                       value={event.description}
-                      onChange={(e) => updateEvent({ ...event, description: e.target.value })}></textarea>
+                      onChange={(e) => updateEvent({ ...event, description: e.target.value })}
+                    ></textarea>
                     {errors.description && <p className="invalid">This field is required</p>}
                   </div>
                 </div>

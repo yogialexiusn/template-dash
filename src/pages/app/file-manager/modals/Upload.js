@@ -4,12 +4,11 @@ import { Button } from "reactstrap";
 import { Icon } from "../../../../components/Component";
 import { bytesToMegaBytes } from "../../../../utils/Utils";
 
-import {iconsType} from '../components/Icons';
+import { iconsType } from "../components/Icons";
 
 const Upload = ({ toggle }) => {
-
   const [files, setFiles] = useState([]);
-  
+
   const handleDropChange = (acceptedFiles) => {
     setFiles(acceptedFiles);
   };
@@ -100,9 +99,7 @@ const Upload = ({ toggle }) => {
               </a>
             </li>
             <li>
-              <Button color="primary">
-                Add Files
-              </Button>
+              <Button color="primary">Add Files</Button>
             </li>
           </ul>
         </div>

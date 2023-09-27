@@ -1,33 +1,32 @@
-import React, {useState} from 'react'
+import React, { useState } from "react";
 import { useFileManager } from "../components/Context";
-import Files from '../components/Files';
+import Files from "../components/Files";
 import DatePicker from "react-datepicker";
-import { RSelect } from '../../../../components/Component';
-import { Row, Col, Button } from 'reactstrap';
+import { RSelect } from "../../../../components/Component";
+import { Row, Col, Button } from "reactstrap";
 
 const Recovery = () => {
-
   const [dates, setDates] = useState({
     from: new Date(),
     to: new Date(),
   });
 
-  const {fileManager} = useFileManager();
+  const { fileManager } = useFileManager();
 
   const selectOptions = [];
   fileManager.data.users.forEach((item) => {
     selectOptions.push({
       id: item.id,
       value: item.name,
-      label:item.name
+      label: item.name,
     });
   });
 
-  const files = [...fileManager.files.filter((item) => item.deleted)]
+  const files = [...fileManager.files.filter((item) => item.deleted)];
 
   return (
     <>
-    <Row>
+      <Row>
         <Col xl="3" className="order-xl-12">
           <div className={`nk-fmg-filter toggle-expand-content ${fileManager.recoveryFilter ? "expanded" : ""}`}>
             <form>
@@ -66,7 +65,7 @@ const Recovery = () => {
                 </Col>
                 <Col lg="12">
                   <div className="d-flex justify-between mt-1">
-                    <button type="reset" className="link link-sm link-primary ms-n1" >
+                    <button type="reset" className="link link-sm link-primary ms-n1">
                       Reset Filter
                     </button>
                     <Button color="primary" size="sm">
@@ -82,9 +81,8 @@ const Recovery = () => {
           <Files files={files} fixedView="list" page="recovery" />
         </Col>
       </Row>
-        
     </>
-  )
-}
+  );
+};
 
-export default Recovery
+export default Recovery;

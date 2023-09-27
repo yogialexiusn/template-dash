@@ -1,12 +1,7 @@
 import React, { useContext, useState } from "react";
 import Content from "../../../layout/content/Content";
 import Head from "../../../layout/head/Head";
-import {
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown,
-  DropdownItem,
-} from "reactstrap";
+import { DropdownMenu, DropdownToggle, UncontrolledDropdown, DropdownItem } from "reactstrap";
 import {
   Block,
   BlockBetween,
@@ -109,12 +104,12 @@ const UserContactCardPage = () => {
   };
 
   const closeModal = () => {
-    setModal({ add: false })
+    setModal({ add: false });
     resetForm();
   };
 
   const closeEditModal = () => {
-    setModal({ edit: false })
+    setModal({ edit: false });
     resetForm();
   };
 
@@ -383,9 +378,22 @@ const UserContactCardPage = () => {
           </Row>
         </Block>
 
-        <CardFormModal modal={modal.add} modalType="add" formData={formData} setFormData={setFormData} closeModal={closeModal} onSubmit={onFormSubmit} />
-        <CardFormModal modal={modal.edit} modalType="edit" formData={editFormData} setFormData={setEditFormData} closeModal={closeEditModal} onSubmit={onEditSubmit} />
-      
+        <CardFormModal
+          modal={modal.add}
+          modalType="add"
+          formData={formData}
+          setFormData={setFormData}
+          closeModal={closeModal}
+          onSubmit={onFormSubmit}
+        />
+        <CardFormModal
+          modal={modal.edit}
+          modalType="edit"
+          formData={editFormData}
+          setFormData={setEditFormData}
+          closeModal={closeEditModal}
+          onSubmit={onEditSubmit}
+        />
       </Content>
     </React.Fragment>
   );

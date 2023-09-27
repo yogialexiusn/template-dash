@@ -24,7 +24,11 @@ const BreadcrumbsPage = ({ ...props }) => {
                 Indicate the current page’s location within a navigational hierarchy that automatically adds separators
                 via CSS. To use the components, import it such as{" "}
                 <code>import {`{Breadcrumb, BreadcrumbItem}`} from "reactstrap"</code>. Visit the{" "}
-                <a href={"https://reactstrap.github.io/?path=/docs/components-breadcrumb--breadcrumb"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://reactstrap.github.io/?path=/docs/components-breadcrumb--breadcrumb"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

@@ -7,13 +7,8 @@ import Layout from "./components/Layout";
 const FileManager = () => {
   return (
     <Layout>
-      <Body 
-        title={
-          <BlockTitle page>Settings</BlockTitle>
-        }
-      >
+      <Body title={<BlockTitle page>Settings</BlockTitle>}>
         <Settings />
-
       </Body>
     </Layout>
   );

@@ -23,7 +23,11 @@ const SpinnerPage = ({ ...props }) => {
               <p className="lead">
                 Indicate the loading state of a component or page with Bootstrap spinners. To use it, import it such as{" "}
                 <code>import {`{Spinner}`} from "reactstrap"</code>. Visit the{" "}
-                <a href={"https://reactstrap.github.io/?path=/docs/components-spinner--spinner"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://reactstrap.github.io/?path=/docs/components-spinner--spinner"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

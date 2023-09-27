@@ -53,7 +53,7 @@ const UserDetailsPage = () => {
 
   useEffect(() => {
     sideBar ? document.body.classList.add("toggle-shown") : document.body.classList.remove("toggle-shown");
-  }, [sideBar])
+  }, [sideBar]);
 
   // delete a note
   const deleteNote = (id) => {
@@ -98,12 +98,7 @@ const UserDetailsPage = () => {
                 </BlockDes>
               </BlockHeadContent>
               <BlockHeadContent>
-                <Button
-                  color="light"
-                  outline
-                  className="bg-white d-none d-sm-inline-flex"
-                  onClick={() => navigate(-1)}
-                >
+                <Button color="light" outline className="bg-white d-none d-sm-inline-flex" onClick={() => navigate(-1)}>
                   <Icon name="arrow-left"></Icon>
                   <span>Back</span>
                 </Button>
@@ -372,7 +367,9 @@ const UserDetailsPage = () => {
                     <div className="user-card user-card-s2 mt-5 mt-xxl-0">
                       <UserAvatar className="lg" theme="primary" text={findUpper(user.name)} />
                       <div className="user-info">
-                        <Badge color="outline-light" pill className="ucap">{user.role}</Badge>
+                        <Badge color="outline-light" pill className="ucap">
+                          {user.role}
+                        </Badge>
                         <h5>{user.name}</h5>
                         <span className="sub-text">{user.email}</span>
                       </div>

@@ -1,11 +1,11 @@
-@use 'sass:math';
+@use "sass:math";
 $w_100: 100%;
-$li_cols: 2,3,4;
+$li_cols: 2, 3, 4;
 @each $li_col in $li_cols {
-    .li-col#{$li_col}x{
-        > li {
-            width: math.div($w_100,$li_col);
-            float: left;
-        }
+  .li-col#{$li_col}x {
+    > li {
+      width: math.div($w_100, $li_col);
+      float: left;
     }
+  }
 }

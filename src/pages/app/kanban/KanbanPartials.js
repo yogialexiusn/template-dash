@@ -193,7 +193,9 @@ export const KanbanColumn = ({ data, setData, column, index }) => {
               <div className="kanban-title-board">
                 <div className="kanban-title-content">
                   <h6 className="title">{column.text}</h6>
-                  <Badge className="text-dark" pill color="outline-light">{column.tasks.length}</Badge>
+                  <Badge className="text-dark" pill color="outline-light">
+                    {column.tasks.length}
+                  </Badge>
                 </div>
                 <div className="kanban-title-content">
                   <UncontrolledDropdown>

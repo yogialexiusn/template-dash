@@ -2,7 +2,7 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import { Icon, RSelect, Col } from "../../../../components/Component";
 import { useForm } from "react-hook-form";
-import { ModalBody,  Button } from "reactstrap";
+import { ModalBody, Button } from "reactstrap";
 import { getDateStructured } from "../../../../utils/Utils";
 import data, { dateFormat, languageOptions, timezoneFormat } from "../Data";
 
@@ -22,7 +22,11 @@ const ProfileUpdate = ({ formData, setFormData, setModal }) => {
     setModal(false);
   };
 
-  const {  register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   return (
     <React.Fragment>
@@ -50,9 +54,10 @@ const ProfileUpdate = ({ formData, setFormData, setModal }) => {
                     type="text"
                     id="fm-name"
                     className="form-control"
-                    {...register('name', { required: true })}
+                    {...register("name", { required: true })}
                     defaultValue={formData.name}
-                    placeholder="Enter name" />
+                    placeholder="Enter name"
+                  />
                   {errors.name && <p className="invalid">This field is required</p>}
                 </div>
               </Col>
@@ -65,9 +70,10 @@ const ProfileUpdate = ({ formData, setFormData, setModal }) => {
                     type="text"
                     id="fm-display-name"
                     className="form-control"
-                    {...register('displayName', { required: true })}
+                    {...register("displayName", { required: true })}
                     defaultValue={formData.displayName}
-                    placeholder="Enter display name" />
+                    placeholder="Enter display name"
+                  />
                   {errors.displayName && <p className="invalid">This field is required</p>}
                 </div>
               </Col>
@@ -80,7 +86,7 @@ const ProfileUpdate = ({ formData, setFormData, setModal }) => {
                     type="email"
                     id="fm-email"
                     className="form-control"
-                    {...register('email', {
+                    {...register("email", {
                       required: true,
                       pattern: {
                         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -88,7 +94,8 @@ const ProfileUpdate = ({ formData, setFormData, setModal }) => {
                       },
                     })}
                     defaultValue={formData.email}
-                    placeholder="Enter recovery email" />
+                    placeholder="Enter recovery email"
+                  />
                   {errors.email && errors.email.type === "required" && (
                     <span className="invalid">This is required</span>
                   )}
@@ -106,9 +113,10 @@ const ProfileUpdate = ({ formData, setFormData, setModal }) => {
                     type="number"
                     id="phone-no"
                     className="form-control"
-                    {...register('phone')}
+                    {...register("phone")}
                     defaultValue={formData.phone}
-                    placeholder="Phone Number" />
+                    placeholder="Phone Number"
+                  />
                   {errors.phone && <p className="invalid">This field is required</p>}
                 </div>
               </Col>

@@ -7,5 +7,9 @@ export const ProductContext = createContext();
 export const ProductContextProvider = (props) => {
   const [data, setData] = useState(productCardData);
 
-  return <ProductContext.Provider value={{ contextData: [data, setData] }}><Outlet /></ProductContext.Provider>;
+  return (
+    <ProductContext.Provider value={{ contextData: [data, setData] }}>
+      <Outlet />
+    </ProductContext.Provider>
+  );
 };

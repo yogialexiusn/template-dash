@@ -110,12 +110,7 @@ const Settings = () => {
                     </li>
                     <li>
                       <div className="custom-control custom-radio">
-                        <input
-                          type="radio"
-                          className="custom-control-input"
-                          name="reg-public"
-                          id="reg-disable"
-                        />
+                        <input type="radio" className="custom-control-input" name="reg-public" id="reg-disable" />
                         <label className="custom-control-label" htmlFor="reg-disable">
                           Disable
                         </label>
@@ -123,12 +118,7 @@ const Settings = () => {
                     </li>
                     <li>
                       <div className="custom-control custom-radio">
-                        <input
-                          type="radio"
-                          className="custom-control-input"
-                          name="reg-public"
-                          id="reg-request"
-                        />
+                        <input type="radio" className="custom-control-input" name="reg-public" id="reg-request" />
                         <label className="custom-control-label" htmlFor="reg-request">
                           On Request
                         </label>
@@ -170,12 +160,7 @@ const Settings = () => {
                   <div className="form-group">
                     <div className="form-control-wrap">
                       <div className="custom-control custom-switch">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          name="reg-public"
-                          id="site-off"
-                        />
+                        <input type="checkbox" className="custom-control-input" name="reg-public" id="site-off" />
                         <label className="custom-control-label" htmlFor="site-off">
                           Offline
                         </label>

@@ -18,14 +18,7 @@ import {
 } from "../../../components/Component";
 import { projectData } from "./ProjectData";
 import { findUpper, setDeadline, setDeadlineDays, calcPercentage } from "../../../utils/Utils";
-import {
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown,
-  Progress,
-  DropdownItem,
-  Badge
-} from "reactstrap";
+import { DropdownMenu, DropdownToggle, UncontrolledDropdown, Progress, DropdownItem, Badge } from "reactstrap";
 import FormModal from "./FormModal";
 
 const ProjectCardPage = () => {
@@ -74,12 +67,12 @@ const ProjectCardPage = () => {
   };
 
   const closeModal = () => {
-    setModal({ add: false })
+    setModal({ add: false });
     resetForm();
   };
 
   const closeEditModal = () => {
-    setModal({ edit: false })
+    setModal({ edit: false });
     resetForm();
   };
 
@@ -375,8 +368,22 @@ const ProjectCardPage = () => {
           </div>
         </Block>
 
-        <FormModal modal={modal.add} modalType="add" formData={formData} setFormData={setFormData} closeModal={closeModal} onSubmit={onFormSubmit} />
-        <FormModal modal={modal.edit} modalType="edit" formData={editFormData} setFormData={setEditFormData} closeModal={closeEditModal} onSubmit={onEditSubmit} />
+        <FormModal
+          modal={modal.add}
+          modalType="add"
+          formData={formData}
+          setFormData={setFormData}
+          closeModal={closeModal}
+          onSubmit={onFormSubmit}
+        />
+        <FormModal
+          modal={modal.edit}
+          modalType="edit"
+          formData={editFormData}
+          setFormData={setEditFormData}
+          closeModal={closeEditModal}
+          onSubmit={onEditSubmit}
+        />
       </Content>
     </React.Fragment>
   );

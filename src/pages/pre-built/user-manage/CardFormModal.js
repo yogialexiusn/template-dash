@@ -1,36 +1,36 @@
 import React, { useEffect } from "react";
-import {
-  Form,
-  Modal,
-  ModalBody,
-} from "reactstrap";
-import {
-  Icon,
-  Col,
-  Button,
-} from "../../../components/Component";
+import { Form, Modal, ModalBody } from "reactstrap";
+import { Icon, Col, Button } from "../../../components/Component";
 import { useForm } from "react-hook-form";
 
-const CardFormModal = ({modal,closeModal,onSubmit, formData, setFormData,modalType}) => {
-    useEffect(() => {
-        reset(formData)
-    }, [formData]);
-    const { reset, register, handleSubmit, formState: { errors } } = useForm();
-  return <>
+const CardFormModal = ({ modal, closeModal, onSubmit, formData, setFormData, modalType }) => {
+  useEffect(() => {
+    reset(formData);
+  }, [formData]);
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  return (
+    <>
       <Modal isOpen={modal} toggle={() => closeModal()} className="modal-dialog-centered" size="lg">
         <ModalBody>
           <a
             href="#cancel"
             onClick={(ev) => {
               ev.preventDefault();
-              closeModal()
+              closeModal();
             }}
             className="close"
           >
             <Icon name="cross-sm"></Icon>
           </a>
           <div className="p-2">
-            <h5 className="title">{modalType === "add" && "Add User"} {modalType === "edit" && "Update User"}</h5>
+            <h5 className="title">
+              {modalType === "add" && "Add User"} {modalType === "edit" && "Update User"}
+            </h5>
             <div className="mt-4">
               <Form className="row gy-4" onSubmit={handleSubmit(onSubmit)}>
                 <Col md="6">
@@ -39,10 +39,11 @@ const CardFormModal = ({modal,closeModal,onSubmit, formData, setFormData,modalTy
                     <input
                       className="form-control"
                       type="text"
-                      {...register('name', { required: "This field is required" })}
+                      {...register("name", { required: "This field is required" })}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="Enter name" />
+                      placeholder="Enter name"
+                    />
                     {errors.name && <span className="invalid">{errors.name.message}</span>}
                   </div>
                 </Col>
@@ -52,10 +53,11 @@ const CardFormModal = ({modal,closeModal,onSubmit, formData, setFormData,modalTy
                     <input
                       className="form-control"
                       type="text"
-                      {...register('designation', { required: "This field is required" })}
+                      {...register("designation", { required: "This field is required" })}
                       value={formData.designation}
                       onChange={(e) => setFormData({ ...formData, designation: e.target.value })}
-                      placeholder="Enter Designation" />
+                      placeholder="Enter Designation"
+                    />
                     {errors.designation && <span className="invalid">{errors.designation.message}</span>}
                   </div>
                 </Col>
@@ -65,10 +67,10 @@ const CardFormModal = ({modal,closeModal,onSubmit, formData, setFormData,modalTy
                     <input
                       className="form-control"
                       type="number"
-                      {...register('projects', { required: "This field is required" })}
-                      value={formData.projects} 
+                      {...register("projects", { required: "This field is required" })}
+                      value={formData.projects}
                       onChange={(e) => setFormData({ ...formData, projects: e.target.value })}
-                      />
+                    />
                     {errors.projects && <span className="invalid">{errors.projects.message}</span>}
                   </div>
                 </Col>
@@ -78,10 +80,10 @@ const CardFormModal = ({modal,closeModal,onSubmit, formData, setFormData,modalTy
                     <input
                       className="form-control"
                       type="number"
-                      {...register('performed', { required: "This field is required" })}
-                      value={formData.performed} 
+                      {...register("performed", { required: "This field is required" })}
+                      value={formData.performed}
                       onChange={(e) => setFormData({ ...formData, performed: e.target.value })}
-                      />
+                    />
                     {errors.performed && <span className="invalid">{errors.performed.message}</span>}
                   </div>
                 </Col>
@@ -91,10 +93,10 @@ const CardFormModal = ({modal,closeModal,onSubmit, formData, setFormData,modalTy
                     <input
                       className="form-control"
                       type="number"
-                      {...register('tasks', { required: "This field is required" })}
+                      {...register("tasks", { required: "This field is required" })}
                       value={formData.tasks}
                       onChange={(e) => setFormData({ ...formData, tasks: e.target.value })}
-                       />
+                    />
                     {errors.tasks && <span className="invalid">{errors.tasks.message}</span>}
                   </div>
                 </Col>
@@ -102,14 +104,14 @@ const CardFormModal = ({modal,closeModal,onSubmit, formData, setFormData,modalTy
                   <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                     <li>
                       <Button type="submit" color="primary" size="md">
-                      {modalType === "add" && "Add User"} {modalType === "edit" && "Update User"}
+                        {modalType === "add" && "Add User"} {modalType === "edit" && "Update User"}
                       </Button>
                     </li>
                     <li>
                       <Button
                         onClick={(ev) => {
                           ev.preventDefault();
-                          closeModal()
+                          closeModal();
                         }}
                         className="link link-light"
                       >
@@ -123,6 +125,7 @@ const CardFormModal = ({modal,closeModal,onSubmit, formData, setFormData,modalTy
           </div>
         </ModalBody>
       </Modal>
-  </>;
+    </>
+  );
 };
 export default CardFormModal;

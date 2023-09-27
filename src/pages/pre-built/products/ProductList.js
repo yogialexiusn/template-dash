@@ -51,11 +51,11 @@ const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(7);
   const [files, setFiles] = useState([]);
-  
+
   //scroll off when sidebar shows
   useEffect(() => {
     view.add ? document.body.classList.add("toggle-shown") : document.body.classList.remove("toggle-shown");
-  }, [view.add])
+  }, [view.add]);
 
   // Changing state value when searching name
   useEffect(() => {
@@ -92,7 +92,7 @@ const ProductList = () => {
 
   const onFormSubmit = (form) => {
     const { title, price, salePrice, sku, stock } = form;
-    
+
     let submittedData = {
       id: data.length + 1,
       name: title,
@@ -161,7 +161,7 @@ const ProductList = () => {
   };
 
   useEffect(() => {
-    reset(formData)
+    reset(formData);
   }, [formData]);
 
   // selects all the products
@@ -216,8 +216,8 @@ const ProductList = () => {
       acceptedFiles.map((file) =>
         Object.assign(file, {
           preview: URL.createObjectURL(file),
-        })
-      )
+        }),
+      ),
     );
   };
 
@@ -229,7 +229,12 @@ const ProductList = () => {
   // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   return (
     <React.Fragment>
@@ -413,10 +418,10 @@ const ProductList = () => {
                   </DataTableHead>
                   {currentItems.length > 0
                     ? currentItems.map((item) => {
-                      const categoryList = []
-                        item.category.forEach((currentElement) => { 
-                        categoryList.push(currentElement.label)
-                       })
+                        const categoryList = [];
+                        item.category.forEach((currentElement) => {
+                          categoryList.push(currentElement.label);
+                        });
                         return (
                           <DataTableItem key={item.id}>
                             <DataTableRow className="nk-tb-col-check">
@@ -448,9 +453,7 @@ const ProductList = () => {
                               <span className="tb-sub">{item.stock}</span>
                             </DataTableRow>
                             <DataTableRow size="md">
-                              <span className="tb-sub">
-                                {categoryList.join(", ")}
-                              </span>
+                              <span className="tb-sub">{categoryList.join(", ")}</span>
                             </DataTableRow>
                             <DataTableRow size="md">
                               <div className="asterisk tb-asterisk">
@@ -575,11 +578,12 @@ const ProductList = () => {
                           <input
                             type="text"
                             className="form-control"
-                            {...register('name', {
+                            {...register("name", {
                               required: "This field is required",
                             })}
                             value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          />
                           {errors.name && <span className="invalid">{errors.name.message}</span>}
                         </div>
                       </div>
@@ -592,10 +596,11 @@ const ProductList = () => {
                         <div className="form-control-wrap">
                           <input
                             type="number"
-                            {...register('price', { required: "This is required" })}
+                            {...register("price", { required: "This is required" })}
                             className="form-control"
                             value={formData.price}
-                            onChange={(e) => setFormData({ ...formData, price: e.target.value })}/>
+                            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                          />
                           {errors.price && <span className="invalid">{errors.price.message}</span>}
                         </div>
                       </div>
@@ -609,9 +614,10 @@ const ProductList = () => {
                           <input
                             type="number"
                             className="form-control"
-                            {...register('salePrice')}
-                            value={formData.salePrice} 
-                            onChange={(e) => setFormData({ ...formData, salePrice: e.target.value })}/>
+                            {...register("salePrice")}
+                            value={formData.salePrice}
+                            onChange={(e) => setFormData({ ...formData, salePrice: e.target.value })}
+                          />
                           {errors.salePrice && <span className="invalid">{errors.salePrice.message}</span>}
                         </div>
                       </div>
@@ -625,9 +631,10 @@ const ProductList = () => {
                           <input
                             type="number"
                             className="form-control"
-                            {...register('stock', { required: "This is required" })}
+                            {...register("stock", { required: "This is required" })}
                             value={formData.stock}
-                            onChange={(e) => setFormData({ ...formData, stock: e.target.value })} />
+                            onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                          />
                           {errors.stock && <span className="invalid">{errors.stock.message}</span>}
                         </div>
                       </div>
@@ -641,9 +648,10 @@ const ProductList = () => {
                           <input
                             type="text"
                             className="form-control"
-                            {...register('sku', { required: "This is required" })}
+                            {...register("sku", { required: "This is required" })}
                             value={formData.sku}
-                            onChange={(e) => setFormData({ ...formData, sku: e.target.value })}/>
+                            onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+                          />
                           {errors.sku && <span className="invalid">{errors.sku.message}</span>}
                         </div>
                       </div>
@@ -786,11 +794,12 @@ const ProductList = () => {
                       <input
                         type="text"
                         className="form-control"
-                        {...register('name', {
+                        {...register("name", {
                           required: "This field is required",
                         })}
-                        value={formData.name} 
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}/>
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      />
                       {errors.name && <span className="invalid">{errors.name.message}</span>}
                     </div>
                   </div>
@@ -803,10 +812,11 @@ const ProductList = () => {
                     <div className="form-control-wrap">
                       <input
                         type="number"
-                        {...register('price', { required: "This is required" })}
+                        {...register("price", { required: "This is required" })}
                         className="form-control"
-                        value={formData.price} 
-                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}/>
+                        value={formData.price}
+                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                      />
                       {errors.price && <span className="invalid">{errors.price.message}</span>}
                     </div>
                   </div>
@@ -820,9 +830,10 @@ const ProductList = () => {
                       <input
                         type="number"
                         className="form-control"
-                        {...register('salePrice')}
-                        value={formData.salePrice} 
-                        onChange={(e) => setFormData({ ...formData, salePrice: e.target.value })}/>
+                        {...register("salePrice")}
+                        value={formData.salePrice}
+                        onChange={(e) => setFormData({ ...formData, salePrice: e.target.value })}
+                      />
                       {errors.salePrice && <span className="invalid">{errors.salePrice.message}</span>}
                     </div>
                   </div>
@@ -836,9 +847,10 @@ const ProductList = () => {
                       <input
                         type="number"
                         className="form-control"
-                        {...register('stock', { required: "This is required" })}
+                        {...register("stock", { required: "This is required" })}
                         value={formData.stock}
-                        onChange={(e) => setFormData({ ...formData, stock: e.target.value })} />
+                        onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                      />
                       {errors.stock && <span className="invalid">{errors.stock.message}</span>}
                     </div>
                   </div>
@@ -852,9 +864,10 @@ const ProductList = () => {
                       <input
                         type="text"
                         className="form-control"
-                        {...register('sku', { required: "This is required" })}
-                        value={formData.sku} 
-                        onChange={(e) => setFormData({ ...formData, sku: e.target.value })}/>
+                        {...register("sku", { required: "This is required" })}
+                        value={formData.sku}
+                        onChange={(e) => setFormData({ ...formData, sku: e.target.value })}
+                      />
                       {errors.sku && <span className="invalid">{errors.sku.message}</span>}
                     </div>
                   </div>

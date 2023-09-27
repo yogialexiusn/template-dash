@@ -27,7 +27,7 @@ const AnalyticsHomePage = () => {
   const [sm, updateSm] = useState(false);
   return (
     <React.Fragment>
-      <Head title="Analytics Dashboard" />
+      <Head title="Administrator Lotte Data Communication Indonesia" />
       <Content>
         <BlockHead size="sm">
           <div className="nk-block-between">

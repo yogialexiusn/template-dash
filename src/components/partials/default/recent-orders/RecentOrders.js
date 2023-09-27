@@ -59,9 +59,7 @@ const RecentOrders = () => {
             <DataTableRow>
               <Badge
                 className="badge-dot badge-dot-xs"
-                color={
-                  item.status === "Paid" ? "success" : item.status === "Due" ? "warning" : "danger"
-                }
+                color={item.status === "Paid" ? "success" : item.status === "Due" ? "warning" : "danger"}
               >
                 {item.status}
               </Badge>

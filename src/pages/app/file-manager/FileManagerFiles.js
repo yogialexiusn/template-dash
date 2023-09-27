@@ -7,11 +7,7 @@ import Layout from "./components/Layout";
 const FileManager = () => {
   return (
     <Layout>
-      <Body searchBar viewFilter
-        title={
-          <BlockTitle page>Files</BlockTitle>
-        }
-      >
+      <Body searchBar viewFilter title={<BlockTitle page>Files</BlockTitle>}>
         <AllFiles />
       </Body>
     </Layout>

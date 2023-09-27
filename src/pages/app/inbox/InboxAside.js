@@ -4,13 +4,7 @@ import InboxForm from "./InboxForm";
 import { Icon, UserAvatar, Button, LinkItem, LinkList } from "../../../components/Component";
 import { findUpper } from "../../../utils/Utils";
 import { colourOptions } from "./InboxData";
-import {
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown,
-  Badge
-} from "reactstrap";
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown, Badge } from "reactstrap";
 import LabelFormModal from "./LabelFormModal";
 import ContactsFormModal from "./ContactsFormModal";
 
@@ -42,16 +36,16 @@ const InboxAside = ({
     label: "",
     theme: {
       value: "primary",
-      label: "Primary"
+      label: "Primary",
     },
   });
 
   const [editLabelFormData, setEditLabelFormData] = useState({
-    editId:0,
+    editId: 0,
     label: "",
     theme: {
       value: "primary",
-      label: "Primary"
+      label: "Primary",
     },
   });
 
@@ -60,18 +54,18 @@ const InboxAside = ({
       label: "",
       theme: {
         value: "primary",
-        label: "Primary"
+        label: "Primary",
       },
     });
   };
 
   const resetEditLabelForm = () => {
     setEditLabelFormData({
-      editId:0,
+      editId: 0,
       label: "",
       theme: {
         value: "primary",
-        label: "Primary"
+        label: "Primary",
       },
     });
   };
@@ -91,13 +85,13 @@ const InboxAside = ({
           item.message.meta[tab.toLowerCase()] === true &&
           item.message.meta.trash !== true &&
           item.message.meta.archive !== true &&
-          item.message.meta.unread !== true
+          item.message.meta.unread !== true,
       );
       return defaultData.length;
     } else if (tab === "Draft") {
       let defaultData = data.filter(
         (item) =>
-          item.message.meta.draft === true && item.message.meta.trash !== true && item.message.meta.archive !== true
+          item.message.meta.draft === true && item.message.meta.trash !== true && item.message.meta.archive !== true,
       );
       return defaultData.length;
     } else if (tab === "Archive") {
@@ -132,15 +126,15 @@ const InboxAside = ({
         const selected_theme = colourOptions.filter(function (option) {
           return option.value === item.color;
         });
-        setLabelModal({...labelModal, edit:true});
+        setLabelModal({ ...labelModal, edit: true });
         setEditLabelFormData({
-          label: item.text, 
+          label: item.text,
           theme: {
             value: selected_theme[0].value,
-            label: selected_theme[0].label
-          }, 
-          editId: item.id
-        })
+            label: selected_theme[0].label,
+          },
+          editId: item.id,
+        });
       }
     });
   };
@@ -234,7 +228,9 @@ const InboxAside = ({
                   <Icon name={item.icon}></Icon>
                   <span className="nk-ibx-menu-text">{item.name}</span>
                   {item.badge && (
-                    <Badge pill color={item.badge.theme}>{getTabDataNum(item.name)}</Badge>
+                    <Badge pill color={item.badge.theme}>
+                      {getTabDataNum(item.name)}
+                    </Badge>
                   )}
                 </a>
               </li>
@@ -247,7 +243,7 @@ const InboxAside = ({
               href="#add"
               onClick={(ev) => {
                 ev.preventDefault();
-                setLabelModal({...labelModal, add:true});
+                setLabelModal({ ...labelModal, add: true });
               }}
             >
               <Icon name="plus-c"></Icon>
@@ -403,10 +399,29 @@ const InboxAside = ({
         composeState={composeModal}
         draftData={{ subject: "", message: "" }}
       />
-      <LabelFormModal modal={labelModal.add} modalAction="add" formData={labelFormData} setFormData={setLabelFormData} closeModal={onLabelFormCancel} onSubmit={onLabelFormSubmit} />
-      <LabelFormModal modal={labelModal.edit} modalAction="edit" formData={editLabelFormData} setFormData={setEditLabelFormData} closeModal={onLabelFormCancel} onSubmit={onLabelEditFormSubmit} />
-      <ContactsFormModal modal={contactModal} formData={conatctFormData} setFormData={setConatctFormData} closeModal={onConatctFormCancel} onSubmit={onContactFormSubmit} />
-
+      <LabelFormModal
+        modal={labelModal.add}
+        modalAction="add"
+        formData={labelFormData}
+        setFormData={setLabelFormData}
+        closeModal={onLabelFormCancel}
+        onSubmit={onLabelFormSubmit}
+      />
+      <LabelFormModal
+        modal={labelModal.edit}
+        modalAction="edit"
+        formData={editLabelFormData}
+        setFormData={setEditLabelFormData}
+        closeModal={onLabelFormCancel}
+        onSubmit={onLabelEditFormSubmit}
+      />
+      <ContactsFormModal
+        modal={contactModal}
+        formData={conatctFormData}
+        setFormData={setConatctFormData}
+        closeModal={onConatctFormCancel}
+        onSubmit={onContactFormSubmit}
+      />
     </div>
   );
 };

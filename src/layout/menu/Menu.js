@@ -303,7 +303,7 @@ const Menu = ({ sidebarToggle, mobileView }) => {
             sidebarToggle={sidebarToggle}
             mobileView={mobileView}
           />
-        )
+        ),
       )}
     </ul>
   );

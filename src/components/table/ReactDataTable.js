@@ -81,14 +81,7 @@ const ExpandableRowComponent = ({ data }) => {
 
 const CustomCheckbox = React.forwardRef(({ onClick, ...rest }, ref) => (
   <div className="custom-control custom-control-sm custom-checkbox notext">
-    <input
-      id={rest.name}
-      type="checkbox"
-      className="custom-control-input"
-      ref={ref}
-      onClick={onClick}
-      {...rest}
-    />
+    <input id={rest.name} type="checkbox" className="custom-control-input" ref={ref} onClick={onClick} {...rest} />
     <label className="custom-control-label" htmlFor={rest.name} />
   </div>
 ));

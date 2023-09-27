@@ -8,11 +8,7 @@ import Layout from "./components/Layout";
 const FileManager = () => {
   return (
     <Layout>
-      <Body searchBar recoveryFilter
-        title={
-          <BlockTitle page>Recovery</BlockTitle>
-        }
-      >
+      <Body searchBar recoveryFilter title={<BlockTitle page>Recovery</BlockTitle>}>
         <Recovery />
       </Body>
     </Layout>

@@ -442,7 +442,9 @@ const RatingWidgets = () => {
                           <span>Fulltime</span>
                         </li>
                       </ul>
-                      <Badge className="badge-dim badge-sm" pill color="outline-info">$1550.00</Badge>
+                      <Badge className="badge-dim badge-sm" pill color="outline-info">
+                        $1550.00
+                      </Badge>
                     </div>
                     <Collapse isOpen={collapse}>
                       <div className="divider"></div>
@@ -534,7 +536,9 @@ const RatingWidgets = () => {
                           <span>Fulltime</span>
                         </li>
                       </ul>
-                      <Badge className="badge-dim badge-sm" pill color="outline-info">$1550.00</Badge>
+                      <Badge className="badge-dim badge-sm" pill color="outline-info">
+                        $1550.00
+                      </Badge>
                     </div>
                     <Collapse isOpen={collapse2}>
                       <div className="divider"></div>
@@ -1427,7 +1431,9 @@ const RatingWidgets = () => {
                       <div className="fake-class">
                         <h6 className="mt-0 d-flex align-center">
                           <span>Abu Bin Ishiyak</span>
-                          <Badge className="badge-dim ms-2" color="outline-info">Author</Badge>
+                          <Badge className="badge-dim ms-2" color="outline-info">
+                            Author
+                          </Badge>
                         </h6>
                         <p className="text-soft">
                           Time zone depend on your server time as we use that by default. So you need to change that

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Content from "../../../layout/content/Content";
-import { Card} from "reactstrap";
+import { Card } from "reactstrap";
 import Head from "../../../layout/head/Head";
 import {
   BlockBetween,
@@ -17,7 +17,7 @@ import UserProfileAside from "./UserProfileAside";
 
 const UserProfileActivityPage = () => {
   const [sm, updateSm] = useState(false);
-  const [mobileView , setMobileView] = useState(false);
+  const [mobileView, setMobileView] = useState(false);
 
   // function to change the design view under 990 px
   const viewChange = () => {
@@ -41,7 +41,7 @@ const UserProfileActivityPage = () => {
       window.removeEventListener("load", viewChange);
     };
   }, []);
-  
+
   return (
     <React.Fragment>
       <Head title="User List - Profile"></Head>
@@ -53,7 +53,7 @@ const UserProfileActivityPage = () => {
                 sm ? "content-active" : ""
               }`}
             >
-              <UserProfileAside updateSm={updateSm}  sm={sm} />
+              <UserProfileAside updateSm={updateSm} sm={sm} />
             </div>
             <div className="card-inner card-inner-lg">
               {sm && mobileView && <div className="toggle-overlay" onClick={() => updateSm(!sm)}></div>}

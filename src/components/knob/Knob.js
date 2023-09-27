@@ -10,7 +10,7 @@ const Knob = ({ data, type, centerText }) => {
       <Doughnut
         data={data}
         options={{
-          plugins:{
+          plugins: {
             legend: {
               display: false,
             },
@@ -20,12 +20,16 @@ const Knob = ({ data, type, centerText }) => {
           },
           rotation: 270,
           circumference: type === "half" ? 180 : 360,
-          cutout: '93%',
+          cutout: "93%",
           maintainAspectRatio: true,
           hover: false,
         }}
       />
-      <div className={`position-absolute top-50 start-50 translate-middle fs-1 fw-light ${type === "full" ? "pb-4" : "pt-5"}`}>
+      <div
+        className={`position-absolute top-50 start-50 translate-middle fs-1 fw-light ${
+          type === "full" ? "pb-4" : "pt-5"
+        }`}
+      >
         <div className="text-lead">{centerText}</div>
       </div>
     </div>

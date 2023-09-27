@@ -93,7 +93,7 @@ const ProductDetails = ({ match }) => {
     setNav2(slider2.current);
   }, []);
 
-  let {productId} = useParams();
+  let { productId } = useParams();
   // grabs the id of the url and loads the corresponding data
   useEffect(() => {
     const id = productId;

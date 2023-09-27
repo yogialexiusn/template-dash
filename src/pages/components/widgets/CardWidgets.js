@@ -30,7 +30,17 @@ import {
   Progress,
 } from "../../../components/Component";
 import { findUpper } from "../../../utils/Utils";
-import { Card, Row, Col, Button, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle, Badge } from "reactstrap";
+import {
+  Card,
+  Row,
+  Col,
+  Button,
+  UncontrolledDropdown,
+  DropdownMenu,
+  DropdownItem,
+  DropdownToggle,
+  Badge,
+} from "reactstrap";
 
 const CardWidgets = () => {
   const [heart, setHeart] = useState(false);

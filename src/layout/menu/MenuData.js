@@ -1,58 +1,19 @@
 const menu = [
   {
-    heading: "Use-case preview",
+    heading: "LOTTE DATA COMMUNICATION",
   },
   {
-    icon: "bag",
-    text: "E-Commerce Panel",
-    link: "/ecommerce/index",
-    panel: true,
-    newTab: true,
-    subPanel: [
-      {
-        icon: "dashboard-fill",
-        text: "Dashboard",
-        link: "/ecommerce/index",
-      },
-      {
-        icon: "bag-fill",
-        text: "Orders",
-        link: "/ecommerce/orders",
-      },
-      {
-        icon: "package-fill",
-        text: "Products",
-        link: "/ecommerce/products",
-      },
-      {
-        icon: "users-fill",
-        text: "Customers",
-        link: "/ecommerce/customer",
-      },
-      {
-        icon: "chat-fill",
-        text: "Support",
-        link: "/ecommerce/support",
-      },
-      {
-        icon: "opt-alt-fill",
-        text: "Settings",
-        link: "/ecommerce/settings",
-      },
-      {
-        icon: "server-fill",
-        text: "Integration",
-        link: "/ecommerce/integration",
-      },
-    ],
-  },
-  {
-    heading: "Dashboards",
+    heading: "INDONESIA ADMINISTRATOR",
   },
   {
     icon: "cart-fill",
     text: "Default",
     link: "/",
+  },
+  {
+    icon: "table-view-fill",
+    text: "Career",
+    link: "/career",
   },
   {
     icon: "activity-round-fill",

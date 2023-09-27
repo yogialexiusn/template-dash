@@ -8,7 +8,6 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  
   Nav,
   NavLink,
   NavItem,
@@ -62,7 +61,11 @@ const ModalsPage = () => {
                 Use Bootstrap’s JavaScript modal plugin to add dialogs to your site for lightboxes, user notifications,
                 or completely custom content. To use it, import it such as{" "}
                 <code>import {`{Modal,ModalBody,ModalBody,ModalFooter}`} from "reactstrap"</code>. Visit the{" "}
-                <a href={"https://reactstrap.github.io/?path=/docs/components-modal--modal"} target="_blank" rel="noreferrer">
+                <a
+                  href={"https://reactstrap.github.io/?path=/docs/components-modal--modal"}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Reactstrap
                 </a>{" "}
                 library for detailed instructions.

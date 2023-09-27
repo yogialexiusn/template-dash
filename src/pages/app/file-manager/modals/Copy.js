@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Icon } from "../../../../components/Component";
 import { useFileManager } from "../components/Context";
-import icons from "../components/Icons"
+import icons from "../components/Icons";
 
 const Copy = ({ file, toggle, toggleCreate }) => {
-
-  const {fileManager} = useFileManager();
+  const { fileManager } = useFileManager();
 
   const [selected, setSelected] = useState("");
 
@@ -32,7 +31,8 @@ const Copy = ({ file, toggle, toggleCreate }) => {
         <div className="nk-fmg-listing is-scrollable">
           <div className="nk-files nk-files-view-list is-compact">
             <div className="nk-files-list">
-              {fileManager.files.filter((item) => item.type === "folder" && !item.deleted)
+              {fileManager.files
+                .filter((item) => item.type === "folder" && !item.deleted)
                 .map((item) => {
                   return (
                     <div
@@ -43,7 +43,9 @@ const Copy = ({ file, toggle, toggleCreate }) => {
                       <div className="nk-file-info">
                         <a className="nk-file-link" href="#link" onClick={(ev) => ev.preventDefault()}>
                           <div className="nk-file-title">
-                            <div className="nk-file-icon"><div className="nk-file-icon-type">{icons[item.icon]}</div></div>
+                            <div className="nk-file-icon">
+                              <div className="nk-file-icon-type">{icons[item.icon]}</div>
+                            </div>
                             <div className="nk-file-name">
                               <div className="nk-file-name-text">
                                 <span className="title">{item.name}</span>

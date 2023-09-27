@@ -12,7 +12,7 @@ import {
 } from "../../../components/Component";
 import { useForm } from "react-hook-form";
 import { Steps, Step } from "react-step-builder";
-import { Row, Col,  Button } from "reactstrap";
+import { Row, Col, Button } from "reactstrap";
 
 const PersonalForm = (props) => {
   const [formData, setFormData] = useState({
@@ -27,14 +27,19 @@ const PersonalForm = (props) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const { reset, register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const submitForm = (data) => {
     props.next();
   };
 
   useEffect(() => {
-    reset(formData)
+    reset(formData);
   }, [formData]);
 
   return (
@@ -50,9 +55,10 @@ const PersonalForm = (props) => {
                 type="text"
                 id="first-name"
                 className="form-control"
-                {...register('firstName', { required: true })}
+                {...register("firstName", { required: true })}
                 onChange={(e) => onInputChange(e)}
-                defaultValue={formData.firstName} />
+                defaultValue={formData.firstName}
+              />
               {errors.firstName && <span className="invalid">This field is required</span>}
             </div>
           </div>
@@ -67,9 +73,10 @@ const PersonalForm = (props) => {
                 type="text"
                 id="last-name"
                 className="form-control"
-                {...register('lastName', { required: true })}
+                {...register("lastName", { required: true })}
                 onChange={(e) => onInputChange(e)}
-                defaultValue={formData.lastName} />
+                defaultValue={formData.lastName}
+              />
               {errors.lastName && <span className="invalid">This field is required</span>}
             </div>
           </div>
@@ -84,7 +91,7 @@ const PersonalForm = (props) => {
                 type="text"
                 id="email"
                 className="form-control"
-                {...register('email', {
+                {...register("email", {
                   required: true,
                   pattern: {
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -92,7 +99,8 @@ const PersonalForm = (props) => {
                   },
                 })}
                 onChange={(e) => onInputChange(e)}
-                defaultValue={formData.email} />
+                defaultValue={formData.email}
+              />
               {errors.email && errors.email.type === "required" && (
                 <span className="invalid">This field is required</span>
               )}
@@ -112,9 +120,10 @@ const PersonalForm = (props) => {
                 type="number"
                 id="phone-no"
                 className="form-control"
-                {...register('phone', { required: true })}
+                {...register("phone", { required: true })}
                 onChange={(e) => onInputChange(e)}
-                defaultValue={formData.phone} />
+                defaultValue={formData.phone}
+              />
               {errors.phone && <span className="invalid">This field is required</span>}
             </div>
           </div>
@@ -129,9 +138,10 @@ const PersonalForm = (props) => {
                 type="text"
                 id="city"
                 className="form-control"
-                {...register('city', { required: true })}
+                {...register("city", { required: true })}
                 onChange={(e) => onInputChange(e)}
-                defaultValue={formData.city} />
+                defaultValue={formData.city}
+              />
               {errors.city && <span className="invalid">This field is required</span>}
             </div>
           </div>
@@ -162,7 +172,12 @@ const UserSettings = (props) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const { handleSubmit, register, watch, formState: { errors } } = useForm();
+  const {
+    handleSubmit,
+    register,
+    watch,
+    formState: { errors },
+  } = useForm();
 
   const submitForm = (data) => {
     props.next();
@@ -184,9 +199,10 @@ const UserSettings = (props) => {
                 type="text"
                 id="username"
                 className="form-control"
-                {...register('username', { required: true })}
+                {...register("username", { required: true })}
                 onChange={(e) => onInputChange(e)}
-                defaultValue={formData.username} />
+                defaultValue={formData.username}
+              />
               {errors.username && <span className="invalid">This field is required</span>}
             </div>
           </div>
@@ -201,7 +217,7 @@ const UserSettings = (props) => {
                 type="password"
                 id="password"
                 className="form-control"
-                {...register('password', {
+                {...register("password", {
                   required: "This field is required",
                   minLength: {
                     value: 6,
@@ -209,7 +225,8 @@ const UserSettings = (props) => {
                   },
                 })}
                 onChange={(e) => onInputChange(e)}
-                defaultValue={formData.password} />
+                defaultValue={formData.password}
+              />
               {errors.password && <span className="invalid">{errors.password.message}</span>}
             </div>
           </div>
@@ -224,12 +241,13 @@ const UserSettings = (props) => {
                 type="password"
                 id="rePassword"
                 className="form-control"
-                {...register('rePassword', {
+                {...register("rePassword", {
                   required: "This field is required",
                   validate: (value) => value === password.current || "The passwords do not match",
                 })}
                 onChange={(e) => onInputChange(e)}
-                defaultValue={formData.rePassword} />
+                defaultValue={formData.rePassword}
+              />
               {errors.rePassword && <span className="invalid">{errors.rePassword?.message}</span>}
             </div>
           </div>
@@ -241,8 +259,9 @@ const UserSettings = (props) => {
               className="custom-control-input"
               onChange={(e) => setFormData({ ...formData, terms: e.target.checked })}
               checked={formData.terms}
-              {...register('terms', { required: true })}
-              id="fw-policy" />
+              {...register("terms", { required: true })}
+              id="fw-policy"
+            />
             {errors.terms && <span className="invalid">This field is required</span>}
             <label className="custom-control-label" htmlFor="fw-policy">
               I agreed Terms and policy
@@ -279,7 +298,11 @@ const PaymentInfo = (props) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const {  register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const submitForm = (data) => {
     //window.location.reload();
@@ -299,8 +322,9 @@ const PaymentInfo = (props) => {
                 type="text"
                 className="form-control"
                 id="fw-token-address"
-                {...register('tokenAddress', { required: true })}
-                onChange={(e) => onInputChange(e)} />
+                {...register("tokenAddress", { required: true })}
+                onChange={(e) => onInputChange(e)}
+              />
               {errors.tokenAddress && <span className="invalid">This field is required</span>}
             </div>
           </div>
@@ -313,10 +337,11 @@ const PaymentInfo = (props) => {
                 <input
                   type="radio"
                   className="custom-control-input"
-                  {...register('ethRadio', { required: true })}
+                  {...register("ethRadio", { required: true })}
                   id="fw-lt1eth"
                   checked={formData.contribute === "leEth" ? true : false}
-                  onChange={() => setFormData({ ...formData, contribute: "leEth" })} />
+                  onChange={() => setFormData({ ...formData, contribute: "leEth" })}
+                />
                 {errors.ethRadio && <span className="invalid">This field is required</span>}
                 <label className="custom-control-label" htmlFor="fw-lt1eth">
                   Less than 1 ETH
@@ -328,10 +353,11 @@ const PaymentInfo = (props) => {
                 <input
                   type="radio"
                   className="custom-control-input"
-                  {...register('ethRadio', { required: true })}
+                  {...register("ethRadio", { required: true })}
                   id="fw-ov1eth"
                   checked={formData.contribute === "ovEth" ? true : false}
-                  onChange={() => setFormData({ ...formData, contribute: "ovEth" })} />
+                  onChange={() => setFormData({ ...formData, contribute: "ovEth" })}
+                />
                 <label className="custom-control-label" htmlFor="fw-ov1eth">
                   Over than 1 ETH
                 </label>
@@ -349,8 +375,9 @@ const PaymentInfo = (props) => {
                 type="text"
                 className="form-control required"
                 id="fw-telegram-username"
-                {...register('telegram', { required: true })}
-                onChange={(e) => onInputChange(e)} />
+                {...register("telegram", { required: true })}
+                onChange={(e) => onInputChange(e)}
+              />
               {errors.telegram && <span className="invalid">This field is required</span>}
             </div>
           </div>

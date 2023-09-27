@@ -7,11 +7,7 @@ import { BlockTitle } from "../../../components/Component";
 const FileManager = () => {
   return (
     <Layout>
-      <Body searchBar 
-        title={
-          <BlockTitle page>Starred</BlockTitle>
-        }
-      >
+      <Body searchBar title={<BlockTitle page>Starred</BlockTitle>}>
         <Starred />
       </Body>
     </Layout>
