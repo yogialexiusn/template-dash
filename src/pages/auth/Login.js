@@ -3,6 +3,7 @@ import Logo from "../../images/logo.png";
 import LogoDark from "../../images/logo-dark.png";
 import Head from "../../layout/head/Head";
 import AuthFooter from "./AuthFooter";
+import { useNavigate } from 'react-router-dom';
 import {
   Block,
   BlockContent,
@@ -21,6 +22,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
+  const navigate = useNavigate();
 
   const onFormSubmit = (formData) => {
     setLoading(true);
@@ -44,6 +46,11 @@ const Login = () => {
     }
   };
 
+  const routeChange = () =>{ 
+    let path = '/demo2'; 
+    navigate(path);
+}
+
   const {
     register,
     handleSubmit,
@@ -55,7 +62,7 @@ const Login = () => {
       <Head title="Login" />
       <Block className="nk-block-middle nk-auth-body  wide-xs">
         <div className="brand-logo pb-4 text-center">
-          <Link to={process.env.PUBLIC_URL + "/"} className="logo-link">
+          <Link to={"http://localhost:3000/landing"} className="logo-link">
             <img className="logo-light logo-img logo-img-lg" src={Logo} alt="logo" />
             <img className="logo-dark logo-img logo-img-lg" src={LogoDark} alt="logo-dark" />
           </Link>
@@ -66,14 +73,14 @@ const Login = () => {
             <BlockContent>
               <BlockTitle tag="h4">Sign-In</BlockTitle>
               <BlockDes>
-                <p>Access Dashlite using your email and passcode.</p>
+                <p>Access Administator Lotte Data Communication Indonesia using your email / username and password.</p>
               </BlockDes>
             </BlockContent>
           </BlockHead>
           {errorVal && (
             <div className="mb-3">
               <Alert color="danger" className="alert-icon">
-                <Icon name="alert-circle" /> Unable to login with credentials{" "}
+                <Icon name="alert-circle" /> Unable to login because username or password is wrong{" "}
               </Alert>
             </div>
           )}
@@ -89,7 +96,7 @@ const Login = () => {
                   type="text"
                   id="default-01"
                   {...register("name", { required: "This field is required" })}
-                  defaultValue="info@softnio.com"
+                  
                   placeholder="Enter your email address or username"
                   className="form-control-lg form-control"
                 />
@@ -99,7 +106,7 @@ const Login = () => {
             <div className="form-group">
               <div className="form-label-group">
                 <label className="form-label" htmlFor="password">
-                  Passcode
+                  Password
                 </label>
                 <Link className="link link-primary link-sm" to={`${process.env.PUBLIC_URL}/auth-reset`}>
                   Forgot Code?
@@ -122,7 +129,7 @@ const Login = () => {
                   type={passState ? "text" : "password"}
                   id="password"
                   {...register("passcode", { required: "This field is required" })}
-                  defaultValue="123456"
+                  
                   placeholder="Enter your passcode"
                   className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`}
                 />
@@ -130,43 +137,12 @@ const Login = () => {
               </div>
             </div>
             <div className="form-group">
-              <Button size="lg" className="btn-block" type="submit" color="primary">
+              <Button size="lg" className="btn-block" type="submit" color="primary" onClick={routeChange}>
                 {loading ? <Spinner size="sm" color="light" /> : "Sign in"}
               </Button>
             </div>
           </Form>
-          <div className="form-note-s2 text-center pt-4">
-            New on our platform? <Link to={`${process.env.PUBLIC_URL}/auth-register`}>Create an account</Link>
-          </div>
-          <div className="text-center pt-4 pb-3">
-            <h6 className="overline-title overline-title-sap">
-              <span>OR</span>
-            </h6>
-          </div>
-          <ul className="nav justify-center gx-4">
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#socials"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                }}
-              >
-                Facebook
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="#socials"
-                onClick={(ev) => {
-                  ev.preventDefault();
-                }}
-              >
-                Google
-              </a>
-            </li>
-          </ul>
+          
         </PreviewCard>
       </Block>
       <AuthFooter />

@@ -24,38 +24,17 @@ const Career = () => {
               Components
             </BackTo>
             <BlockTitle tag="h2" className="fw-normal">
-              DataTable Example
+              Career Menu
             </BlockTitle>
             <BlockDes>
               <p className="lead">
-                The tables in this section has used the{" "}
-                <a href="https://react-data-table-component.netlify.app/" target="_blank" rel="noreferrer">
-                  React-Data-Table-Component
-                </a>{" "}
-                package. Visit the{" "}
-                <a href="https://react-data-table-component.netlify.app/" target="_blank" rel="noreferrer">
-                  documentation
-                </a>{" "}
-                for further understanding. The plugin has been customized for the purpose of React Dashlite.
+              The table function in the career menu is used to view a list of job applicants who have applied for job openings. It includes various features such as search and adding data to open job vacancies.
               </p>
             </BlockDes>
           </BlockHeadContent>
         </BlockHead>
 
-        <Block size="lg">
-          <BlockHead>
-            <BlockHeadContent>
-              <BlockTitle tag="h4">DataTable Default</BlockTitle>
-              <p>
-                Just import <code>ReactDataTable</code> from <code>components</code>, it is built in for react dashlite.
-              </p>
-            </BlockHeadContent>
-          </BlockHead>
-
-          <PreviewCard>
-            <ReactDataTable data={DataTableData} columns={dataTableColumns} expandableRows pagination />
-          </PreviewCard>
-        </Block>
+        
 
         <Block size="lg">
           <BlockHead>
@@ -72,23 +51,7 @@ const Career = () => {
           </PreviewCard>
         </Block>
 
-        <Block size="lg">
-          <BlockHead>
-            <BlockHeadContent>
-              <BlockTitle tag="h4">DataTable with custom markup</BlockTitle>
-            </BlockHeadContent>
-          </BlockHead>
-
-          <PreviewCard>
-            <ReactDataTable
-              data={userData}
-              columns={dataTableColumns2}
-              pagination
-              className="nk-tb-list"
-              selectableRows
-            />
-          </PreviewCard>
-        </Block>
+        
       </Content>
     </React.Fragment>
   );
