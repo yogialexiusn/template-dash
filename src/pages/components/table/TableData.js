@@ -29,37 +29,43 @@ export const basicData = {
 
 export const dataTableColumns = [
   {
-    name: "Name",
+    name: "ID CAREER",
     selector: (row) => row.name,
     sortable: true,
   },
   {
-    name: "Age",
+    name: "CAREER NAME",
     selector: (row) => row.age,
     sortable: true,
     hide: 370,
   },
   {
-    name: "Gender",
+    name: "DEPARTMENT - TEAM",
     selector: (row) => row.gender,
     sortable: true,
     hide: "sm",
   },
   {
-    name: "Company",
+    name: "COUNTRY - LOCATION",
     selector: (row) => row.company,
     sortable: true,
     hide: "sm",
   },
   {
-    name: "Start Date",
+    name: "WORK PLACE TYPE",
     selector: (row) => row.startDate,
     sortable: true,
     hide: "md",
   },
   {
-    name: "Salary",
+    name: "ACTION",
     selector: (row) => row.salary,
+    sortable: true,
+    hide: "md",
+  },
+  {
+    name: "APPLICANT",
+    selector: (row) => row.cek,
     sortable: true,
     hide: "md",
   },
@@ -185,6 +191,7 @@ export const DataTableData = [
     company: "BUZZWORKS",
     startDate: "2017-02-17",
     salary: "$2,570.39",
+    cek: ""
   },
   {
     id: 1,
@@ -532,7 +539,7 @@ export const DataTableData = [
     id: 39,
     name: "Booker Chambers",
     age: 24,
-    gender: "male",
+    gender: (row) => <button>cacad</button>,
     company: "SKYPLEX",
     startDate: "2014-07-29",
     salary: "$3,949.05",

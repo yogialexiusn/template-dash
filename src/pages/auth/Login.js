@@ -4,6 +4,7 @@ import LogoDark from "../../images/logo-dark.png";
 import Head from "../../layout/head/Head";
 import AuthFooter from "./AuthFooter";
 import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../../config/AxiosInstance';
 import {
   Block,
   BlockContent,
@@ -23,6 +24,8 @@ const Login = () => {
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
   const navigate = useNavigate();
+  const [user, setUser] = useState();
+  const [password, setPassword] = useState();
 
   const onFormSubmit = (formData) => {
     setLoading(true);
@@ -73,7 +76,7 @@ const Login = () => {
             <BlockContent>
               <BlockTitle tag="h4">Sign-In</BlockTitle>
               <BlockDes>
-                <p>Access Administator Lotte Data Communication Indonesia using your email / username and password.</p>
+                {/* <p>Access Administator </p> */}
               </BlockDes>
             </BlockContent>
           </BlockHead>

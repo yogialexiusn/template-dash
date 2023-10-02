@@ -5,7 +5,21 @@ import { ProductContextProvider } from "../pages/pre-built/products/ProductConte
 import { UserContextProvider } from "../pages/pre-built/user-manage/UserContext";
 
 import Homepage from "../pages/Homepage";
-import Career from "../pages/Career";
+import MasterRole from "../pages/MasterRole";
+import MasterUser from "../pages/MasterUser";
+import MasterChangeRequest from "../pages/MasterChangeRequest";
+import MasterCareer from "../pages/MasterCareer";
+import MasterNews from "../pages/MasterNews";
+import MasterProgram from "../pages/MasterProgram";
+import MasterMenu from "../pages/MasterMenu";
+import MasterTeam from "../pages/MasterTeam";
+import TrcCareer from "../pages/TrcCareer";
+import TrcNews from "../pages/TrcNews";
+import TrcChangeRequest from "../pages/TrcChangeRequest";
+import TrcRoleToMenu from "../pages/TrcRoleToMenu";
+import TrcMenuAccess from "../pages/TrcMenuAccess";
+
+
 import Sales from "../pages/Sales";
 import Analytics from "../pages/Analytics";
 
@@ -171,8 +185,20 @@ const Router = () => {
 
       <Route path={`${process.env.PUBLIC_URL}`} element={<Layout />}>
         {/*Dashboards*/}
-        <Route index element={<Homepage />}></Route>
-        <Route path="career" element={<Career />}></Route>
+        <Route index element={<MasterRole />}></Route>
+        <Route path="masterrole" element={<MasterRole />}></Route>
+        <Route path="masteruser" element={<MasterUser />}></Route>
+        <Route path="masterchangerequest" element={<MasterChangeRequest />}></Route>
+        <Route path="mastercareer" element={<MasterCareer />}></Route>
+        <Route path="masternews" element={<MasterNews />}></Route>
+        <Route path="masterprogram" element={<MasterProgram />}></Route>
+        <Route path="mastermenu" element={<MasterMenu />}></Route>
+        <Route path="masterteam" element={<MasterTeam />}></Route>
+        <Route path="trccareer" element={<TrcCareer />}></Route>
+        <Route path="trcnews" element={<TrcNews />}></Route>
+        <Route path="trcchangerequest" element={<TrcChangeRequest />}></Route>
+        <Route path="trcroletomenu" element={<TrcRoleToMenu />}></Route>
+        <Route path="trcmenuaccess" element={<TrcMenuAccess />}></Route>
         <Route path="sales" element={<Sales />}></Route>
         <Route path="analytics" element={<Analytics />}></Route>
         <Route path="_blank" element={<Blank />}></Route>
