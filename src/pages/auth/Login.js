@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Logo from "../../images/logo.png";
 import LogoDark from "../../images/logo-dark.png";
 import Head from "../../layout/head/Head";
 import AuthFooter from "./AuthFooter";
-import { useNavigate } from 'react-router-dom';
-import { axiosInstance } from '../../config/AxiosInstance';
+import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "../../config/AxiosInstance";
 import {
   Block,
   BlockContent,
@@ -18,14 +18,17 @@ import {
 import { Form, Spinner, Alert } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { LoginAuth } from "../../api/AuthApi";
+import Cookies from "js-cookies/src/cookies";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
   const navigate = useNavigate();
-  const [user, setUser] = useState();
-  const [password, setPassword] = useState();
+  const [jwtCookie, setJwtCookie] = useState();
+  const [passwordWeb, setPasswordWeb] = useState();
+  const [usernameWeb, setUsernameWeb] = useState("");
 
   const onFormSubmit = (formData) => {
     setLoading(true);
@@ -49,10 +52,42 @@ const Login = () => {
     }
   };
 
-  const routeChange = () =>{ 
-    let path = '/demo2'; 
+  const handleLogin = async () => {
+    login(usernameWeb, passwordWeb);
+  };
+
+  const login = useCallback(
+    async (e) => {
+      console.log("username", usernameWeb);
+      console.log("password", passwordWeb);
+      e.preventDefault();
+      let requestBody = {
+        username: usernameWeb,
+        password: passwordWeb,
+      };
+      let response = await axiosInstance().post("/api/v1/auth/signin", requestBody);
+      console.log("yogiresponse = " + JSON.stringify(response.data.data.jwtCookie.value));
+
+      if (response.status === 200) {
+        // setTotalData(response.data.totalData);
+        // setTotalPages(response.data.totalPages);
+        const total = JSON.stringify(response.data.totalPages);
+        setPassState(true);
+        Cookies.setItem("jwtCookie", response.data.data.jwtCookie.value);
+        navigate("/admin/masternews");
+      } else {
+        // setRequestChanges([]);
+        // setMessage(response.data.message);
+      }
+      // setShouldFetchData(false);
+    },
+    [usernameWeb, passwordWeb],
+  );
+
+  const routeChange = () => {
+    let path = "/admin";
     navigate(path);
-}
+  };
 
   const {
     register,
@@ -75,9 +110,7 @@ const Login = () => {
           <BlockHead>
             <BlockContent>
               <BlockTitle tag="h4">Sign-In</BlockTitle>
-              <BlockDes>
-                {/* <p>Access Administator </p> */}
-              </BlockDes>
+              <BlockDes>{/* <p>Access Administator </p> */}</BlockDes>
             </BlockContent>
           </BlockHead>
           {errorVal && (
@@ -87,28 +120,29 @@ const Login = () => {
               </Alert>
             </div>
           )}
-          <Form className="is-alter" onSubmit={handleSubmit(onFormSubmit)}>
+          {/* <Form className="is-alter" onSubmit={login}> */}
+          <Form className="is-alter">
             <div className="form-group">
               <div className="form-label-group">
-                <label className="form-label" htmlFor="default-01">
+                <label className="form-label" htmlFor="username" value="Username">
                   Email or Username
                 </label>
               </div>
               <div className="form-control-wrap">
                 <input
                   type="text"
-                  id="default-01"
-                  {...register("name", { required: "This field is required" })}
-                  
+                  id="username"
                   placeholder="Enter your email address or username"
                   className="form-control-lg form-control"
+                  required
+                  onChange={(event) => setUsernameWeb(event.target.value)}
                 />
                 {errors.name && <span className="invalid">{errors.name.message}</span>}
               </div>
             </div>
             <div className="form-group">
               <div className="form-label-group">
-                <label className="form-label" htmlFor="password">
+                <label className="form-label" htmlFor="password" value="Password">
                   Password
                 </label>
                 <Link className="link link-primary link-sm" to={`${process.env.PUBLIC_URL}/auth-reset`}>
@@ -131,21 +165,27 @@ const Login = () => {
                 <input
                   type={passState ? "text" : "password"}
                   id="password"
-                  {...register("passcode", { required: "This field is required" })}
-                  
+                  // {...register("passcode", { required: "This field is required" })}
                   placeholder="Enter your passcode"
                   className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`}
+                  required
+                  onChange={(event) => setPasswordWeb(event.target.value)}
                 />
                 {errors.passcode && <span className="invalid">{errors.passcode.message}</span>}
               </div>
             </div>
             <div className="form-group">
-              <Button size="lg" className="btn-block" type="submit" color="primary" onClick={routeChange}>
-                {loading ? <Spinner size="sm" color="light" /> : "Sign in"}
+              <Button
+                size="lg"
+                // className="btn-block"
+                color="primary"
+                onClick={login}
+              >
+                {/* {loading ? <Spinner size="sm" color="light" /> : "Sign in"} */}
+                Login123
               </Button>
             </div>
           </Form>
-          
         </PreviewCard>
       </Block>
       <AuthFooter />

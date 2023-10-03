@@ -6,82 +6,82 @@ const menu = [
     icon: "property",
     text: "Role",
     link: "/masterrole",
-    active: "true"
+    active: "true",
   },
   {
     icon: "users",
     text: "User",
     link: "/masteruser",
-    active: "true"
+    active: "true",
   },
   {
     icon: "tranx",
     text: "Change Request",
     link: "/masterchangerequest",
-    active: "true"
+    active: "true",
   },
   {
     icon: "network",
     text: "Career",
     link: "/mastercareer",
-    active: "true"
+    active: "true",
   },
   {
     icon: "article",
     text: "News",
     link: "/masternews",
-    active: "true"
+    active: "true",
   },
   {
     icon: "tile-thumb-fill",
     text: "Program",
     link: "/masterprogram",
-    active: "true"
+    active: "true",
   },
   {
     icon: "table-view-fill",
     text: "Menu",
     link: "/mastermenu",
-    active: "true"
+    active: "true",
   },
   {
     icon: "building",
     text: "Team",
     link: "/masterTeam",
-    active: "true"
+    active: "true",
   },
   {
     heading: "TRANSACTION",
   },
   {
     icon: "network",
-    text: "Career",
+    text: "Career Cek",
     link: "/trccareer",
-    active: "true"
+    active: "true",
   },
   {
     icon: "article",
-    text: "News",
+    text: "News Cek",
     link: "/trcnews",
-    active: "true"
+    active: "true",
   },
   {
     icon: "tranx",
-    text: "Change Request",
+    text: "Change Request Cek",
     link: "/trcchangerequest",
-    active: "true"
+    active: "true",
   },
   {
     icon: "cc-secure-fill",
     text: "Role to Menu",
     link: "/trcroletomenu",
-    active: "true"
+    active: "true",
   },
   {
     icon: "security",
     text: "Menu Access",
     link: "/trcmenuaccess",
-    active: "true"
+    active: "true",
   },
 ];
 export default menu;

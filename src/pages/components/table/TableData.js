@@ -191,7 +191,7 @@ export const DataTableData = [
     company: "BUZZWORKS",
     startDate: "2017-02-17",
     salary: "$2,570.39",
-    cek: ""
+    cek: "",
   },
   {
     id: 1,
