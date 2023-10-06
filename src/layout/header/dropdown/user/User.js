@@ -3,15 +3,25 @@ import { DropdownToggle, DropdownMenu, Dropdown } from "reactstrap";
 import { Icon } from "../../../../components/Component";
 import { LinkList, LinkItem } from "../../../../components/links/Links";
 import UserAvatar from "../../../../components/user/UserAvatar";
+import Cookies from "js-cookies/src/cookies";
+import Login from "../../../../pages/auth/Login";
+import { useLocation } from "react-router";
 
-const User = () => {
+const User = (responseData) => {
+  const location = useLocation();
+  const userName = responseData?.userName; // Replace with the actual data key you want to access
+
+  const data = location.state?.name;
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
 
-  const handleSignout = () => {
-    localStorage.removeItem("accessToken");
+  const cek = () => {
+    console.log("cookeis" + Cookies.getItem("jwtCookie"));
   };
 
+  const handleSignout = () => {
+    Cookies.removeItem("jwtCookie");
+  };
   return (
     <Dropdown isOpen={open} className="user-dropdown" toggle={toggle}>
       <DropdownToggle
@@ -26,7 +36,7 @@ const User = () => {
           <UserAvatar icon="user-alt" className="sm" />
           <div className="user-info d-none d-md-block">
             <div className="user-status">Administrator</div>
-            <div className="user-name dropdown-indicator">Abu Bin Ishityak</div>
+            <div className="user-name dropdown-indicator">bu Bin Ishtiyaddkd</div>
           </div>
         </div>
       </DropdownToggle>
@@ -37,7 +47,7 @@ const User = () => {
               <span>AB</span>
             </div>
             <div className="user-info">
-              <span className="lead-text">Abu Bin Ishtiyak</span>
+              <span className="lead-text">Abu Bin Ishtiyaddkd</span>
               <span className="sub-text">info@softnio.com</span>
             </div>
           </div>
@@ -50,9 +60,9 @@ const User = () => {
             <LinkItem link="/user-profile-setting" icon="setting-alt" onClick={toggle}>
               Account Setting
             </LinkItem>
-            <LinkItem link="/user-profile-activity" icon="activity-alt" onClick={toggle}>
+            {/* <LinkItem link="/user-profile-activity" icon="activity-alt" onClick={toggle}>
               Login Activity
-            </LinkItem>
+            </LinkItem> */}
           </LinkList>
         </div>
         <div className="dropdown-inner">

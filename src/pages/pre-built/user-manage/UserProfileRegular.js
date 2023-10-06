@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Content from "../../../layout/content/Content";
-import { Card } from "reactstrap";
+import { Card} from "reactstrap";
 import Head from "../../../layout/head/Head";
 import DatePicker from "react-datepicker";
 import { Modal, ModalBody } from "reactstrap";
@@ -15,7 +15,7 @@ import {
   Row,
   Col,
   Button,
-  RSelect,
+  RSelect
 } from "../../../components/Component";
 import { countryOptions, userData } from "./UserData";
 import { getDateStructured } from "../../../utils/Utils";
@@ -23,8 +23,8 @@ import UserProfileAside from "./UserProfileAside";
 
 const UserProfileRegularPage = () => {
   const [sm, updateSm] = useState(false);
-  const [mobileView, setMobileView] = useState(false);
-
+  const [mobileView , setMobileView] = useState(false);
+  
   const [modalTab, setModalTab] = useState("1");
   const [userInfo, setUserInfo] = useState(userData[0]);
   const [formData, setFormData] = useState({
@@ -73,7 +73,7 @@ const UserProfileRegularPage = () => {
       window.removeEventListener("load", viewChange);
     };
   }, []);
-
+  
   return (
     <React.Fragment>
       <Head title="User List - Profile"></Head>
@@ -243,16 +243,16 @@ const UserProfileRegularPage = () => {
               </Block>
 
               <Modal isOpen={modal} className="modal-dialog-centered" size="lg" toggle={() => setModal(false)}>
-                <a
-                  href="#dropdownitem"
-                  onClick={(ev) => {
-                    ev.preventDefault();
-                    setModal(false);
-                  }}
-                  className="close"
-                >
-                  <Icon name="cross-sm"></Icon>
-                </a>
+                  <a
+                    href="#dropdownitem"
+                    onClick={(ev) => {
+                      ev.preventDefault();
+                      setModal(false);
+                    }}
+                    className="close"
+                  >
+                    <Icon name="cross-sm"></Icon>
+                  </a>
                 <ModalBody>
                   <div className="p-2">
                     <h5 className="title">Update Profile</h5>

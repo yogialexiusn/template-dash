@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Content from "../layout/content/Content";
 import Head from "../layout/head/Head";
 import { Button } from "reactstrap";
+import { axiosInstance } from '../config/AxiosInstance';
 import {
   Block,
   BlockHead,
@@ -15,41 +16,48 @@ import {
 import { DataTableData, dataTableColumns, dataTableColumns2, userData } from "./components/table/TableData";
 
 const MasterCareer = () => {
+  const [respCareer, setRespCareer] = useState([]);
+
+
   useEffect(() => {
-    handleSearchNews();
+    handleSearchMasterCareer();
   }, []);
+
   const handleParamsChange = (event) => {
     const params = event.target.value;
     // setParams(params);
   };
 
-  const handleSearchNews = async () => {
-    // getNews(0);
-  };
+  const handleSearchMasterCareer = useCallback(
+    async (e) => {
+      // e.preventDefault();
+      let requestBody = {
+        code: "",
+        name: "",
+        statusCodes: [0,1],
+        page: 1,
+        size: "2",
+        sortField: "name",
+        sortOrder: "desc"
+      };
 
-  const getNews = useCallback(async (halaman) => {
-    let requestBody = {
-      param: params,
-      statusCodes: [1],
-      sortField: "title",
-      sortOrder: "asc",
-      page: halaman,
-      size: 4,
-    };
-    let response = await axiosInstance().post("/api/v1/trc_news/byparams", requestBody);
-
-    if (response.data.status === 200) {
-      // setTotalData(response.data.totalData);
-      // setTotalPages(response.data.totalPages);
-      const total = JSON.stringify(response.data.totalPages);
-      // setpageCount(total);
-      // setItems(response.data.data);
-    } else {
-      // setRequestChanges([]);
-      // setMessage(response.data.message);
-    }
-    // setShouldFetchData(false);
-  }, []);
+      try {
+        let response = await axiosInstance().post("/api/v1/mst_career/list", requestBody);
+        if (response.status === 200) {
+          setRespCareer(response.data.data);
+          console.log("hasil" + JSON.stringify(respCareer))
+        }
+      } catch (err) {
+        if (err.response) {
+          if (err.response.status === 401) {
+          } else {
+          }
+        } else {
+        }
+      }
+    },
+    [respCareer],
+  );
 
   return (
     <React.Fragment>
@@ -62,8 +70,7 @@ const MasterCareer = () => {
             </BlockTitle>
             <BlockDes>
               <p className="lead">
-                Master Career is used to view a list of job applicants who have applied for job openings. It includes
-                various features such as search and adding data to open job vacancies.
+                Master Career is used to created new Job for applicant.
               </p>
             </BlockDes>
           </BlockHeadContent>
@@ -77,16 +84,14 @@ const MasterCareer = () => {
                   type="text"
                   class="form-control"
                   id="default-01"
-                  placeholder="Search News"
+                  placeholder="Search Career"
                   // value={params}
                   onChange={(e) => handleParamsChange(e)}
                 />
 
                 <Button
                   color="btn ms-3 btn-round btn-primary"
-                  onClick={() => {
-                    handleSearchNews();
-                  }}
+                  onClick= {(e) => handleSearchMasterCareer(e)} 
                 >
                   <em class="icon ni ni-search"></em>
                   <span>Search Career</span>
@@ -98,9 +103,9 @@ const MasterCareer = () => {
 
           <PreviewCard>
             <ReactDataTable
-              data={DataTableData}
+              data={respCareer}
               columns={dataTableColumns}
-              expandableRows
+              // expandableRows
               pagination
               actions
               selectableRows={BackTo}

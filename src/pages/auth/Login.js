@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Logo from "../../images/logo.png";
 import LogoDark from "../../images/logo-dark.png";
 import Head from "../../layout/head/Head";
@@ -16,19 +16,27 @@ import {
   PreviewCard,
 } from "../../components/Component";
 import { Form, Spinner, Alert } from "reactstrap";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { LoginAuth } from "../../api/AuthApi";
 import Cookies from "js-cookies/src/cookies";
+import User from "../../layout/header/dropdown/user/User";
 
-const Login = () => {
+const Login = (props) => {
   const [loading, setLoading] = useState(false);
+  const [resp, setResp] = useState(null);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
   const navigate = useNavigate();
   const [jwtCookie, setJwtCookie] = useState();
   const [passwordWeb, setPasswordWeb] = useState();
   const [usernameWeb, setUsernameWeb] = useState("");
+
+  let products = [
+    { id: 1, product_name: "Product A", product_price: 200 },
+    { id: 2, product_name: "Product B", product_price: 300 },
+    { id: 3, product_name: "Product C", product_price: 400 },
+  ];
 
   const onFormSubmit = (formData) => {
     setLoading(true);
@@ -52,36 +60,46 @@ const Login = () => {
     }
   };
 
-  const handleLogin = async () => {
-    login(usernameWeb, passwordWeb);
+  const passingData = async (resp) => {
+    console.log("apa = " + JSON.stringify(resp));
+    return <User name="Chris" />;
   };
 
   const login = useCallback(
     async (e) => {
-      console.log("username", usernameWeb);
-      console.log("password", passwordWeb);
       e.preventDefault();
       let requestBody = {
         username: usernameWeb,
         password: passwordWeb,
       };
-      let response = await axiosInstance().post("/api/v1/auth/signin", requestBody);
-      console.log("yogiresponse = " + JSON.stringify(response.data.data.jwtCookie.value));
 
-      if (response.status === 200) {
-        // setTotalData(response.data.totalData);
-        // setTotalPages(response.data.totalPages);
-        const total = JSON.stringify(response.data.totalPages);
-        setPassState(true);
-        Cookies.setItem("jwtCookie", response.data.data.jwtCookie.value);
-        navigate("/admin/masternews");
-      } else {
-        // setRequestChanges([]);
-        // setMessage(response.data.message);
+      try {
+        let response = await axiosInstance().post("/api/v1/auth/signin", requestBody);
+        if (response.status === 200) {
+          setResp(response);
+
+          const total = JSON.stringify(response.data.totalPages);
+          setPassState(true);
+          Cookies.setItem("jwtCookie", response.data.data.jwtCookie.value);
+          navigate("/admin/masternews");
+          passingData(response);
+        }
+      } catch (err) {
+        // setLoading=true;
+        if (err.response) {
+          if (err.response.status === 401) {
+            setError("Gagal masuk karena password salah.");
+          } else {
+            setError("Terjadi kesalahan saat masuk.");
+          }
+        } else {
+          setError("Terjadi kesalahan jaringan atau server tidak tersedia.");
+        }
       }
+
       // setShouldFetchData(false);
     },
-    [usernameWeb, passwordWeb],
+    [usernameWeb, passwordWeb, resp],
   );
 
   const routeChange = () => {
@@ -169,6 +187,7 @@ const Login = () => {
                   placeholder="Enter your passcode"
                   className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`}
                   required
+                  defaultValue="12345678"
                   onChange={(event) => setPasswordWeb(event.target.value)}
                 />
                 {errors.passcode && <span className="invalid">{errors.passcode.message}</span>}
@@ -181,8 +200,8 @@ const Login = () => {
                 color="primary"
                 onClick={login}
               >
-                {/* {loading ? <Spinner size="sm" color="light" /> : "Sign in"} */}
-                Login123
+                {loading ? <Spinner size="sm" color="light" /> : "Sign in"}
+                Login
               </Button>
             </div>
           </Form>

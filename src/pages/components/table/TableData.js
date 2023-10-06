@@ -29,42 +29,72 @@ export const basicData = {
 
 export const dataTableColumns = [
   {
-    name: "ID CAREER",
+    name: "id",
     selector: (row) => row.name,
     sortable: true,
   },
   {
-    name: "CAREER NAME",
+    name: "code",
     selector: (row) => row.age,
     sortable: true,
     hide: 370,
   },
   {
-    name: "DEPARTMENT - TEAM",
+    name: "name",
     selector: (row) => row.gender,
     sortable: true,
     hide: "sm",
   },
   {
-    name: "COUNTRY - LOCATION",
+    name: "seq",
     selector: (row) => row.company,
     sortable: true,
     hide: "sm",
   },
   {
-    name: "WORK PLACE TYPE",
+    name: "statusCode",
     selector: (row) => row.startDate,
     sortable: true,
     hide: "md",
   },
   {
-    name: "ACTION",
+    name: "statusName",
     selector: (row) => row.salary,
     sortable: true,
     hide: "md",
   },
   {
-    name: "APPLICANT",
+    name: "isChecked",
+    selector: (row) => row.cek,
+    sortable: true,
+    hide: "md",
+  },
+  {
+    name: "insertby",
+    selector: (row) => row.startDate,
+    sortable: true,
+    hide: "md",
+  },
+  {
+    name: "insertDate",
+    selector: (row) => row.salary,
+    sortable: true,
+    hide: "md",
+  },
+  {
+    name: "updateby",
+    selector: (row) => row.cek,
+    sortable: true,
+    hide: "md",
+  },
+  {
+    name: "updateDate",
+    selector: (row) => row.cek,
+    sortable: true,
+    hide: "md",
+  },
+  {
+    name: "isEditable",
     selector: (row) => row.cek,
     sortable: true,
     hide: "md",
@@ -190,8 +220,7 @@ export const DataTableData = [
     gender: "female",
     company: "BUZZWORKS",
     startDate: "2017-02-17",
-    salary: "$2,570.39",
-    cek: "",
+    salary: "$2,570.39"
   },
   {
     id: 1,

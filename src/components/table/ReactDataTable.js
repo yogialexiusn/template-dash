@@ -64,7 +64,7 @@ const ExpandableRowComponent = ({ data }) => {
   return (
     <ul className="dtr-details p-2 border-bottom ms-1">
       <li className="d-block d-sm-none">
-        <span className="dtr-title">Company</span> <span className="dtr-data">{data.company}</span>
+        <span className="dtr-title">Company</span> <span className="dtr-data">{data.id}</span>
       </li>
       <li className="d-block d-sm-none">
         <span className="dtr-title ">Gender</span> <span className="dtr-data">{data.gender}</span>
@@ -88,21 +88,22 @@ const CustomCheckbox = React.forwardRef(({ onClick, ...rest }, ref) => (
 
 const ReactDataTable = ({ data, columns, pagination, actions, className, selectableRows, expandableRows }) => {
   const [tableData, setTableData] = useState(data);
-  const [searchText, setSearchText] = useState("");
+  // const [searchText, setSearchText] = useState("");
   const [rowsPerPageS, setRowsPerPage] = useState(10);
   const [mobileView, setMobileView] = useState();
 
   useEffect(() => {
-    let defaultData = tableData;
-    if (searchText !== "") {
-      defaultData = data.filter((item) => {
-        return item.name.toLowerCase().includes(searchText.toLowerCase());
-      });
-      setTableData(defaultData);
-    } else {
+    // let defaultData = tableData;
+    // if (searchText !== "") {
+    //   defaultData = data.filter((item) => {
+    //     return item.name.toLowerCase().includes(searchText.toLowerCase());
+    //   });
+    //   setTableData(defaultData);
+    // } else {
       setTableData(data);
-    }
-  }, [searchText]); // eslint-disable-line react-hooks/exhaustive-deps
+      console.log("cacad232 = " + JSON.stringify(tableData))
+    // }
+  }); // eslint-disable-line react-hooks/exhaustive-deps
 
   // function to change the design view under 1200 px
   const viewChange = () => {
@@ -125,7 +126,7 @@ const ReactDataTable = ({ data, columns, pagination, actions, className, selecta
     <div className={`dataTables_wrapper dt-bootstrap4 no-footer ${className ? className : ""}`}>
       <Row className={`justify-between g-2 ${actions ? "with-export" : ""}`}>
         <Col className="col-7 text-start" sm="4">
-          <div id="DataTables_Table_0_filter" className="dataTables_filter">
+          {/* <div id="DataTables_Table_0_filter" className="dataTables_filter">
             <label>
               <input
                 type="search"
@@ -134,7 +135,7 @@ const ReactDataTable = ({ data, columns, pagination, actions, className, selecta
                 onChange={(ev) => setSearchText(ev.target.value)}
               />
             </label>
-          </div>
+          </div> */}
         </Col>
         <Col className="col-5 text-end" sm="8">
           <div className="datatable-filter">

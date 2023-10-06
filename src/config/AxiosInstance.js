@@ -25,10 +25,7 @@ export const axiosInstance = (additionalConfig = {}) => {
     // baseURL: "https://backend-ldci.lottemart.co.id/backend/", //PRD
     headers: {
       authorization: value ? `Bearer ${value}` : null,
-      // authorization: null,
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      // 'Referrer-Policy': 'strict-origin-when-cross-origin',
     },
     ...additionalConfig,
   });
