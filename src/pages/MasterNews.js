@@ -21,16 +21,21 @@ import { DataTableData, dataTableColumns, dataTableColumns2, userData } from "./
 import { set } from "react-hook-form";
 
 function MasterNews() {
-  const [params, setParams] = useState("");
   const [respCareer, setRespCareer] = useState([]);
   const [editedInput, setEditedInput] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isChecklistDisable, setChecklistDisable] = useState(true);
-  const [sortation, setSortation] = useState("desc");
-  const [sortField, setSortField] = useState("id"); // Initialize sortField state
-  const [pageCount, setpageCount] = useState(0);
-  const [pageSelected, SetPageSelected] = useState(0);
-  const [paginationSize, setPaginationSize] = useState(10);
+  const [page, setPage] = useState(0);
+  const [totalData, setTotalData] = useState(0);
+  const [dataNotFound, setDataNotFound] = useState(false);
+
+  const [code, setCode] = useState("");
+  const [name, setName] = useState("");
+  const [size, setSize] = useState("10");
+  const [statusCode, setStatusCode] = useState([1]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [sortField, setSortField] = useState("id");
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const [newRow, setNewRow] = useState({
     id: "",
@@ -67,7 +72,7 @@ function MasterNews() {
       setIsEditing(false);
       setRespCareer(updatedData);
 
-      handleSearchMasterCareer("update_date", "desc", 0);
+      handleSearchMasterCareer();
     }
   };
 
@@ -100,10 +105,11 @@ function MasterNews() {
   };
 
   const handlePageClick = async (data) => {
-    // setPage(data.selected);
-    // console.log('page click12', data.selected);
-    SetPageSelected(data.selected);
-    handleSearchMasterCareer("id", "desc", data.selected);
+    setPage(data.selected, () => {
+      console.log("data = " + data.selected);
+      console.log("page = " + page);
+      handleSearchMasterCareer();
+    });
   };
 
   const handleInputChange = (e, rowIndex, colName) => {
@@ -119,50 +125,39 @@ function MasterNews() {
     setRespCareer(updatedData);
   };
 
-  const handleParamsChange = (event) => {
-    const params = event.target.value;
-    setParams(params);
-  };
+  const handleSearchMasterCareer = useCallback(async () => {
+    let requestBody = {
+      code: code,
+      name: name,
+      size: size,
+      statusCodes: statusCode,
+      page: page,
+      sortField: sortField,
+      sortOrder: sortOrder,
+    };
 
-  const handleSearchMasterCareer = useCallback(
-    async (field, newSortation, currentPage) => {
-      // e.preventDefault();
-      // const newSortation = sortation === "asc" ? "desc" : "asc";
-
-      // Set the sortField state based on the column clicked
-      setSortField(field);
-      let requestBody = {
-        code: "",
-        name: "",
-        statusCodes: [0, 1],
-        page: currentPage,
-        size: paginationSize,
-        sortField: field,
-        sortOrder: newSortation,
-      };
-
-      // Update the state with the new sortation value
-      setSortation(newSortation);
-
-      try {
-        let response = await axiosInstance().post("/api/v1/mst_career/list", requestBody);
-        if (response.status === 200) {
-          const total = response.data.totalPages;
-          setpageCount(total);
-          setRespCareer(response.data.data);
-          setEditedInput(response.data.data);
-        }
-      } catch (err) {
-        if (err.response) {
-          if (err.response.status === 401) {
-          } else {
-          }
+    console.log("requestBody");
+    try {
+      let response = await axiosInstance().post("/api/v1/mst_career/list", requestBody);
+      if (response.status === 200) {
+        const totalPages = response.data.totalPages;
+        setTotalPages(totalPages);
+        setTotalData(response.data.totalData);
+        setRespCareer(response.data.data);
+        setEditedInput(response.data.data);
+        setDataNotFound(false);
+      }
+    } catch (err) {
+      setDataNotFound(true);
+      console.log("kesiini");
+      if (err.response) {
+        if (err.response.status === 401) {
         } else {
         }
+      } else {
       }
-    },
-    [editedInput, paginationSize],
-  );
+    }
+  }, [respCareer, code, name, size, statusCode, page, sortField, sortOrder]);
 
   const handleEdit = async (modifiedInput) => {
     for (const obj of modifiedInput) {
@@ -195,17 +190,28 @@ function MasterNews() {
     window.location.reload();
 
     // After all iterations are done, you can call handleSearchMasterCareer
-    handleSearchMasterCareer("id", "desc", 0);
+    handleSearchMasterCareer();
   };
 
   const handleSorting = async (field) => {
-    const newSortation = sortation === "asc" ? "desc" : "asc";
-    handleSearchMasterCareer(field, newSortation, pageSelected);
+    const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+    setSortOrder(newSortOrder);
+    setSortField(field);
+    handleSearchMasterCareer();
+  };
+
+  const handleSize = (newSize) => {
+    console.log("handleSize = " + newSize);
+    setPage(0);
+    setSize(newSize, () => {
+      // This callback ensures that the state has been updated
+      handleSearchMasterCareer();
+    });
   };
 
   useEffect(() => {
-    handleSearchMasterCareer("id", "desc", 0);
-  }, [paginationSize]);
+    handleSearchMasterCareer();
+  }, [size, page]);
 
   return (
     <React.Fragment>
@@ -225,31 +231,49 @@ function MasterNews() {
             <Col sm="6">
               <div className="form-group">
                 <Label htmlFor="default-5" className="form-label">
-                  CODE
+                  NAME
                 </Label>
-                <input className="form-control focus" placeholder="Optional" />
+                <input
+                  type="text"
+                  className="form-control"
+                  id="name"
+                  placeholder="Optional"
+                  onChange={(e) => setName(e.target.value)}
+                />
               </div>
             </Col>
             <Col sm="6">
               <div className="form-group">
                 <Label htmlFor="default-5" className="form-label">
-                  NAME
+                  CODE
                 </Label>
-                <input className="form-control" placeholder="Optional" />
+                <input
+                  type="text"
+                  className="form-control"
+                  id="code"
+                  placeholder="Optional"
+                  onChange={(e) => setCode(e.target.value)}
+                />
               </div>
             </Col>
             <Col sm="6">
               <div className="form-group">
                 <label htmlFor="default-5" className="form-label">
-                  STATUS
+                  STATUS CODE
                 </label>
-                <div className="form-control-wrap">
-                  <div className="form-control-select-multiple">
-                    <Input type="select" name="select" id="default-5">
-                      <option value="option_select0">Active</option>
-                      <option value="option_select1">Not Active</option>
-                    </Input>
-                  </div>
+                <div class="form-control-select">
+                  {" "}
+                  <select
+                    name="DataTables_Table_0_length"
+                    aria-controls="DataTables_Table_0"
+                    class="custom-select custom-select-sm form-control form-control-sm"
+                    id="statusCode"
+                    value={statusCode}
+                    onChange={(e) => setStatusCode([parseInt(e.target.value)])}
+                  >
+                    <option value={1}>Active</option>
+                    <option value={0}>Not Active</option>
+                  </select>{" "}
                 </div>
               </div>
             </Col>
@@ -266,7 +290,7 @@ function MasterNews() {
                   onChange={(e) => handleParamsChange(e)}
                 /> */}
 
-                <Button color="btn-round btn-primary " onClick={(e) => handleSearchMasterCareer(e)}>
+                <Button color="btn-round btn-primary " onClick={(e) => handleSearchMasterCareer()}>
                   Filter
                   <Icon name="sort" />
                   {""}
@@ -277,6 +301,9 @@ function MasterNews() {
 
           <PreviewCard className="mt-5">
             <div className="d-flex flex-row-reverse">
+              <div>
+                <label>Total Data = {totalData}</label>
+              </div>
               <div>
                 {isEditing ? (
                   <div>
@@ -298,198 +325,260 @@ function MasterNews() {
                       aria-controls="DataTables_Table_0"
                       class="custom-select custom-select-sm form-control form-control-sm"
                       id="paginationSize"
-                      value={paginationSize}
-                      onChange={(e) => setPaginationSize(e.target.value)}
+                      value={size}
+                      onChange={(e) => handleSize(e.target.value)}
                     >
                       <option value="10">10</option>
-                      <option value="25">25</option>
+                      <option value="20">20</option>
+                      <option value="30">30</option>
                       <option value="50">50</option>
-                      <option value="100">100</option>
                     </select>{" "}
                   </div>
                 </label>
               </div>
             </div>
-            <br></br>
-            <table className="table table-orders">
-              <thead>
-                <tr>
-                  <th>&nbsp;</th>
-                  <th>
-                    ID
-                    <Link to="#" onClick={(e) => handleSorting("id")}>
-                      <Icon name="sort" />
-                    </Link>
-                  </th>
-                  <th>
-                    NAME
-                    <Link to="#" onClick={(e) => handleSorting("name")}>
-                      <Icon name="sort" />
-                    </Link>
-                  </th>
-                  <th>
-                    STATUS CODE
-                    <Link to="#" onClick={(e) => handleSorting("mst_status_code")}>
-                      <Icon name="sort" />
-                    </Link>
-                  </th>
-                  <th>
-                    SEQ
-                    <Link to="#" onClick={(e) => handleSorting("seq")}>
-                      <Icon name="sort" />
-                    </Link>
-                  </th>
-                  <th>
-                    CODE
-                    <Link to="#" onClick={(e) => handleSorting("code")}>
-                      <Icon name="sort" />
-                    </Link>
-                  </th>
-                  <th>
-                    STATUS NAME
-                    <Link to="#" onClick={(e) => handleSorting("mst_status_code")}>
-                      <Icon name="sort" />
-                    </Link>
-                  </th>
-                  <th>
-                    INSERT BY
-                    <Link to="#" onClick={(e) => handleSorting("insertby")}>
-                      <Icon name="sort" />
-                    </Link>
-                  </th>
-                  <th>
-                    INSERT DATE
-                    <Link to="#" onClick={(e) => handleSorting("insert_date")}>
-                      <Icon name="sort" />
-                    </Link>
-                  </th>
-                  <th>
-                    UPDATE BY
-                    <Link to="#" onClick={(e) => handleSorting("updateby")}>
-                      <Icon name="sort" />
-                    </Link>
-                  </th>
-                  <th>
-                    UPDATE DATE
-                    <Link to="#" onClick={(e) => handleSorting("update_date")}>
-                      <Icon name="sort" />
-                    </Link>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {respCareer.map((rowData, rowIndex) => (
-                  <tr key={rowData.id}>
-                    <td>
-                      {isEditing ? (
-                        <input
-                          type="checkbox"
-                          checked={rowData.isSelected}
-                          disabled={!rowData.isNew}
-                          onChange={() => handleCheckboxChange(rowData.id)}
-                        />
-                      ) : null}
-                    </td>
-                    <td>
-                      {rowData.isNew || isEditing ? (
-                        <input
-                          disabled={rowData.isNew}
-                          type="text"
-                          value={rowData.id}
-                          onChange={(e) => handleInputChange(e, rowIndex, "id")}
-                        />
-                      ) : (
-                        rowData.id
-                      )}
-                    </td>
-                    <td>
-                      {rowData.isNew || isEditing ? (
-                        <input
-                          type="text"
-                          value={rowData.name}
-                          onChange={(e) => handleInputChange(e, rowIndex, "name")}
-                        />
-                      ) : (
-                        rowData.name
-                      )}
-                    </td>
-                    <td>
-                      {rowData.isNew || isEditing ? (
-                        // <input
-                        //   type="text"
-                        //   value={rowData.statusCode}
-                        //   onChange={(e) => handleInputChange(e, rowIndex, "statusCode")}
-                        // />
-                        <select
-                          id="statusDropdown"
-                          value={rowData.statusCode}
-                          onChange={(e) => handleInputChange(e, rowIndex, "statusCode")}
-                        >
-                          <option value={1}>Active</option>
-                          <option value={0}>Not Active</option>
-                        </select>
-                      ) : (
-                        <td>{rowData.statusCode === 1 ? "Active" : "Not Active"}</td>
-                      )}
-                    </td>
-                    <td>{rowData.isNew || isEditing ? rowData.seq : rowData.seq}</td>
-                    <td>{rowData.isNew || isEditing ? rowData.code : rowData.code}</td>
-                    <td>{rowData.isNew || isEditing ? rowData.statusName : rowData.statusName}</td>
-                    <td>{rowData.isNew || isEditing ? rowData.insertby : rowData.insertby}</td>
-                    <td>
-                      {rowData.isNew || isEditing
-                        ? new Date(rowData.insertDate).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                            hour: "numeric",
-                            minute: "numeric",
-                            second: "numeric",
-                          })
-                        : new Date(rowData.insertDate).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                            hour: "numeric",
-                            minute: "numeric",
-                            second: "numeric",
-                          })}
-                    </td>
-                    <td>{rowData.isNew || isEditing ? rowData.updateby : rowData.updateby}</td>
-                    <td>
-                      {rowData.isNew || isEditing
-                        ? rowData.updateDate
-                          ? new Date(rowData.updateDate).toLocaleString("en-US", {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                              hour: "numeric",
-                              minute: "numeric",
-                              second: "numeric",
-                            })
-                          : "null"
-                        : rowData.updateDate
-                        ? new Date(rowData.updateDate).toLocaleString("en-US", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                            hour: "numeric",
-                            minute: "numeric",
-                            second: "numeric",
-                          })
-                        : "null"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
 
+            <br></br>
+
+            <div>
+              {dataNotFound ? (
+                <div className="p-2 center shadow border">There are no records found</div>
+              ) : (
+                <table className="table table-orders">
+                  <thead>
+                    <tr>
+                      <th>&nbsp;</th>
+                      <th>
+                        ID
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("id");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                      <th>
+                        NAME
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("name");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                      <th>
+                        STATUS CODE
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("mst_status_code");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                      <th>
+                        SEQ
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("seq");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                      <th>
+                        CODE
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("code");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                      <th>
+                        STATUS NAME
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("mst_status_code");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                      <th>
+                        INSERT BY
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("insertby");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                      <th>
+                        INSERT DATE
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("insert_date");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                      <th>
+                        UPDATE BY
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("updateby");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                      <th>
+                        UPDATE DATE
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("update_date");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {respCareer.map((rowData, rowIndex) => (
+                      <tr key={rowData.id}>
+                        <td>
+                          {isEditing ? (
+                            <input
+                              type="checkbox"
+                              checked={rowData.isSelected}
+                              disabled={!rowData.isNew}
+                              onChange={() => handleCheckboxChange(rowData.id)}
+                            />
+                          ) : null}
+                        </td>
+                        <td>
+                          {rowData.isNew || isEditing ? (
+                            <input
+                              disabled={rowData.isNew}
+                              type="text"
+                              value={rowData.id}
+                              onChange={(e) => handleInputChange(e, rowIndex, "id")}
+                            />
+                          ) : (
+                            rowData.id
+                          )}
+                        </td>
+                        <td>
+                          {rowData.isNew || isEditing ? (
+                            <input
+                              type="text"
+                              value={rowData.name}
+                              onChange={(e) => handleInputChange(e, rowIndex, "name")}
+                            />
+                          ) : (
+                            rowData.name
+                          )}
+                        </td>
+                        <td>
+                          {rowData.isNew || isEditing ? (
+                            <select
+                              id="statusDropdown"
+                              value={rowData.statusCode}
+                              onChange={(e) => handleInputChange(e, rowIndex, "statusCode")}
+                            >
+                              <option value={1}>Active</option>
+                              <option value={0}>Not Active</option>
+                            </select>
+                          ) : (
+                            <td>{rowData.statusCode === 1 ? "Active" : "Not Active"}</td>
+                          )}
+                        </td>
+                        <td>{rowData.isNew || isEditing ? rowData.seq : rowData.seq}</td>
+                        <td>{rowData.isNew || isEditing ? rowData.code : rowData.code}</td>
+                        <td>{rowData.isNew || isEditing ? rowData.statusName : rowData.statusName}</td>
+                        <td>{rowData.isNew || isEditing ? rowData.insertby : rowData.insertby}</td>
+                        <td>
+                          {rowData.isNew || isEditing
+                            ? new Date(rowData.insertDate).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                                hour: "numeric",
+                                minute: "numeric",
+                                second: "numeric",
+                              })
+                            : new Date(rowData.insertDate).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                                hour: "numeric",
+                                minute: "numeric",
+                                second: "numeric",
+                              })}
+                        </td>
+                        <td>{rowData.isNew || isEditing ? rowData.updateby : rowData.updateby}</td>
+                        <td>
+                          {rowData.isNew || isEditing
+                            ? rowData.updateDate
+                              ? new Date(rowData.updateDate).toLocaleString("en-US", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                  hour: "numeric",
+                                  minute: "numeric",
+                                  second: "numeric",
+                                })
+                              : "null"
+                            : rowData.updateDate
+                            ? new Date(rowData.updateDate).toLocaleString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                                hour: "numeric",
+                                minute: "numeric",
+                                second: "numeric",
+                              })
+                            : "null"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
             <div className="center mt-5">
               <ReactPaginate
-                previousLabel={"<<"}
-                nextLabel={">>"}
+                previousLabel={<Icon name="caret-left" />}
+                nextLabel={<Icon name="caret-right" />}
                 breakLabel={"..."}
-                pageCount={pageCount}
+                pageCount={totalPages}
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={2}
                 onPageChange={handlePageClick}
