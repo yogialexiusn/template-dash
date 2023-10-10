@@ -6,6 +6,7 @@ import { axiosInstance } from "../config/AxiosInstance";
 import { Link } from "react-router-dom";
 import Icon from "../components/icon/Icon";
 import ReactPaginate from "react-paginate";
+import { Label, Input, Row, Col } from "reactstrap";
 import {
   Block,
   BlockHead,
@@ -30,7 +31,6 @@ function MasterNews() {
   const [pageCount, setpageCount] = useState(0);
   const [pageSelected, SetPageSelected] = useState(0);
   const [paginationSize, setPaginationSize] = useState(10);
-  
 
   const [newRow, setNewRow] = useState({
     id: "",
@@ -67,7 +67,7 @@ function MasterNews() {
       setIsEditing(false);
       setRespCareer(updatedData);
 
-      handleSearchMasterCareer("update_date", "desc");
+      handleSearchMasterCareer("update_date", "desc", 0);
     }
   };
 
@@ -221,29 +221,62 @@ function MasterNews() {
         </BlockHead>
 
         <Block>
+          <Row className="gy-4">
+            <Col sm="6">
+              <div className="form-group">
+                <Label htmlFor="default-5" className="form-label">
+                  CODE
+                </Label>
+                <input className="form-control focus" placeholder="Optional" />
+              </div>
+            </Col>
+            <Col sm="6">
+              <div className="form-group">
+                <Label htmlFor="default-5" className="form-label">
+                  NAME
+                </Label>
+                <input className="form-control" placeholder="Optional" />
+              </div>
+            </Col>
+            <Col sm="6">
+              <div className="form-group">
+                <label htmlFor="default-5" className="form-label">
+                  STATUS
+                </label>
+                <div className="form-control-wrap">
+                  <div className="form-control-select-multiple">
+                    <Input type="select" name="select" id="default-5">
+                      <option value="option_select0">Active</option>
+                      <option value="option_select1">Not Active</option>
+                    </Input>
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
           <BlockHead>
             <BlockHeadContent>
-              <div class="mt-2 d-flex flex-row bg-lighter">
-                <input
+              <div class="d-flex flex-row-reverse">
+                {/* <input
                   type="text"
                   class="form-control"
                   id="default-01"
                   placeholder="Search Career"
                   value={params}
                   onChange={(e) => handleParamsChange(e)}
-                />
+                /> */}
 
-                <Button color="btn ms-3 btn-round btn-primary" onClick={(e) => handleSearchMasterCareer(e)}>
-                  <em class="icon ni ni-search"></em>
-                  <span>Search Career</span>
+                <Button color="btn-round btn-primary " onClick={(e) => handleSearchMasterCareer(e)}>
+                  Filter
+                  <Icon name="sort" />
                   {""}
                 </Button>
               </div>
             </BlockHeadContent>
           </BlockHead>
 
-          <PreviewCard>
-            <div className="d-flex flex-row-reverse ">
+          <PreviewCard className="mt-5">
+            <div className="d-flex flex-row-reverse">
               <div>
                 {isEditing ? (
                   <div>
@@ -424,34 +457,28 @@ function MasterNews() {
                     </td>
                     <td>{rowData.isNew || isEditing ? rowData.updateby : rowData.updateby}</td>
                     <td>
-  {rowData.isNew || isEditing ? (
-    rowData.updateDate ? (
-      new Date(rowData.updateDate).toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-      })
-    ) : (
-      "null"
-    )
-  ) : (
-    rowData.updateDate ? (
-      new Date(rowData.updateDate).toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-      })
-    ) : (
-      "null"
-    )
-  )}
-</td>
+                      {rowData.isNew || isEditing
+                        ? rowData.updateDate
+                          ? new Date(rowData.updateDate).toLocaleString("en-US", {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                              hour: "numeric",
+                              minute: "numeric",
+                              second: "numeric",
+                            })
+                          : "null"
+                        : rowData.updateDate
+                        ? new Date(rowData.updateDate).toLocaleString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            second: "numeric",
+                          })
+                        : "null"}
+                    </td>
                   </tr>
                 ))}
               </tbody>
