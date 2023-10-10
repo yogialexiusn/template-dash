@@ -29,6 +29,8 @@ function MasterNews() {
   const [sortField, setSortField] = useState("id"); // Initialize sortField state
   const [pageCount, setpageCount] = useState(0);
   const [pageSelected, SetPageSelected] = useState(0);
+  const [paginationSize, setPaginationSize] = useState(10);
+  
 
   const [newRow, setNewRow] = useState({
     id: "",
@@ -98,7 +100,9 @@ function MasterNews() {
   };
 
   const handlePageClick = async (data) => {
-    SetPageSelected(data.selected)
+    // setPage(data.selected);
+    // console.log('page click12', data.selected);
+    SetPageSelected(data.selected);
     handleSearchMasterCareer("id", "desc", data.selected);
   };
 
@@ -132,7 +136,7 @@ function MasterNews() {
         name: "",
         statusCodes: [0, 1],
         page: currentPage,
-        size: 10,
+        size: paginationSize,
         sortField: field,
         sortOrder: newSortation,
       };
@@ -157,7 +161,7 @@ function MasterNews() {
         }
       }
     },
-    [editedInput],
+    [editedInput, paginationSize],
   );
 
   const handleEdit = async (modifiedInput) => {
@@ -201,7 +205,7 @@ function MasterNews() {
 
   useEffect(() => {
     handleSearchMasterCareer("id", "desc", 0);
-  }, []);
+  }, [paginationSize]);
 
   return (
     <React.Fragment>
@@ -240,15 +244,38 @@ function MasterNews() {
 
           <PreviewCard>
             <div className="d-flex flex-row-reverse ">
-              {isEditing ? (
-                <div>
-                  <button onClick={handleSaveClick}>Simpan</button>
-                  <button onClick={handleDeleteRowClick}>Hapus</button>
-                  <button onClick={handleAddRowClick}>Add Row</button>
-                </div>
-              ) : (
-                <button onClick={handleEditClick}>Edit</button>
-              )}
+              <div>
+                {isEditing ? (
+                  <div>
+                    <button onClick={handleSaveClick}>Simpan</button>
+                    <button onClick={handleDeleteRowClick}>Hapus</button>
+                    <button onClick={handleAddRowClick}>Add Row</button>
+                  </div>
+                ) : (
+                  <button onClick={handleEditClick}>Edit</button>
+                )}
+              </div>
+              <div>
+                <label>
+                  <span class="d-none d-sm-inline-block">Show</span>
+                  <div class="form-control-select">
+                    {" "}
+                    <select
+                      name="DataTables_Table_0_length"
+                      aria-controls="DataTables_Table_0"
+                      class="custom-select custom-select-sm form-control form-control-sm"
+                      id="paginationSize"
+                      value={paginationSize}
+                      onChange={(e) => setPaginationSize(e.target.value)}
+                    >
+                      <option value="10">10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>{" "}
+                  </div>
+                </label>
+              </div>
             </div>
             <br></br>
             <table className="table table-orders">
@@ -376,10 +403,55 @@ function MasterNews() {
                     <td>{rowData.isNew || isEditing ? rowData.code : rowData.code}</td>
                     <td>{rowData.isNew || isEditing ? rowData.statusName : rowData.statusName}</td>
                     <td>{rowData.isNew || isEditing ? rowData.insertby : rowData.insertby}</td>
-                    <td>{rowData.isNew || isEditing ? rowData.insertDate : rowData.insertDate}</td>
+                    <td>
+                      {rowData.isNew || isEditing
+                        ? new Date(rowData.insertDate).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            second: "numeric",
+                          })
+                        : new Date(rowData.insertDate).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            second: "numeric",
+                          })}
+                    </td>
                     <td>{rowData.isNew || isEditing ? rowData.updateby : rowData.updateby}</td>
-                    <td>{rowData.isNew || isEditing ? rowData.updateDate : rowData.updateDate}</td>
-                    
+                    <td>
+  {rowData.isNew || isEditing ? (
+    rowData.updateDate ? (
+      new Date(rowData.updateDate).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      })
+    ) : (
+      "null"
+    )
+  ) : (
+    rowData.updateDate ? (
+      new Date(rowData.updateDate).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      })
+    ) : (
+      "null"
+    )
+  )}
+</td>
                   </tr>
                 ))}
               </tbody>
