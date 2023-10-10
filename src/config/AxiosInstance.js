@@ -18,7 +18,6 @@ function getWithExpiry(key) {
 
 export const axiosInstance = (additionalConfig = {}) => {
   const value = Cookies.getItem("jwtCookie");
-  console.log("valueyogi = ", value);
   return axios.create({
     baseURL: "http://localhost:8080/", //LOCAL
     // baseURL: 'http://ip_address:port/ldcidev', //DEV

@@ -1,7 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Content from "../layout/content/Content";
 import Head from "../layout/head/Head";
 import { Button } from "reactstrap";
+import { axiosInstance } from "../config/AxiosInstance";
+import { Link } from "react-router-dom";
+import Icon from "../components/icon/Icon";
 import {
   Block,
   BlockHead,
@@ -13,65 +16,203 @@ import {
   ReactDataTable,
 } from "../components/Component";
 import { DataTableData, dataTableColumns, dataTableColumns2, userData } from "./components/table/TableData";
+import { set } from "react-hook-form";
 
-const MasterNews = () => {
-  // const [items, setItems] = useState([]);
-  // const [params, setParams] = useState("");
-  useEffect(() => {
-    handleSearchNews();
-  }, []);
+function MasterNews() {
+  const [params, setParams] = useState("");
+  const [respCareer, setRespCareer] = useState([]);
+  const [editedInput, setEditedInput] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isChecklistDisable, setChecklistDisable] = useState(true);
+  const [sortation, setSortation] = useState("desc");
+  const [sortField, setSortField] = useState("id"); // Initialize sortField state
+
+
+  const [newRow, setNewRow] = useState({
+    id: "",
+    name: "",
+    statusCode: "",
+    seq: "",
+    code: "",
+    statusName: "",
+    insertby: "",
+    insertDate: "",
+    updateby: "",
+    updateDate: "",
+  });
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
+  const handleSaveClick = (e) => {
+    
+      // Setel atribut isNew menjadi false untuk baris baru yang sudah disimpan
+      const updatedData = respCareer.map((rowData) => (rowData.isNew ? { ...rowData, isNew: false } : rowData));
+      const modifiedInput= updatedData.filter(itemB => {
+        const matchingItemA = editedInput.find(itemA => itemA.id === itemB.id);
+        return !matchingItemA || matchingItemA.name !== itemB.name || matchingItemA.statusCode !== itemB.statusCode;
+      });
+      // Cek apakah ada nilai yang kosong di baris-baris yang sedang diedit
+      const hasEmptyValue = modifiedInput.some((rowData) => rowData.name === "" || rowData.statusCode === "");
+      console.log("modifiedInput = " + JSON.stringify(modifiedInput))
+      if (hasEmptyValue) {
+        alert("Tidak dapat menyimpan baris baru dengan nilai kosong.");
+        return; // Hentikan penyimpanan jika ada nilai kosong
+      } else {
+        handleEdit(modifiedInput);
+        setIsEditing(false);
+        setRespCareer(updatedData);
+        
+        handleSearchMasterCareer("update_date", "desc");
+    } 
+  };
+
+  const handleAddRowClick = () => {
+    const updatedData = [...respCareer, { ...newRow, id: null, isNew: true, isSelected: false, statusCode : 1}];
+
+    // Jika sedang dalam mode editing, jangan keluar dari mode edit setelah menambahkan baris baru
+    if (!isEditing) {
+      setIsEditing(true);
+    }
+
+    setChecklistDisable(false);
+    setRespCareer(updatedData);
+  };
+
+  const handleDeleteRowClick = () => {
+    // Hapus baris berdasarkan isSelected
+    const updatedData = respCareer.filter((rowData) => !rowData.isSelected);
+    setRespCareer(updatedData);
+    // setIsEditing(false);
+  };
+
+  const handleCheckboxChange = (id) => {
+    // Toggle isSelected pada baris dengan id tertentu
+    const updatedData = respCareer.map((rowData) =>
+      rowData.id === id ? { ...rowData, isSelected: !rowData.isSelected } : rowData,
+    );
+
+    setRespCareer(updatedData);
+  };
+
+  const handleInputChange = (e, rowIndex, colName) => {
+    const { value } = e.target;
+    const updatedData = [...respCareer];
+    const updatedRow = updatedData[rowIndex];
+
+    if (updatedRow.isNew) {
+      updatedRow[colName] = value;
+    } else {
+      updatedData[rowIndex] = { ...updatedRow, [colName]: value };
+    }
+    setRespCareer(updatedData);
+  };
+
   const handleParamsChange = (event) => {
     const params = event.target.value;
-    // setParams(params);
+    setParams(params);
   };
 
-  const handleSearchNews = async () => {
-    // getNews(0);
-  };
+  const handleSearchMasterCareer = useCallback(
+    async (field, newSortation) => {
+      // e.preventDefault();
+      // const newSortation = sortation === "asc" ? "desc" : "asc";
+      
+      // Set the sortField state based on the column clicked
+      setSortField(field);
+      let requestBody = {
+        code: "",
+        name: "",
+        statusCodes: [0, 1],
+        page: 0,
+        size: "all",
+        sortField: field,
+        sortOrder: newSortation
+      };
 
-  const getNews = useCallback(async (halaman) => {
-    let requestBody = {
-      param: params,
-      statusCodes: [1],
-      sortField: "title",
-      sortOrder: "asc",
-      page: halaman,
-      size: 4,
-    };
-    let response = await axiosInstance().post("/api/v1/trc_news/byparams", requestBody);
+      // Update the state with the new sortation value
+    setSortation(newSortation);
 
-    if (response.data.status === 200) {
-      // setTotalData(response.data.totalData);
-      // setTotalPages(response.data.totalPages);
-      const total = JSON.stringify(response.data.totalPages);
-      // setpageCount(total);
-      // setItems(response.data.data);
-    } else {
-      // setRequestChanges([]);
-      // setMessage(response.data.message);
+      try {
+        let response = await axiosInstance().post("/api/v1/mst_career/list", requestBody);
+        if (response.status === 200) {
+          console.log("cek")
+          setRespCareer(response.data.data);
+          setEditedInput(response.data.data);
+          
+        }
+      } catch (err) {
+        if (err.response) {
+          if (err.response.status === 401) {
+          } else {
+          }
+        } else {
+        }
+      }
+    },
+    [editedInput ],
+  );
+
+  const handleEdit = async (modifiedInput) => {
+    for (const obj of modifiedInput) {
+      let requestBody = {
+        id: obj.id,
+        name: obj.name,
+        statusCode: obj.statusCode
+      };
+      
+      try {
+        let response = await axiosInstance().post("/api/v1/mst_career/addOrUpdate", requestBody);
+        if (response.status === 200) {
+          // Handle success if needed
+        }
+      } catch (err) {
+        if (err.response) {
+          if (err.response.status === 401) {
+            // Handle unauthorized error if needed
+          } else {
+            // Handle other errors if needed
+          }
+        } else {
+          // Handle network or other errors if needed
+        }
+      }
+  
+      // Add a delay of 50ms before the next iteration
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
-    // setShouldFetchData(false);
+    window.location.reload()
+
+    // After all iterations are done, you can call handleSearchMasterCareer
+    handleSearchMasterCareer("id", "asc");
+  }
+
+  const handleSorting = async (field) => {
+    const newSortation = sortation === "asc" ? "desc" : "asc";
+    handleSearchMasterCareer(field, newSortation)
+  }
+
+  useEffect(() => {
+    handleSearchMasterCareer("id", "desc");
   }, []);
 
   return (
     <React.Fragment>
       <Head title="Basic Tables" />
       <Content page="component">
-        <BlockHead size="lg" wide="sm">
+        <BlockHead >
           <BlockHeadContent>
-            <BlockTitle tag="h2" className="fw-normal">
-              Master News
+            <BlockTitle>
+              Master Career
             </BlockTitle>
             <BlockDes>
-              <p className="lead">
-                Master News is used to view a list of job applicants who have applied for job openings. It includes
-                various features such as search and adding data to open job vacancies.
-              </p>
+              <p>Master Career is used to created new Job for applicant.</p>
             </BlockDes>
           </BlockHeadContent>
         </BlockHead>
 
-        <Block size="lg">
+        <Block>
           <BlockHead>
             <BlockHeadContent>
               <div class="mt-2 d-flex flex-row bg-lighter">
@@ -79,17 +220,12 @@ const MasterNews = () => {
                   type="text"
                   class="form-control"
                   id="default-01"
-                  placeholder="Search News"
-                  // value={params}
+                  placeholder="Search Career"
+                  value={params}
                   onChange={(e) => handleParamsChange(e)}
                 />
 
-                <Button
-                  color="btn ms-3 btn-round btn-primary"
-                  onClick={() => {
-                    handleSearchNews();
-                  }}
-                >
+                <Button color="btn ms-3 btn-round btn-primary" onClick={(e) => handleSearchMasterCareer(e)}>
                   <em class="icon ni ni-search"></em>
                   <span>Search Career</span>
                   {""}
@@ -99,18 +235,149 @@ const MasterNews = () => {
           </BlockHead>
 
           <PreviewCard>
-            <ReactDataTable
-              data={DataTableData}
-              columns={dataTableColumns}
-              expandableRows
-              pagination
-              actions
-              selectableRows={BackTo}
-            />
+          <div className="d-flex flex-row-reverse ">
+              {isEditing ? (
+                <div>
+                  <button onClick={handleSaveClick}>Simpan</button>
+                  <button onClick={handleDeleteRowClick}>Hapus</button>
+                  <button onClick={handleAddRowClick}>Add Row</button>
+                </div>
+              ) : (
+                <button onClick={handleEditClick}>Edit</button>
+              )}
+              
+            </div>
+            <br></br>
+            <table className="table table-orders">
+              <thead>
+                <tr>
+                  <th>&nbsp;</th>
+                  <th>ID 
+                    <Link to="#" onClick={(e) => handleSorting("id")}>
+                        <Icon name="sort" />
+                    </Link>
+                  </th>
+                  <th>NAME 
+                    <Link to="#" onClick={(e) => handleSorting("name")}>
+                        <Icon name="sort" />
+                    </Link>
+                  </th>
+                  <th>STATUS CODE 
+                    <Link to="#" onClick={(e) => handleSorting("mst_status_code")}>
+                        <Icon name="sort" />
+                    </Link>
+                  </th>
+                  <th>SEQ 
+                    <Link to="#" onClick={(e) => handleSorting("seq")}>
+                        <Icon name="sort" />
+                    </Link>
+                  </th>
+                  <th>CODE 
+                    <Link to="#" onClick={(e) => handleSorting("code")}>
+                        <Icon name="sort" />
+                    </Link>
+                  </th>
+                  <th>STATUS NAME 
+                    <Link to="#" onClick={(e) => handleSorting("mst_status_code")}>
+                        <Icon name="sort" />
+                    </Link>
+                  </th>
+                  <th>INSERT BY 
+                    <Link to="#" onClick={(e) => handleSorting("insertby")}>
+                        <Icon name="sort" />
+                    </Link>
+                  </th>
+                  <th>INSERT DATE 
+                    <Link to="#" onClick={(e) => handleSorting("insert_date")}>
+                        <Icon name="sort" />
+                    </Link>
+                  </th>
+                  <th>UPDATE BY 
+                    <Link to="#" onClick={(e) => handleSorting("updateby")}>
+                        <Icon name="sort" />
+                    </Link>
+                  </th>
+                  <th>UPDATE DATE 
+                    <Link to="#" onClick={(e) => handleSorting("update_date")}>
+                        <Icon name="sort" />
+                    </Link>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {respCareer.map((rowData, rowIndex) => (
+                  <tr key={rowData.id}>
+                    <td>
+                      {isEditing ? (
+                        <input
+                          type="checkbox"
+                          checked={rowData.isSelected}
+                          disabled= {!rowData.isNew}
+                          onChange={() => handleCheckboxChange(rowData.id)}
+                        />
+                      ) : null}
+                    </td>
+                    <td>
+                      {rowData.isNew || isEditing ? (
+                        <input
+                          disabled= {rowData.isNew}
+                          type="text"
+                          value={rowData.id}
+                          onChange={(e) => handleInputChange(e, rowIndex, "id")}
+                        />
+                      ) : (
+                        rowData.id
+                      )}
+                    </td>
+                    <td>
+                      {rowData.isNew || isEditing ? (
+                        <input
+                          type="text"
+                          value={rowData.name}
+                          onChange={(e) => handleInputChange(e, rowIndex, "name")}
+                        />
+                      ) : (
+                        rowData.name
+                      )}
+                    </td>
+                    <td>
+                      {rowData.isNew || isEditing ? (
+                        // <input
+                        //   type="text"
+                        //   value={rowData.statusCode}
+                        //   onChange={(e) => handleInputChange(e, rowIndex, "statusCode")}
+                        // />
+                        <select
+                          id="statusDropdown"
+                          value={rowData.statusCode}
+                          onChange={(e) => handleInputChange(e, rowIndex, "statusCode")}
+                        >
+                          <option value={1}>Active</option>
+                          <option value={0}>Not Active</option>
+                        </select>
+                      ) : (
+                        <td>{rowData.statusCode === 1 ? "Active" : "Not Active"}</td>
+                        
+                      )}
+                    </td>
+                    <td>{rowData.isNew || isEditing ? rowData.seq : rowData.seq}</td>
+                    <td>{rowData.isNew || isEditing ? rowData.code : rowData.code}</td>
+                    <td>{rowData.isNew || isEditing ? rowData.statusName : rowData.statusName}</td>
+                    <td>{rowData.isNew || isEditing ? rowData.insertby : rowData.insertby}</td>
+                    <td>{rowData.isNew || isEditing ? rowData.insertDate : rowData.insertDate}</td>
+                    <td>{rowData.isNew || isEditing ? rowData.updateby : rowData.updateby}</td>
+                    <td>{rowData.isNew || isEditing ? rowData.updateDate : rowData.updateDate}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            
           </PreviewCard>
         </Block>
       </Content>
     </React.Fragment>
   );
-};
+}
+
 export default MasterNews;

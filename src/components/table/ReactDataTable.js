@@ -64,10 +64,10 @@ const ExpandableRowComponent = ({ data }) => {
   return (
     <ul className="dtr-details p-2 border-bottom ms-1">
       <li className="d-block d-sm-none">
-        <span className="dtr-title">Company</span> <span className="dtr-data">{data.id}</span>
+        <span className="dtr-title">Company</span> <span className="dtr-data">{data.name}</span>
       </li>
       <li className="d-block d-sm-none">
-        <span className="dtr-title ">Gender</span> <span className="dtr-data">{data.gender}</span>
+        <span className="dtr-title ">Gender</span> <span className="dtr-data">{data.name}</span>
       </li>
       <li>
         <span className="dtr-title">Start Date</span> <span className="dtr-data">{data.startDate}</span>
@@ -93,17 +93,16 @@ const ReactDataTable = ({ data, columns, pagination, actions, className, selecta
   const [mobileView, setMobileView] = useState();
 
   useEffect(() => {
-    // let defaultData = tableData;
+    let defaultData = tableData;
     // if (searchText !== "") {
     //   defaultData = data.filter((item) => {
     //     return item.name.toLowerCase().includes(searchText.toLowerCase());
     //   });
-    //   setTableData(defaultData);
+    setTableData(defaultData);
     // } else {
-      setTableData(data);
-      console.log("cacad232 = " + JSON.stringify(tableData))
+    console.log("cacad232 = " + JSON.stringify(data));
     // }
-  }); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   // function to change the design view under 1200 px
   const viewChange = () => {
@@ -137,9 +136,9 @@ const ReactDataTable = ({ data, columns, pagination, actions, className, selecta
             </label>
           </div> */}
         </Col>
-        <Col className="col-5 text-end" sm="8">
+        <Col className="col-5 text-end" sm="10">
           <div className="datatable-filter">
-            <div className="d-flex justify-content-end g-2">
+            <div className="d-flex justify-content-end g-5">
               {actions && <Export data={data} />}
               <div className="dataTables_length" id="DataTables_Table_0_length">
                 <label>
@@ -165,7 +164,8 @@ const ReactDataTable = ({ data, columns, pagination, actions, className, selecta
         </Col>
       </Row>
       <DataTable
-        data={tableData}
+        style={{ overflowX: "scroll" }}
+        data={data}
         columns={columns}
         className={className}
         selectableRows={selectableRows}
@@ -173,12 +173,12 @@ const ReactDataTable = ({ data, columns, pagination, actions, className, selecta
         expandableRowsComponent={ExpandableRowComponent}
         expandableRows={mobileView}
         noDataComponent={<div className="p-2">There are no records found</div>}
-        sortIcon={
-          <div>
-            <span>&darr;</span>
-            <span>&uarr;</span>
-          </div>
-        }
+        // sortIcon={
+        //   <div>
+        //     <span>&darr;</span>
+        //     <span>&uarr;</span>
+        //   </div>
+        // }
         pagination={pagination}
         paginationComponent={({ currentPage, rowsPerPage, rowCount, onChangePage, onChangeRowsPerPage }) => (
           <DataTablePagination

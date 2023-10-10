@@ -35,8 +35,8 @@ const MasterCareer = () => {
         code: "",
         name: "",
         statusCodes: [0,1],
-        page: 1,
-        size: "2",
+        page: 0,
+        size: "all",
         sortField: "name",
         sortOrder: "desc"
       };
@@ -45,7 +45,7 @@ const MasterCareer = () => {
         let response = await axiosInstance().post("/api/v1/mst_career/list", requestBody);
         if (response.status === 200) {
           setRespCareer(response.data.data);
-          console.log("hasil" + JSON.stringify(respCareer))
+  
         }
       } catch (err) {
         if (err.response) {
@@ -101,8 +101,9 @@ const MasterCareer = () => {
             </BlockHeadContent>
           </BlockHead>
 
-          <PreviewCard>
-            <ReactDataTable
+          <PreviewCard >
+
+            <ReactDataTable style={{ overflowX: 'scroll !important', maxWidth: '100% !important' }}
               data={respCareer}
               columns={dataTableColumns}
               // expandableRows
@@ -110,6 +111,7 @@ const MasterCareer = () => {
               actions
               selectableRows={BackTo}
             />
+
           </PreviewCard>
         </Block>
       </Content>
