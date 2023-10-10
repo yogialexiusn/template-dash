@@ -5,6 +5,7 @@ import { Button } from "reactstrap";
 import { axiosInstance } from "../config/AxiosInstance";
 import { Link } from "react-router-dom";
 import Icon from "../components/icon/Icon";
+import ReactPaginate from "react-paginate";
 import {
   Block,
   BlockHead,
@@ -26,7 +27,8 @@ function MasterNews() {
   const [isChecklistDisable, setChecklistDisable] = useState(true);
   const [sortation, setSortation] = useState("desc");
   const [sortField, setSortField] = useState("id"); // Initialize sortField state
-
+  const [pageCount, setpageCount] = useState(0);
+  const [pageSelected, SetPageSelected] = useState(0);
 
   const [newRow, setNewRow] = useState({
     id: "",
@@ -46,30 +48,29 @@ function MasterNews() {
   };
 
   const handleSaveClick = (e) => {
-    
-      // Setel atribut isNew menjadi false untuk baris baru yang sudah disimpan
-      const updatedData = respCareer.map((rowData) => (rowData.isNew ? { ...rowData, isNew: false } : rowData));
-      const modifiedInput= updatedData.filter(itemB => {
-        const matchingItemA = editedInput.find(itemA => itemA.id === itemB.id);
-        return !matchingItemA || matchingItemA.name !== itemB.name || matchingItemA.statusCode !== itemB.statusCode;
-      });
-      // Cek apakah ada nilai yang kosong di baris-baris yang sedang diedit
-      const hasEmptyValue = modifiedInput.some((rowData) => rowData.name === "" || rowData.statusCode === "");
-      console.log("modifiedInput = " + JSON.stringify(modifiedInput))
-      if (hasEmptyValue) {
-        alert("Tidak dapat menyimpan baris baru dengan nilai kosong.");
-        return; // Hentikan penyimpanan jika ada nilai kosong
-      } else {
-        handleEdit(modifiedInput);
-        setIsEditing(false);
-        setRespCareer(updatedData);
-        
-        handleSearchMasterCareer("update_date", "desc");
-    } 
+    // Setel atribut isNew menjadi false untuk baris baru yang sudah disimpan
+    const updatedData = respCareer.map((rowData) => (rowData.isNew ? { ...rowData, isNew: false } : rowData));
+    const modifiedInput = updatedData.filter((itemB) => {
+      const matchingItemA = editedInput.find((itemA) => itemA.id === itemB.id);
+      return !matchingItemA || matchingItemA.name !== itemB.name || matchingItemA.statusCode !== itemB.statusCode;
+    });
+    // Cek apakah ada nilai yang kosong di baris-baris yang sedang diedit
+    const hasEmptyValue = modifiedInput.some((rowData) => rowData.name === "" || rowData.statusCode === "");
+    console.log("modifiedInput = " + JSON.stringify(modifiedInput));
+    if (hasEmptyValue) {
+      alert("Tidak dapat menyimpan baris baru dengan nilai kosong.");
+      return; // Hentikan penyimpanan jika ada nilai kosong
+    } else {
+      handleEdit(modifiedInput);
+      setIsEditing(false);
+      setRespCareer(updatedData);
+
+      handleSearchMasterCareer("update_date", "desc");
+    }
   };
 
   const handleAddRowClick = () => {
-    const updatedData = [...respCareer, { ...newRow, id: null, isNew: true, isSelected: false, statusCode : 1}];
+    const updatedData = [...respCareer, { ...newRow, id: null, isNew: true, isSelected: false, statusCode: 1 }];
 
     // Jika sedang dalam mode editing, jangan keluar dari mode edit setelah menambahkan baris baru
     if (!isEditing) {
@@ -96,6 +97,11 @@ function MasterNews() {
     setRespCareer(updatedData);
   };
 
+  const handlePageClick = async (data) => {
+    SetPageSelected(data.selected)
+    handleSearchMasterCareer("id", "desc", data.selected);
+  };
+
   const handleInputChange = (e, rowIndex, colName) => {
     const { value } = e.target;
     const updatedData = [...respCareer];
@@ -115,32 +121,32 @@ function MasterNews() {
   };
 
   const handleSearchMasterCareer = useCallback(
-    async (field, newSortation) => {
+    async (field, newSortation, currentPage) => {
       // e.preventDefault();
       // const newSortation = sortation === "asc" ? "desc" : "asc";
-      
+
       // Set the sortField state based on the column clicked
       setSortField(field);
       let requestBody = {
         code: "",
         name: "",
         statusCodes: [0, 1],
-        page: 0,
-        size: "all",
+        page: currentPage,
+        size: 10,
         sortField: field,
-        sortOrder: newSortation
+        sortOrder: newSortation,
       };
 
       // Update the state with the new sortation value
-    setSortation(newSortation);
+      setSortation(newSortation);
 
       try {
         let response = await axiosInstance().post("/api/v1/mst_career/list", requestBody);
         if (response.status === 200) {
-          console.log("cek")
+          const total = response.data.totalPages;
+          setpageCount(total);
           setRespCareer(response.data.data);
           setEditedInput(response.data.data);
-          
         }
       } catch (err) {
         if (err.response) {
@@ -151,7 +157,7 @@ function MasterNews() {
         }
       }
     },
-    [editedInput ],
+    [editedInput],
   );
 
   const handleEdit = async (modifiedInput) => {
@@ -159,9 +165,9 @@ function MasterNews() {
       let requestBody = {
         id: obj.id,
         name: obj.name,
-        statusCode: obj.statusCode
+        statusCode: obj.statusCode,
       };
-      
+
       try {
         let response = await axiosInstance().post("/api/v1/mst_career/addOrUpdate", requestBody);
         if (response.status === 200) {
@@ -178,34 +184,32 @@ function MasterNews() {
           // Handle network or other errors if needed
         }
       }
-  
+
       // Add a delay of 50ms before the next iteration
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-    window.location.reload()
+    window.location.reload();
 
     // After all iterations are done, you can call handleSearchMasterCareer
-    handleSearchMasterCareer("id", "asc");
-  }
+    handleSearchMasterCareer("id", "desc", 0);
+  };
 
   const handleSorting = async (field) => {
     const newSortation = sortation === "asc" ? "desc" : "asc";
-    handleSearchMasterCareer(field, newSortation)
-  }
+    handleSearchMasterCareer(field, newSortation, pageSelected);
+  };
 
   useEffect(() => {
-    handleSearchMasterCareer("id", "desc");
+    handleSearchMasterCareer("id", "desc", 0);
   }, []);
 
   return (
     <React.Fragment>
       <Head title="Basic Tables" />
       <Content page="component">
-        <BlockHead >
+        <BlockHead>
           <BlockHeadContent>
-            <BlockTitle>
-              Master Career
-            </BlockTitle>
+            <BlockTitle>Master Career</BlockTitle>
             <BlockDes>
               <p>Master Career is used to created new Job for applicant.</p>
             </BlockDes>
@@ -235,7 +239,7 @@ function MasterNews() {
           </BlockHead>
 
           <PreviewCard>
-          <div className="d-flex flex-row-reverse ">
+            <div className="d-flex flex-row-reverse ">
               {isEditing ? (
                 <div>
                   <button onClick={handleSaveClick}>Simpan</button>
@@ -245,61 +249,70 @@ function MasterNews() {
               ) : (
                 <button onClick={handleEditClick}>Edit</button>
               )}
-              
             </div>
             <br></br>
             <table className="table table-orders">
               <thead>
                 <tr>
                   <th>&nbsp;</th>
-                  <th>ID 
+                  <th>
+                    ID
                     <Link to="#" onClick={(e) => handleSorting("id")}>
-                        <Icon name="sort" />
+                      <Icon name="sort" />
                     </Link>
                   </th>
-                  <th>NAME 
+                  <th>
+                    NAME
                     <Link to="#" onClick={(e) => handleSorting("name")}>
-                        <Icon name="sort" />
+                      <Icon name="sort" />
                     </Link>
                   </th>
-                  <th>STATUS CODE 
+                  <th>
+                    STATUS CODE
                     <Link to="#" onClick={(e) => handleSorting("mst_status_code")}>
-                        <Icon name="sort" />
+                      <Icon name="sort" />
                     </Link>
                   </th>
-                  <th>SEQ 
+                  <th>
+                    SEQ
                     <Link to="#" onClick={(e) => handleSorting("seq")}>
-                        <Icon name="sort" />
+                      <Icon name="sort" />
                     </Link>
                   </th>
-                  <th>CODE 
+                  <th>
+                    CODE
                     <Link to="#" onClick={(e) => handleSorting("code")}>
-                        <Icon name="sort" />
+                      <Icon name="sort" />
                     </Link>
                   </th>
-                  <th>STATUS NAME 
+                  <th>
+                    STATUS NAME
                     <Link to="#" onClick={(e) => handleSorting("mst_status_code")}>
-                        <Icon name="sort" />
+                      <Icon name="sort" />
                     </Link>
                   </th>
-                  <th>INSERT BY 
+                  <th>
+                    INSERT BY
                     <Link to="#" onClick={(e) => handleSorting("insertby")}>
-                        <Icon name="sort" />
+                      <Icon name="sort" />
                     </Link>
                   </th>
-                  <th>INSERT DATE 
+                  <th>
+                    INSERT DATE
                     <Link to="#" onClick={(e) => handleSorting("insert_date")}>
-                        <Icon name="sort" />
+                      <Icon name="sort" />
                     </Link>
                   </th>
-                  <th>UPDATE BY 
+                  <th>
+                    UPDATE BY
                     <Link to="#" onClick={(e) => handleSorting("updateby")}>
-                        <Icon name="sort" />
+                      <Icon name="sort" />
                     </Link>
                   </th>
-                  <th>UPDATE DATE 
+                  <th>
+                    UPDATE DATE
                     <Link to="#" onClick={(e) => handleSorting("update_date")}>
-                        <Icon name="sort" />
+                      <Icon name="sort" />
                     </Link>
                   </th>
                 </tr>
@@ -312,7 +325,7 @@ function MasterNews() {
                         <input
                           type="checkbox"
                           checked={rowData.isSelected}
-                          disabled= {!rowData.isNew}
+                          disabled={!rowData.isNew}
                           onChange={() => handleCheckboxChange(rowData.id)}
                         />
                       ) : null}
@@ -320,7 +333,7 @@ function MasterNews() {
                     <td>
                       {rowData.isNew || isEditing ? (
                         <input
-                          disabled= {rowData.isNew}
+                          disabled={rowData.isNew}
                           type="text"
                           value={rowData.id}
                           onChange={(e) => handleInputChange(e, rowIndex, "id")}
@@ -357,7 +370,6 @@ function MasterNews() {
                         </select>
                       ) : (
                         <td>{rowData.statusCode === 1 ? "Active" : "Not Active"}</td>
-                        
                       )}
                     </td>
                     <td>{rowData.isNew || isEditing ? rowData.seq : rowData.seq}</td>
@@ -367,12 +379,33 @@ function MasterNews() {
                     <td>{rowData.isNew || isEditing ? rowData.insertDate : rowData.insertDate}</td>
                     <td>{rowData.isNew || isEditing ? rowData.updateby : rowData.updateby}</td>
                     <td>{rowData.isNew || isEditing ? rowData.updateDate : rowData.updateDate}</td>
+                    
                   </tr>
                 ))}
               </tbody>
             </table>
 
-            
+            <div className="center mt-5">
+              <ReactPaginate
+                previousLabel={"<<"}
+                nextLabel={">>"}
+                breakLabel={"..."}
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={2}
+                onPageChange={handlePageClick}
+                containerClassName={"pagination"}
+                pageClassName={"page-item"}
+                pageLinkClassName={"page-link"}
+                previousClassName={"page-item"}
+                previousLinkClassName={"page-link"}
+                nextClassName={"page-item"}
+                nextLinkClassName={"page-link"}
+                breakClassName={"page-item"}
+                breakLinkClassName={"page-link"}
+                activeClassName={"active"}
+              />
+            </div>
           </PreviewCard>
         </Block>
       </Content>

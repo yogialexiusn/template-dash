@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import Content from "../layout/content/Content";
 import Head from "../layout/head/Head";
 import { Button } from "reactstrap";
-import { axiosInstance } from '../config/AxiosInstance';
+import { axiosInstance } from "../config/AxiosInstance";
 import {
   Block,
   BlockHead,
@@ -17,7 +17,6 @@ import { DataTableData, dataTableColumns, dataTableColumns2, userData } from "./
 
 const MasterCareer = () => {
   const [respCareer, setRespCareer] = useState([]);
-
 
   useEffect(() => {
     handleSearchMasterCareer();
@@ -34,18 +33,17 @@ const MasterCareer = () => {
       let requestBody = {
         code: "",
         name: "",
-        statusCodes: [0,1],
+        statusCodes: [0, 1],
         page: 0,
         size: "all",
         sortField: "name",
-        sortOrder: "desc"
+        sortOrder: "desc",
       };
 
       try {
         let response = await axiosInstance().post("/api/v1/mst_career/list", requestBody);
         if (response.status === 200) {
           setRespCareer(response.data.data);
-  
         }
       } catch (err) {
         if (err.response) {
@@ -69,9 +67,7 @@ const MasterCareer = () => {
               Master Career
             </BlockTitle>
             <BlockDes>
-              <p className="lead">
-                Master Career is used to created new Job for applicant.
-              </p>
+              <p className="lead">Master Career is used to created new Job for applicant.</p>
             </BlockDes>
           </BlockHeadContent>
         </BlockHead>
@@ -89,10 +85,7 @@ const MasterCareer = () => {
                   onChange={(e) => handleParamsChange(e)}
                 />
 
-                <Button
-                  color="btn ms-3 btn-round btn-primary"
-                  onClick= {(e) => handleSearchMasterCareer(e)} 
-                >
+                <Button color="btn ms-3 btn-round btn-primary" onClick={(e) => handleSearchMasterCareer(e)}>
                   <em class="icon ni ni-search"></em>
                   <span>Search Career</span>
                   {""}
@@ -101,9 +94,9 @@ const MasterCareer = () => {
             </BlockHeadContent>
           </BlockHead>
 
-          <PreviewCard >
-
-            <ReactDataTable style={{ overflowX: 'scroll !important', maxWidth: '100% !important' }}
+          <PreviewCard>
+            <ReactDataTable
+              style={{ overflowX: "scroll !important", maxWidth: "100% !important" }}
               data={respCareer}
               columns={dataTableColumns}
               // expandableRows
@@ -111,7 +104,6 @@ const MasterCareer = () => {
               actions
               selectableRows={BackTo}
             />
-
           </PreviewCard>
         </Block>
       </Content>
