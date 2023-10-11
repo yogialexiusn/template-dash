@@ -55,19 +55,19 @@ const menu = [
   },
   {
     icon: "network",
-    text: "Career Cek",
+    text: "Transaction Career",
     link: "/trccareer",
     active: "true",
   },
   {
     icon: "article",
-    text: "News Cek",
+    text: "Transaction News",
     link: "/trcnews",
     active: "true",
   },
   {
     icon: "tranx",
-    text: "Change Request Cek",
+    text: "Transaction Change Request",
     link: "/trcchangerequest",
     active: "true",
   },

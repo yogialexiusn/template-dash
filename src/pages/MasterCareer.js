@@ -13,15 +13,12 @@ import {
   BlockHeadContent,
   BlockTitle,
   BlockDes,
-  BackTo,
   PreviewCard,
-  ReactDataTable,
 } from "../components/Component";
-import { DataTableData, dataTableColumns, dataTableColumns2, userData } from "./components/table/TableData";
-import { set } from "react-hook-form";
+import { MASTER_CAREER_LIST, MASTER_CAREER_ADD } from "../config/Constants";
 
 function MasterCareer() {
-  const [respCareer, setRespCareer] = useState([]);
+  const [responseData, setResponseData] = useState([]);
   const [editedInput, setEditedInput] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
@@ -56,7 +53,7 @@ function MasterCareer() {
 
   const handleSaveClick = (e) => {
     // Setel atribut isNew menjadi false untuk baris baru yang sudah disimpan
-    const updatedData = respCareer.map((rowData) => (rowData.isNew ? { ...rowData, isNew: false } : rowData));
+    const updatedData = responseData.map((rowData) => (rowData.isNew ? { ...rowData, isNew: false } : rowData));
     const modifiedInput = updatedData.filter((itemB) => {
       const matchingItemA = editedInput.find((itemA) => itemA.id === itemB.id);
       return !matchingItemA || matchingItemA.name !== itemB.name || matchingItemA.statusCode !== itemB.statusCode;
@@ -69,22 +66,20 @@ function MasterCareer() {
     } else {
       handleEdit(modifiedInput);
       setIsEditing(false);
-      setRespCareer(updatedData);
-
-      handleSearchMasterCareer();
+      setResponseData(updatedData);
+      handleFilterButton();
     }
   };
 
   const handleAddRowClick = () => {
-    const updatedData = [...respCareer, { ...newRow, id: null, isNew: true, isSelected: false, statusCode: 1 }];
+    const updatedData = [...responseData, { ...newRow, id: null, isNew: true, isSelected: false, statusCode: 1 }];
 
     // Jika sedang dalam mode editing, jangan keluar dari mode edit setelah menambahkan baris baru
     if (!isEditing) {
       setIsEditing(true);
     }
-
     setChecklistDisable(false);
-    setRespCareer(updatedData);
+    setResponseData(updatedData);
   };
 
   const handleCancelClick = () => {
@@ -95,29 +90,29 @@ function MasterCareer() {
 
   const handleDeleteRowClick = () => {
     // Hapus baris berdasarkan isSelected
-    const updatedData = respCareer.filter((rowData) => !rowData.isSelected);
-    setRespCareer(updatedData);
+    const updatedData = responseData.filter((rowData) => !rowData.isSelected);
+    setResponseData(updatedData);
     // setIsEditing(false);
   };
 
   const handleCheckboxChange = (id) => {
     // Toggle isSelected pada baris dengan id tertentu
-    const updatedData = respCareer.map((rowData) =>
+    const updatedData = responseData.map((rowData) =>
       rowData.id === id ? { ...rowData, isSelected: !rowData.isSelected } : rowData,
     );
 
-    setRespCareer(updatedData);
+    setResponseData(updatedData);
   };
 
   const handlePageClick = async (data) => {
     setPage(data.selected, () => {
-      handleSearchMasterCareer();
+      handleFilterButton();
     });
   };
 
   const handleInputChange = (e, rowIndex, colName) => {
     const { value } = e.target;
-    const updatedData = [...respCareer];
+    const updatedData = [...responseData];
     const updatedRow = updatedData[rowIndex];
 
     if (updatedRow.isNew) {
@@ -125,10 +120,10 @@ function MasterCareer() {
     } else {
       updatedData[rowIndex] = { ...updatedRow, [colName]: value };
     }
-    setRespCareer(updatedData);
+    setResponseData(updatedData);
   };
 
-  const handleSearchMasterCareer = useCallback(async () => {
+  const handleFilterButton = useCallback(async () => {
     let requestBody = {
       code: code,
       name: name,
@@ -140,12 +135,12 @@ function MasterCareer() {
     };
 
     try {
-      let response = await axiosInstance().post("/api/v1/mst_career/list", requestBody);
+      let response = await axiosInstance().post(MASTER_CAREER_LIST, requestBody);
       if (response.status === 200) {
         const totalPages = response.data.totalPages;
         setTotalPages(totalPages);
         setTotalData(response.data.totalData);
-        setRespCareer(response.data.data);
+        setResponseData(response.data.data);
         setEditedInput(response.data.data);
         setDataNotFound(false);
       }
@@ -159,7 +154,7 @@ function MasterCareer() {
       } else {
       }
     }
-  }, [respCareer, code, name, size, statusCode, page, sortField, sortOrder]);
+  }, [responseData, code, name, size, statusCode, page, sortField, sortOrder]);
 
   const handleEdit = async (modifiedInput) => {
     for (const obj of modifiedInput) {
@@ -170,7 +165,7 @@ function MasterCareer() {
       };
 
       try {
-        let response = await axiosInstance().post("/api/v1/mst_career/addOrUpdate", requestBody);
+        let response = await axiosInstance().post(MASTER_CAREER_ADD, requestBody);
         if (response.status === 200) {
           // Handle success if needed
         }
@@ -191,27 +186,27 @@ function MasterCareer() {
     }
     window.location.reload();
 
-    // After all iterations are done, you can call handleSearchMasterCareer
-    handleSearchMasterCareer();
+    // After all iterations are done, you can call handleFilterButton
+    handleFilterButton();
   };
 
   const handleSorting = async (field) => {
     const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
     setSortOrder(newSortOrder);
     setSortField(field);
-    handleSearchMasterCareer();
+    handleFilterButton();
   };
 
   const handleSize = (newSize) => {
     setPage(0);
     setSize(newSize, () => {
       // This callback ensures that the state has been updated
-      handleSearchMasterCareer();
+      handleFilterButton();
     });
   };
 
   useEffect(() => {
-    handleSearchMasterCareer();
+    handleFilterButton();
   }, [size, page]);
 
   return (
@@ -280,7 +275,7 @@ function MasterCareer() {
             </Col>
             <Col sm="6">
               <div className="form-group d-flex flex-row-reverse mt-5">
-                <Button color="btn-round btn-primary " onClick={(e) => handleSearchMasterCareer()}>
+                <Button color="btn-round btn-primary " onClick={(e) => handleFilterButton()}>
                   Filter
                   <Icon name="sort" />
                   {""}
@@ -333,7 +328,7 @@ function MasterCareer() {
                 </label>
               </div>
             </div>
-             }
+            }
 
             <br></br>
 
@@ -468,7 +463,7 @@ function MasterCareer() {
                     </tr>
                   </thead>
                   <tbody className="tb-odr-body">
-                    {respCareer.map((rowData, rowIndex) => (
+                    {responseData.map((rowData, rowIndex) => (
                       <tr key={rowData.id}>
                         <td className="tb-odr-info">
                           {isEditing ? (

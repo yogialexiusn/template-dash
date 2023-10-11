@@ -79,7 +79,7 @@ const UserProfileSettingPage = () => {
               <Block>
                 <Card>
                   <div className="card-inner-group">
-                    <div className="card-inner">
+                    {/* <div className="card-inner">
                       <div className="between-center flex-wrap flex-md-nowrap g-3">
                         <div className="nk-block-text">
                           <h6>Save my Activity Logs</h6>
@@ -95,7 +95,7 @@ const UserProfileSettingPage = () => {
                           </ul>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                     <div className="card-inner">
                       <div className="between-center flex-wrap g-3">
                         <div className="nk-block-text">
@@ -116,7 +116,7 @@ const UserProfileSettingPage = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="card-body">
+                    {/* <div className="card-body">
                       <div className="between-center flex-wrap flex-md-nowrap g-3">
                         <div className="nk-block-text">
                           <h6>
@@ -135,7 +135,7 @@ const UserProfileSettingPage = () => {
                           <Button color="primary">Disable</Button>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </Card>
               </Block>

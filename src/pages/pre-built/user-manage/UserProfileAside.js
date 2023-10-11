@@ -57,7 +57,7 @@ const UserProfileAside = ({ updateSm, sm }) => {
           </div>
         </div>
       </div>
-      <div className="card-inner">
+      {/* <div className="card-inner">
         <div className="user-account-info py-0">
           <h6 className="overline-title-alt">Nio Wallet Account</h6>
           <div className="user-balance">
@@ -70,7 +70,7 @@ const UserProfileAside = ({ updateSm, sm }) => {
             </span>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="card-inner p-0">
         <ul className="link-list-menu">
           <li onClick={() => updateSm(false)}>
@@ -82,7 +82,7 @@ const UserProfileAside = ({ updateSm, sm }) => {
               <span>Personal Information</span>
             </Link>
           </li>
-          <li onClick={() => updateSm(false)}>
+          {/* <li onClick={() => updateSm(false)}>
             <Link
               to={`${process.env.PUBLIC_URL}/user-profile-notification`}
               className={
@@ -101,7 +101,7 @@ const UserProfileAside = ({ updateSm, sm }) => {
               <Icon name="activity-round-fill"></Icon>
               <span>Account Activity</span>
             </Link>
-          </li>
+          </li> */}
           <li onClick={() => updateSm(false)}>
             <Link
               to={`${process.env.PUBLIC_URL}/user-profile-setting`}
