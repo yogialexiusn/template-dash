@@ -24,8 +24,7 @@ function MasterNews() {
   const [respCareer, setRespCareer] = useState([]);
   const [editedInput, setEditedInput] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-  const [isChecklistDisable, setChecklistDisable] = useState(true);
-  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   const [totalData, setTotalData] = useState(0);
   const [dataNotFound, setDataNotFound] = useState(false);
 
@@ -33,10 +32,11 @@ function MasterNews() {
   const [name, setName] = useState("");
   const [size, setSize] = useState("10");
   const [statusCode, setStatusCode] = useState([1]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [sortField, setSortField] = useState("id");
+  const [page, setPage] = useState(0);
+  const [sortField, setSortField] = useState("update_date");
   const [sortOrder, setSortOrder] = useState("asc");
 
+  const [isChecklistDisable, setChecklistDisable] = useState(true);
   const [newRow, setNewRow] = useState({
     id: "",
     name: "",
@@ -63,7 +63,6 @@ function MasterNews() {
     });
     // Cek apakah ada nilai yang kosong di baris-baris yang sedang diedit
     const hasEmptyValue = modifiedInput.some((rowData) => rowData.name === "" || rowData.statusCode === "");
-    console.log("modifiedInput = " + JSON.stringify(modifiedInput));
     if (hasEmptyValue) {
       alert("Tidak dapat menyimpan baris baru dengan nilai kosong.");
       return; // Hentikan penyimpanan jika ada nilai kosong
@@ -88,6 +87,12 @@ function MasterNews() {
     setRespCareer(updatedData);
   };
 
+  const handleCancelClick = () => {
+    if (isEditing) {
+      setIsEditing(false);
+    }
+  };
+
   const handleDeleteRowClick = () => {
     // Hapus baris berdasarkan isSelected
     const updatedData = respCareer.filter((rowData) => !rowData.isSelected);
@@ -106,8 +111,6 @@ function MasterNews() {
 
   const handlePageClick = async (data) => {
     setPage(data.selected, () => {
-      console.log("data = " + data.selected);
-      console.log("page = " + page);
       handleSearchMasterCareer();
     });
   };
@@ -136,7 +139,6 @@ function MasterNews() {
       sortOrder: sortOrder,
     };
 
-    console.log("requestBody");
     try {
       let response = await axiosInstance().post("/api/v1/mst_career/list", requestBody);
       if (response.status === 200) {
@@ -149,7 +151,7 @@ function MasterNews() {
       }
     } catch (err) {
       setDataNotFound(true);
-      console.log("kesiini");
+      setTotalData(0);
       if (err.response) {
         if (err.response.status === 401) {
         } else {
@@ -201,7 +203,6 @@ function MasterNews() {
   };
 
   const handleSize = (newSize) => {
-    console.log("handleSize = " + newSize);
     setPage(0);
     setSize(newSize, () => {
       // This callback ensures that the state has been updated
@@ -226,12 +227,12 @@ function MasterNews() {
           </BlockHeadContent>
         </BlockHead>
 
-        <Block>
-          <Row className="gy-4">
+        <Block size="lg">
+          <Row className="gy-3 ">
             <Col sm="6">
               <div className="form-group">
                 <Label htmlFor="default-5" className="form-label">
-                  NAME
+                  Name
                 </Label>
                 <input
                   type="text"
@@ -245,7 +246,7 @@ function MasterNews() {
             <Col sm="6">
               <div className="form-group">
                 <Label htmlFor="default-5" className="form-label">
-                  CODE
+                  Code
                 </Label>
                 <input
                   type="text"
@@ -259,7 +260,7 @@ function MasterNews() {
             <Col sm="6">
               <div className="form-group">
                 <label htmlFor="default-5" className="form-label">
-                  STATUS CODE
+                  Status Code
                 </label>
                 <div class="form-control-select">
                   {" "}
@@ -277,47 +278,42 @@ function MasterNews() {
                 </div>
               </div>
             </Col>
-          </Row>
-          <BlockHead>
-            <BlockHeadContent>
-              <div class="d-flex flex-row-reverse">
-                {/* <input
-                  type="text"
-                  class="form-control"
-                  id="default-01"
-                  placeholder="Search Career"
-                  value={params}
-                  onChange={(e) => handleParamsChange(e)}
-                /> */}
-
+            <Col sm="6">
+              <div className="form-group d-flex flex-row-reverse mt-5">
                 <Button color="btn-round btn-primary " onClick={(e) => handleSearchMasterCareer()}>
                   Filter
                   <Icon name="sort" />
                   {""}
                 </Button>
               </div>
-            </BlockHeadContent>
-          </BlockHead>
-
-          <PreviewCard className="mt-5">
-            <div className="d-flex flex-row-reverse">
-              <div>
-                <label>Total Data = {totalData}</label>
+            </Col>
+          </Row>
+          <PreviewCard className="mt-5 border">
+            {
+            dataNotFound ? 
+            null
+            : 
+            <div class="row gy-4">
+              <div class="col-md-2 col-sm-6">
+                <label className="text-black">Total Data = {totalData}</label>
               </div>
-              <div>
+              
+              <div class="col-md-3 col-lg-7">
                 {isEditing ? (
-                  <div>
-                    <button onClick={handleSaveClick}>Simpan</button>
-                    <button onClick={handleDeleteRowClick}>Hapus</button>
-                    <button onClick={handleAddRowClick}>Add Row</button>
+                  <div class="row gy-1">
+                    <button class="btn btn-outline-dark col-md-3 col-sm-1 me-1" onClick={handleSaveClick}><span>Save</span><em class="icon ni ni-save"></em></button>
+                    <button class="btn btn-outline-dark col-md-3 col-sm-1 me-1" onClick={handleDeleteRowClick}><span>Delete</span><em class="icon ni ni-trash-alt"></em></button>
+                    <button class="btn btn-outline-dark col-md-3 col-sm-1 me-1" onClick={handleAddRowClick}><span>Add Row</span><em class="icon ni ni-grid-add-c"></em></button>
+                    <button class="btn btn-outline-dark col-md-2 col-sm-1 me-1" onClick={handleCancelClick}><span>Cancel</span><em class="icon ni ni-curve-down-left"></em></button>
                   </div>
                 ) : (
-                  <button onClick={handleEditClick}>Edit</button>
+                  // <button onClick={handleEditClick}>Edit</button>
+                  <a  class="btn btn-secondary" data-bs-toggle="dropdown" onClick={handleEditClick}><span>Edit</span><em class="icon ni ni-curve-down-right"></em></a>
                 )}
               </div>
-              <div>
+              <div class="d-flex flex-row-reverse">
                 <label>
-                  <span class="d-none d-sm-inline-block">Show</span>
+                  {/* <div class="col-sm-1 me-1">Show</div> */}
                   <div class="form-control-select">
                     {" "}
                     <select
@@ -337,6 +333,7 @@ function MasterNews() {
                 </label>
               </div>
             </div>
+             }
 
             <br></br>
 
@@ -345,10 +342,10 @@ function MasterNews() {
                 <div className="p-2 center shadow border">There are no records found</div>
               ) : (
                 <table className="table table-orders">
-                  <thead>
-                    <tr>
-                      <th>&nbsp;</th>
-                      <th>
+                  <thead className="tb-odr-head">
+                    <tr className="tb-odr-item">
+                      <th className="tb-odr-info">&nbsp;</th>
+                      <th className="tb-odr-info">
                         ID
                         <Link
                           to="#"
@@ -360,7 +357,7 @@ function MasterNews() {
                           <Icon name="sort" />
                         </Link>
                       </th>
-                      <th>
+                      <th className="tb-odr-info">
                         NAME
                         <Link
                           to="#"
@@ -372,7 +369,7 @@ function MasterNews() {
                           <Icon name="sort" />
                         </Link>
                       </th>
-                      <th>
+                      <th className="tb-odr-info">
                         STATUS CODE
                         <Link
                           to="#"
@@ -384,7 +381,7 @@ function MasterNews() {
                           <Icon name="sort" />
                         </Link>
                       </th>
-                      <th>
+                      <th className="tb-odr-info">
                         SEQ
                         <Link
                           to="#"
@@ -396,7 +393,7 @@ function MasterNews() {
                           <Icon name="sort" />
                         </Link>
                       </th>
-                      <th>
+                      <th className="tb-odr-info">
                         CODE
                         <Link
                           to="#"
@@ -408,7 +405,7 @@ function MasterNews() {
                           <Icon name="sort" />
                         </Link>
                       </th>
-                      <th>
+                      <th className="tb-odr-info">
                         STATUS NAME
                         <Link
                           to="#"
@@ -420,7 +417,7 @@ function MasterNews() {
                           <Icon name="sort" />
                         </Link>
                       </th>
-                      <th>
+                      <th className="tb-odr-info">
                         INSERT BY
                         <Link
                           to="#"
@@ -432,7 +429,7 @@ function MasterNews() {
                           <Icon name="sort" />
                         </Link>
                       </th>
-                      <th>
+                      <th className="tb-odr-info">
                         INSERT DATE
                         <Link
                           to="#"
@@ -444,7 +441,7 @@ function MasterNews() {
                           <Icon name="sort" />
                         </Link>
                       </th>
-                      <th>
+                      <th className="tb-odr-info">
                         UPDATE BY
                         <Link
                           to="#"
@@ -456,7 +453,7 @@ function MasterNews() {
                           <Icon name="sort" />
                         </Link>
                       </th>
-                      <th>
+                      <th className="tb-odr-info">
                         UPDATE DATE
                         <Link
                           to="#"
@@ -470,10 +467,10 @@ function MasterNews() {
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="tb-odr-body">
                     {respCareer.map((rowData, rowIndex) => (
                       <tr key={rowData.id}>
-                        <td>
+                        <td className="tb-odr-info">
                           {isEditing ? (
                             <input
                               type="checkbox"
@@ -483,7 +480,7 @@ function MasterNews() {
                             />
                           ) : null}
                         </td>
-                        <td>
+                        <td className="tb-odr-info">
                           {rowData.isNew || isEditing ? (
                             <input
                               disabled={rowData.isNew}
@@ -495,7 +492,7 @@ function MasterNews() {
                             rowData.id
                           )}
                         </td>
-                        <td>
+                        <td className="tb-odr-info">
                           {rowData.isNew || isEditing ? (
                             <input
                               type="text"
@@ -506,7 +503,7 @@ function MasterNews() {
                             rowData.name
                           )}
                         </td>
-                        <td>
+                        <td className="tb-odr-info">
                           {rowData.isNew || isEditing ? (
                             <select
                               id="statusDropdown"
@@ -517,14 +514,18 @@ function MasterNews() {
                               <option value={0}>Not Active</option>
                             </select>
                           ) : (
-                            <td>{rowData.statusCode === 1 ? "Active" : "Not Active"}</td>
+                            <td className="tb-odr-info">{rowData.statusCode === 1 ? "Active" : "Not Active"}</td>
                           )}
                         </td>
-                        <td>{rowData.isNew || isEditing ? rowData.seq : rowData.seq}</td>
-                        <td>{rowData.isNew || isEditing ? rowData.code : rowData.code}</td>
-                        <td>{rowData.isNew || isEditing ? rowData.statusName : rowData.statusName}</td>
-                        <td>{rowData.isNew || isEditing ? rowData.insertby : rowData.insertby}</td>
-                        <td>
+                        <td className="tb-odr-info">{rowData.isNew || isEditing ? rowData.seq : rowData.seq}</td>
+                        <td className="tb-odr-info">{rowData.isNew || isEditing ? rowData.code : rowData.code}</td>
+                        <td className="tb-odr-info">
+                          {rowData.isNew || isEditing ? rowData.statusName : rowData.statusName}
+                        </td>
+                        <td className="tb-odr-info">
+                          {rowData.isNew || isEditing ? rowData.insertby : rowData.insertby}
+                        </td>
+                        <td className="tb-odr-info">
                           {rowData.isNew || isEditing
                             ? new Date(rowData.insertDate).toLocaleDateString("en-US", {
                                 year: "numeric",
@@ -543,8 +544,10 @@ function MasterNews() {
                                 second: "numeric",
                               })}
                         </td>
-                        <td>{rowData.isNew || isEditing ? rowData.updateby : rowData.updateby}</td>
-                        <td>
+                        <td className="tb-odr-info">
+                          {rowData.isNew || isEditing ? rowData.updateby : rowData.updateby}
+                        </td>
+                        <td className="tb-odr-info">
                           {rowData.isNew || isEditing
                             ? rowData.updateDate
                               ? new Date(rowData.updateDate).toLocaleString("en-US", {

@@ -8,7 +8,7 @@ const Content = ({ ...props }) => {
           <div className="nk-content-body">
             {!props.page ? props.children : null}
             {props.page === "component" ? (
-              <div className="components-preview wide-md mx-auto">{props.children}</div>
+              <div className="components-preview large-md mx-auto">{props.children}</div> // ukuran page
             ) : null}
           </div>
         </div>
