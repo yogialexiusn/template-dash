@@ -38,30 +38,7 @@ const Login = (props) => {
     { id: 3, product_name: "Product C", product_price: 400 },
   ];
 
-  const onFormSubmit = (formData) => {
-    setLoading(true);
-    const loginName = "info@softnio.com";
-    const pass = "123456";
-    if (formData.name === loginName && formData.passcode === pass) {
-      localStorage.setItem("accessToken", "token");
-      setTimeout(() => {
-        window.history.pushState(
-          `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`,
-          "auth-login",
-          `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`,
-        );
-        window.location.reload();
-      }, 1000);
-    } else {
-      setTimeout(() => {
-        setError("Cannot login with credentials");
-        setLoading(false);
-      }, 1000);
-    }
-  };
-
   const passingData = async (resp) => {
-    console.log("apa = " + JSON.stringify(resp));
     return <User name="Chris" />;
   };
 
@@ -81,6 +58,7 @@ const Login = (props) => {
           const total = JSON.stringify(response.data.totalPages);
           setPassState(true);
           Cookies.setItem("jwtCookie", response.data.data.jwtCookie.value);
+          localStorage.setItem("user", JSON.stringify(response.data));
           navigate("/admin/masternews");
           passingData(response);
         }
@@ -201,7 +179,6 @@ const Login = (props) => {
                 onClick={login}
               >
                 {loading ? <Spinner size="sm" color="light" /> : "Sign in"}
-                Login
               </Button>
             </div>
           </Form>

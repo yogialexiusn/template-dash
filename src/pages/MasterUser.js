@@ -7,14 +7,7 @@ import { Link } from "react-router-dom";
 import Icon from "../components/icon/Icon";
 import ReactPaginate from "react-paginate";
 import { Label, Input, Row, Col } from "reactstrap";
-import {
-  Block,
-  BlockHead,
-  BlockHeadContent,
-  BlockTitle,
-  BlockDes,
-  PreviewCard,
-} from "../components/Component";
+import { Table, Block, BlockHead, BlockHeadContent, BlockTitle, BlockDes, PreviewCard } from "../components/Component";
 import { MASTER_USER_LIST, MASTER_USER_ADD } from "../config/Constants";
 
 function MasterUser() {
@@ -25,8 +18,11 @@ function MasterUser() {
   const [totalData, setTotalData] = useState(0);
   const [dataNotFound, setDataNotFound] = useState(false);
 
-  const [code, setCode] = useState("");
-  const [name, setName] = useState("");
+  const [firstname, setFirstname] = useState("");
+  const [lastname, setLastname] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [roleIds, setRoleids] = useState([1]);
   const [size, setSize] = useState("10");
   const [statusCode, setStatusCode] = useState([1]);
   const [page, setPage] = useState(0);
@@ -84,6 +80,8 @@ function MasterUser() {
 
   const handleCancelClick = () => {
     if (isEditing) {
+      const updatedData = responseData.filter((rowData) => !rowData.isSelected);
+      setResponseData(updatedData.filter((item) => item.id !== null)); // delete data that contain id = null
       setIsEditing(false);
     }
   };
@@ -125,13 +123,16 @@ function MasterUser() {
 
   const handleFilterButton = useCallback(async () => {
     let requestBody = {
-      code: code,
-      name: name,
-      size: size,
+      firstname: firstname,
+      lastname: lastname,
+      username: username,
+      email: email,
+      roleIds: roleIds,
       statusCodes: statusCode,
       page: page,
       sortField: sortField,
       sortOrder: sortOrder,
+      size: size,
     };
 
     try {
@@ -154,7 +155,7 @@ function MasterUser() {
       } else {
       }
     }
-  }, [responseData, code, name, size, statusCode, page, sortField, sortOrder]);
+  }, [responseData, firstname, lastname, username, email, roleIds, size, statusCode, page, sortField, sortOrder]);
 
   const handleEdit = async (modifiedInput) => {
     for (const obj of modifiedInput) {
@@ -181,7 +182,7 @@ function MasterUser() {
         }
       }
 
-      // Add a delay of 50ms before the next iteration
+      // Add a delay of 1000ms before the next iteration
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
     window.location.reload();
@@ -217,7 +218,7 @@ function MasterUser() {
           <BlockHeadContent>
             <BlockTitle>Master User</BlockTitle>
             <BlockDes>
-              <p>Master User is used to created new Job for applicant.</p>
+              <p>Master User is used to created new User.</p>
             </BlockDes>
           </BlockHeadContent>
         </BlockHead>
@@ -227,29 +228,82 @@ function MasterUser() {
             <Col sm="6">
               <div className="form-group">
                 <Label htmlFor="default-5" className="form-label">
-                  Name
+                  Firstname
                 </Label>
                 <input
                   type="text"
                   className="form-control"
-                  id="name"
+                  id="firstname"
                   placeholder="Optional"
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setFirstname(e.target.value)}
                 />
               </div>
             </Col>
             <Col sm="6">
               <div className="form-group">
                 <Label htmlFor="default-5" className="form-label">
-                  Code
+                  Lastname
                 </Label>
                 <input
                   type="text"
                   className="form-control"
-                  id="code"
+                  id="lastname"
                   placeholder="Optional"
-                  onChange={(e) => setCode(e.target.value)}
+                  onChange={(e) => setLastname(e.target.value)}
                 />
+              </div>
+            </Col>
+            <Col sm="6">
+              <div className="form-group">
+                <Label htmlFor="default-5" className="form-label">
+                  Username
+                </Label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="username"
+                  placeholder="Optional"
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+            </Col>
+            <Col sm="6">
+              <div className="form-group">
+                <Label htmlFor="default-5" className="form-label">
+                  Email
+                </Label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="lastname"
+                  placeholder="Optional"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+            </Col>
+            <Col sm="6">
+              <div className="form-group">
+                <label htmlFor="default-5" className="form-label">
+                  Roles Ids
+                </label>
+                <div class="form-control-select">
+                  {" "}
+                  <select
+                    name="DataTables_Table_0_length"
+                    aria-controls="DataTables_Table_0"
+                    class="custom-select custom-select-sm form-control form-control-sm"
+                    id="rolesIds"
+                    value={roleIds}
+                    onChange={(e) => {
+                      const selectedValues = e.target.value.split(",").map((value) => parseInt(value));
+                      setRoleids(selectedValues);
+                    }}
+                  >
+                    <option value={1}>Active</option>
+                    <option value={0}>Not Active</option>
+                    <option value="0,1">All</option>
+                  </select>{" "}
+                </div>
               </div>
             </Col>
             <Col sm="6">
@@ -265,10 +319,14 @@ function MasterUser() {
                     class="custom-select custom-select-sm form-control form-control-sm"
                     id="statusCode"
                     value={statusCode}
-                    onChange={(e) => setStatusCode([parseInt(e.target.value)])}
+                    onChange={(e) => {
+                      const selectedValues = e.target.value.split(",").map((value) => parseInt(value));
+                      setStatusCode(selectedValues);
+                    }}
                   >
                     <option value={1}>Active</option>
                     <option value={0}>Not Active</option>
+                    <option value="0,1">All</option>
                   </select>{" "}
                 </div>
               </div>
@@ -284,51 +342,90 @@ function MasterUser() {
             </Col>
           </Row>
           <PreviewCard className="mt-5 border">
-            {
-            dataNotFound ? 
-            null
-            : 
-            <div class="row gy-4">
-              <div class="col-md-2 col-sm-6">
-                <label className="text-black">Total Data = {totalData}</label>
-              </div>
-              
-              <div class="col-md-3 col-lg-7">
-                {isEditing ? (
-                  <div class="row gy-1">
-                    <button class="btn btn-outline-dark col-md-3 col-sm-1 me-1" onClick={handleSaveClick}><span>Save</span><em class="icon ni ni-save"></em></button>
-                    <button class="btn btn-outline-dark col-md-3 col-sm-1 me-1" onClick={handleDeleteRowClick}><span>Delete</span><em class="icon ni ni-trash-alt"></em></button>
-                    <button class="btn btn-outline-dark col-md-3 col-sm-1 me-1" onClick={handleAddRowClick}><span>Add Row</span><em class="icon ni ni-grid-add-c"></em></button>
-                    <button class="btn btn-outline-dark col-md-2 col-sm-1 me-1" onClick={handleCancelClick}><span>Cancel</span><em class="icon ni ni-curve-down-left"></em></button>
+            {dataNotFound ? null : (
+              <div class="nk-block-between">
+                <div class="nk-block-head-content">
+                  <div class="nk-block-des text-soft">
+                    <p>The table contains {totalData} records.</p>
                   </div>
-                ) : (
-                  // <button onClick={handleEditClick}>Edit</button>
-                  <a  class="btn btn-secondary" data-bs-toggle="dropdown" onClick={handleEditClick}><span>Edit</span><em class="icon ni ni-curve-down-right"></em></a>
-                )}
-              </div>
-              <div class="d-flex flex-row-reverse">
-                <label>
-                  {/* <div class="col-sm-1 me-1">Show</div> */}
-                  <div class="form-control-select">
-                    {" "}
-                    <select
-                      name="DataTables_Table_0_length"
-                      aria-controls="DataTables_Table_0"
-                      class="custom-select custom-select-sm form-control form-control-sm"
-                      id="paginationSize"
-                      value={size}
-                      onChange={(e) => handleSize(e.target.value)}
-                    >
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="30">30</option>
-                      <option value="50">50</option>
-                    </select>{" "}
+                </div>
+                <div class="nk-block-head-content">
+                  <div class="toggle-wrap nk-block-tools-toggle">
+                    <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu">
+                      <em class="icon ni ni-menu-alt-r"></em>
+                    </a>
+                    <div class="toggle-expand-content" data-content="pageMenu">
+                      <ul class="nk-block-tools g-3">
+                        <li>
+                          <div class="drodown">
+                            {isEditing ? (
+                              <div class="nk-block-between">
+                                <button
+                                  class="btn btn-outline-dark nk-block-head-content me-2"
+                                  onClick={handleSaveClick}
+                                >
+                                  <span>Save</span>
+                                  <em class="icon ni ni-save"></em>
+                                </button>
+                                <button
+                                  class="btn btn-outline-dark nk-block-head-content me-2"
+                                  onClick={handleDeleteRowClick}
+                                >
+                                  <span>Delete</span>
+                                  <em class="icon ni ni-trash-alt"></em>
+                                </button>
+                                <button
+                                  class="btn btn-outline-dark nk-block-head-content me-2"
+                                  onClick={handleAddRowClick}
+                                >
+                                  <span>Add Row</span>
+                                  <em class="icon ni ni-grid-add-c"></em>
+                                </button>
+                                <button
+                                  class="btn btn-secondary nk-block-head-content me-2"
+                                  onClick={handleCancelClick}
+                                >
+                                  <span>Cancel</span>
+                                  <em class="icon ni ni-curve-down-right"></em>
+                                </button>
+                              </div>
+                            ) : (
+                              <></>
+                              // <a  class="btn btn-secondary" data-bs-toggle="dropdown" onClick={handleEditClick}><span>Edit</span><em class="icon ni ni-curve-down-left"></em></a>
+                            )}
+                          </div>
+                        </li>
+                        <li class="nk-block-tools-opt d-none d-sm-block">
+                          <label>
+                            <div class="form-control-select">
+                              {" "}
+                              <select
+                                name="DataTables_Table_0_length"
+                                aria-controls="DataTables_Table_0"
+                                class="custom-select custom-select-sm form-control form-control-sm"
+                                id="paginationSize"
+                                value={size}
+                                onChange={(e) => handleSize(e.target.value)}
+                              >
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                              </select>{" "}
+                            </div>
+                          </label>
+                        </li>
+                        <li class="nk-block-tools-opt d-block d-sm-none">
+                          <a href="#" class="btn btn-icon btn-primary">
+                            <em class="icon ni ni-plus"></em>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </label>
+                </div>
               </div>
-            </div>
-            }
+            )}
 
             <br></br>
 
@@ -353,12 +450,60 @@ function MasterUser() {
                         </Link>
                       </th>
                       <th className="tb-odr-info">
-                        NAME
+                        FIRSTNAME
                         <Link
                           to="#"
                           onClick={(e) => {
                             e.preventDefault();
-                            handleSorting("name");
+                            handleSorting("firstname");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                      <th className="tb-odr-info">
+                        LASTNAME
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("lastname");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                      <th className="tb-odr-info">
+                        USERNAME
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("username");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                      <th className="tb-odr-info">
+                        EMAIL
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("email");
+                          }}
+                        >
+                          <Icon name="sort" />
+                        </Link>
+                      </th>
+                      <th className="tb-odr-info">
+                        ROLE ID
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleSorting("roleId");
                           }}
                         >
                           <Icon name="sort" />
@@ -491,11 +636,58 @@ function MasterUser() {
                           {rowData.isNew || isEditing ? (
                             <input
                               type="text"
-                              value={rowData.name}
-                              onChange={(e) => handleInputChange(e, rowIndex, "name")}
+                              value={rowData.firstname}
+                              onChange={(e) => handleInputChange(e, rowIndex, "firstname")}
                             />
                           ) : (
-                            rowData.name
+                            rowData.firstname
+                          )}
+                        </td>
+                        <td className="tb-odr-info">
+                          {rowData.isNew || isEditing ? (
+                            <input
+                              type="text"
+                              value={rowData.lastname}
+                              onChange={(e) => handleInputChange(e, rowIndex, "lastname")}
+                            />
+                          ) : (
+                            rowData.lastname
+                          )}
+                        </td>
+                        <td className="tb-odr-info">
+                          {rowData.isNew || isEditing ? (
+                            <input
+                              type="text"
+                              value={rowData.username}
+                              onChange={(e) => handleInputChange(e, rowIndex, "username")}
+                            />
+                          ) : (
+                            rowData.username
+                          )}
+                        </td>
+                        <td className="tb-odr-info">
+                          {rowData.isNew || isEditing ? (
+                            <input
+                              type="text"
+                              value={rowData.email}
+                              onChange={(e) => handleInputChange(e, rowIndex, "email")}
+                            />
+                          ) : (
+                            rowData.email
+                          )}
+                        </td>
+                        <td className="tb-odr-info">
+                          {rowData.isNew || isEditing ? (
+                            <select
+                              id="statusDropdown"
+                              value={rowData.roleId}
+                              onChange={(e) => handleInputChange(e, rowIndex, "roleId")}
+                            >
+                              <option value={1}>Active</option>
+                              <option value={0}>Not Active</option>
+                            </select>
+                          ) : (
+                            <td className="tb-odr-info">{rowData.roleId === 1 ? "Active" : "Not Active"}</td>
                           )}
                         </td>
                         <td className="tb-odr-info">

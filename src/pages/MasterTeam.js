@@ -7,14 +7,7 @@ import { Link } from "react-router-dom";
 import Icon from "../components/icon/Icon";
 import ReactPaginate from "react-paginate";
 import { Label, Input, Row, Col } from "reactstrap";
-import {
-  Block,
-  BlockHead,
-  BlockHeadContent,
-  BlockTitle,
-  BlockDes,
-  PreviewCard,
-} from "../components/Component";
+import { Block, BlockHead, BlockHeadContent, BlockTitle, BlockDes, PreviewCard } from "../components/Component";
 import { MASTER_TEAM_LIST, MASTER_TEAM_ADD } from "../config/Constants";
 
 function MasterTeam() {
@@ -84,6 +77,8 @@ function MasterTeam() {
 
   const handleCancelClick = () => {
     if (isEditing) {
+      const updatedData = responseData.filter((rowData) => !rowData.isSelected);
+      setResponseData(updatedData.filter((item) => item.id !== null)); // delete data that contain id = null
       setIsEditing(false);
     }
   };
@@ -180,7 +175,7 @@ function MasterTeam() {
         }
       }
 
-      // Add a delay of 50ms before the next iteration
+      // Add a delay of 1000ms before the next iteration
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
     window.location.reload();
@@ -216,7 +211,7 @@ function MasterTeam() {
           <BlockHeadContent>
             <BlockTitle>Master Team</BlockTitle>
             <BlockDes>
-              <p>Master Team is used to created new Job for applicant.</p>
+              <p>Master Team is used to created new Master Team.</p>
             </BlockDes>
           </BlockHeadContent>
         </BlockHead>
@@ -264,10 +259,14 @@ function MasterTeam() {
                     class="custom-select custom-select-sm form-control form-control-sm"
                     id="statusCode"
                     value={statusCode}
-                    onChange={(e) => setStatusCode([parseInt(e.target.value)])}
+                    onChange={(e) => {
+                      const selectedValues = e.target.value.split(",").map((value) => parseInt(value));
+                      setStatusCode(selectedValues);
+                    }}
                   >
                     <option value={1}>Active</option>
                     <option value={0}>Not Active</option>
+                    <option value="0,1">All</option>
                   </select>{" "}
                 </div>
               </div>
@@ -283,51 +282,92 @@ function MasterTeam() {
             </Col>
           </Row>
           <PreviewCard className="mt-5 border">
-            {
-            dataNotFound ? 
-            null
-            : 
-            <div class="row gy-4">
-              <div class="col-md-2 col-sm-6">
-                <label className="text-black">Total Data = {totalData}</label>
-              </div>
-              
-              <div class="col-md-3 col-lg-7">
-                {isEditing ? (
-                  <div class="row gy-1">
-                    <button class="btn btn-outline-dark col-md-3 col-sm-1 me-1" onClick={handleSaveClick}><span>Save</span><em class="icon ni ni-save"></em></button>
-                    <button class="btn btn-outline-dark col-md-3 col-sm-1 me-1" onClick={handleDeleteRowClick}><span>Delete</span><em class="icon ni ni-trash-alt"></em></button>
-                    <button class="btn btn-outline-dark col-md-3 col-sm-1 me-1" onClick={handleAddRowClick}><span>Add Row</span><em class="icon ni ni-grid-add-c"></em></button>
-                    <button class="btn btn-outline-dark col-md-2 col-sm-1 me-1" onClick={handleCancelClick}><span>Cancel</span><em class="icon ni ni-curve-down-left"></em></button>
+            {dataNotFound ? null : (
+              <div class="nk-block-between">
+                <div class="nk-block-head-content">
+                  <div class="nk-block-des text-soft">
+                    <p>The table contains {totalData} records.</p>
                   </div>
-                ) : (
-                  // <button onClick={handleEditClick}>Edit</button>
-                  <a  class="btn btn-secondary" data-bs-toggle="dropdown" onClick={handleEditClick}><span>Edit</span><em class="icon ni ni-curve-down-right"></em></a>
-                )}
-              </div>
-              <div class="d-flex flex-row-reverse">
-                <label>
-                  {/* <div class="col-sm-1 me-1">Show</div> */}
-                  <div class="form-control-select">
-                    {" "}
-                    <select
-                      name="DataTables_Table_0_length"
-                      aria-controls="DataTables_Table_0"
-                      class="custom-select custom-select-sm form-control form-control-sm"
-                      id="paginationSize"
-                      value={size}
-                      onChange={(e) => handleSize(e.target.value)}
-                    >
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="30">30</option>
-                      <option value="50">50</option>
-                    </select>{" "}
+                </div>
+                <div class="nk-block-head-content">
+                  <div class="toggle-wrap nk-block-tools-toggle">
+                    <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu">
+                      <em class="icon ni ni-menu-alt-r"></em>
+                    </a>
+                    <div class="toggle-expand-content" data-content="pageMenu">
+                      <ul class="nk-block-tools g-3">
+                        <li>
+                          <div class="drodown">
+                            {isEditing ? (
+                              <div class="nk-block-between">
+                                <button
+                                  class="btn btn-outline-dark nk-block-head-content me-2"
+                                  onClick={handleSaveClick}
+                                >
+                                  <span>Save</span>
+                                  <em class="icon ni ni-save"></em>
+                                </button>
+                                <button
+                                  class="btn btn-outline-dark nk-block-head-content me-2"
+                                  onClick={handleDeleteRowClick}
+                                >
+                                  <span>Delete</span>
+                                  <em class="icon ni ni-trash-alt"></em>
+                                </button>
+                                <button
+                                  class="btn btn-outline-dark nk-block-head-content me-2"
+                                  onClick={handleAddRowClick}
+                                >
+                                  <span>Add Row</span>
+                                  <em class="icon ni ni-grid-add-c"></em>
+                                </button>
+                                <button
+                                  class="btn btn-secondary nk-block-head-content me-2"
+                                  onClick={handleCancelClick}
+                                >
+                                  <span>Cancel</span>
+                                  <em class="icon ni ni-curve-down-right"></em>
+                                </button>
+                              </div>
+                            ) : (
+                              <a class="btn btn-secondary" data-bs-toggle="dropdown" onClick={handleEditClick}>
+                                <span>Edit</span>
+                                <em class="icon ni ni-curve-down-left"></em>
+                              </a>
+                            )}
+                          </div>
+                        </li>
+                        <li class="nk-block-tools-opt d-none d-sm-block">
+                          <label>
+                            <div class="form-control-select">
+                              {" "}
+                              <select
+                                name="DataTables_Table_0_length"
+                                aria-controls="DataTables_Table_0"
+                                class="custom-select custom-select-sm form-control form-control-sm"
+                                id="paginationSize"
+                                value={size}
+                                onChange={(e) => handleSize(e.target.value)}
+                              >
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                              </select>{" "}
+                            </div>
+                          </label>
+                        </li>
+                        <li class="nk-block-tools-opt d-block d-sm-none">
+                          <a href="#" class="btn btn-icon btn-primary">
+                            <em class="icon ni ni-plus"></em>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
-                </label>
+                </div>
               </div>
-            </div>
-            }
+            )}
 
             <br></br>
 

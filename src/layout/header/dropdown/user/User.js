@@ -4,21 +4,18 @@ import { Icon } from "../../../../components/Component";
 import { LinkList, LinkItem } from "../../../../components/links/Links";
 import UserAvatar from "../../../../components/user/UserAvatar";
 import Cookies from "js-cookies/src/cookies";
-import Login from "../../../../pages/auth/Login";
-import { useLocation } from "react-router";
 
-const User = (responseData) => {
-  const location = useLocation();
-  const userName = responseData?.userName; // Replace with the actual data key you want to access
-
-  const data = location.state?.name;
+const User = () => {
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
-
-  const cek = () => {
-    console.log("cookeis" + Cookies.getItem("jwtCookie"));
-  };
-
+  const userDataString = localStorage.getItem("user");
+  const userData = JSON.parse(userDataString);
+  const firstName = userData.data.userProfile.firstname;
+  const lastName = userData.data.userProfile.lastname;
+  const fullName = firstName + " " + lastName;
+  const userName = userData.data.userProfile.username;
+  const email = userData.data.userProfile.email;
+  const logoName = firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase();
   const handleSignout = () => {
     Cookies.removeItem("jwtCookie");
   };
@@ -35,8 +32,8 @@ const User = (responseData) => {
         <div className="user-toggle">
           <UserAvatar icon="user-alt" className="sm" />
           <div className="user-info d-none d-md-block">
-            <div className="user-status">Administrator</div>
-            <div className="user-name dropdown-indicator">bu Bin Ishtiyaddkd</div>
+            <div className="user-status">Administrator Pages</div>
+            <div className="user-name dropdown-indicator">{fullName}</div>
           </div>
         </div>
       </DropdownToggle>
@@ -44,11 +41,11 @@ const User = (responseData) => {
         <div className="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
           <div className="user-card sm">
             <div className="user-avatar">
-              <span>AB</span>
+              <span>{logoName}</span>
             </div>
             <div className="user-info">
-              <span className="lead-text">Abu Bin Ishtiyaddkd</span>
-              <span className="sub-text">info@softnio.com</span>
+              <span className="lead-text">{userName}</span>
+              <span className="sub-text">{email}</span>
             </div>
           </div>
         </div>
@@ -60,9 +57,6 @@ const User = (responseData) => {
             <LinkItem link="/user-profile-setting" icon="setting-alt" onClick={toggle}>
               Account Setting
             </LinkItem>
-            {/* <LinkItem link="/user-profile-activity" icon="activity-alt" onClick={toggle}>
-              Login Activity
-            </LinkItem> */}
           </LinkList>
         </div>
         <div className="dropdown-inner">

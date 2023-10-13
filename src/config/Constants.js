@@ -15,3 +15,12 @@ export const MASTER_NEWS_ADD = "/api/v1/mst_news/addOrUpdate";
 export const MASTER_PROGRAM_ADD = "/api/v1/mst_program/addOrUpdate";
 export const MASTER_MENU_ADD = "/api/v1/mst_menu/addOrUpdate";
 export const MASTER_TEAM_ADD = "/api/v1/mst_team/addOrUpdate";
+
+export const TRANSACTION_CAREERHEADER_LIST = "/api/v1/trc_career_header/list";
+export const TRANSACTION_NEWS_LIST = "/api/v1/trc_news/byparams";
+
+export const TRANSACTION_CAREERHEADER_ADD = "/api/v1/trc_career_header/addOrUpdate";
+export const TRANSACTION_CAREERDETAIL_ADD = "/api/v1/mst_team/addOrUpdate";
+export const TRANSACTION_NEWS_ADD = "/api/v1/trc_news/addOrUpdate";
+
+export const CHANGE_PASSWORD = "/api/v1/auth/change_password";

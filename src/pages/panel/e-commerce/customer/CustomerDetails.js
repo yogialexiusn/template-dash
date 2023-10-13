@@ -192,7 +192,9 @@ const CustomerDetails = ({ match }) => {
                     <Block>
                       <BlockHead>
                         <BlockTitle tag="h5">Personal Information</BlockTitle>
-                        <p>Basic info, like your name and address, that you use on Lotte Data Communication Indonesia</p>
+                        <p>
+                          Basic info, like your name and address, that you use on Lotte Data Communication Indonesia
+                        </p>
                       </BlockHead>
                       <div className="profile-ud-list">
                         <div className="profile-ud-item">
