@@ -6,9 +6,13 @@ import { axiosInstance } from "../config/AxiosInstance";
 import { Link } from "react-router-dom";
 import Icon from "../components/icon/Icon";
 import ReactPaginate from "react-paginate";
-import { Label, Input, Row, Col } from "reactstrap";
+import { Label, Input, Row, Col, Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,} from "reactstrap";
 import { Block, BlockHead, BlockHeadContent, BlockTitle, BlockDes, PreviewCard } from "../components/Component";
 import { TRANSACTION_CAREERHEADER_LIST, TRANSACTION_CAREERHEADER_ADD } from "../config/Constants";
+import { QuillComponent } from "../components/partials/rich-editor/QuillComponent";
 
 function TrcCareer() {
   const [responseData, setResponseData] = useState([]);
@@ -17,6 +21,7 @@ function TrcCareer() {
   const [totalPages, setTotalPages] = useState(0);
   const [totalData, setTotalData] = useState(0);
   const [dataNotFound, setDataNotFound] = useState(false);
+  const [modalForm, setModalForm] = useState(false);
 
   const [name, setName] = useState("");
   const [size, setSize] = useState("10");
@@ -39,6 +44,8 @@ function TrcCareer() {
     updateDate: "",
   });
 
+  const toggleForm = () => setModalForm(!modalForm);
+
   const handleEditClick = () => {
     setIsEditing(true);
   };
@@ -56,9 +63,10 @@ function TrcCareer() {
       alert("Tidak dapat menyimpan baris baru dengan nilai kosong.");
       return; // Hentikan penyimpanan jika ada nilai kosong
     } else {
+      console.log(JSON.stringify(modifiedInput))
       handleEdit(modifiedInput);
       setIsEditing(false);
-      setResponseData(updatedData);
+      setResponseData(modifiedInput);
       handleFilterButton();
     }
   };
@@ -102,6 +110,19 @@ function TrcCareer() {
     setPage(data.selected, () => {
       handleFilterButton();
     });
+  };
+
+  const handleRichEditor = (e, rowIndex, colName) => {
+    const { value } = e.target;
+    const updatedData = [...responseData];
+    const updatedRow = updatedData[rowIndex];
+
+    if (updatedRow.isNew) {
+      updatedRow[colName] = value;
+    } else {
+      updatedData[rowIndex] = { ...updatedRow, [colName]: value };
+    }
+    setResponseData(updatedData);
   };
 
   const handleInputChange = (e, rowIndex, colName) => {
@@ -237,6 +258,124 @@ function TrcCareer() {
       return value;
     };
 
+    return <td className="tb-odr-info">{renderContent()}</td>;
+  }
+
+  function ModalWithForm({ value, isEditing, isNew}) {
+    const renderContent = () => {
+      if (isNew || isEditing) {
+        <td className="tb-odr-info">
+        <Button color="primary" onClick={toggleForm}>
+          Modal With Form
+        </Button>
+          <Modal isOpen={modalForm} toggle={toggleForm}>
+            <ModalHeader
+              toggle={toggleForm}
+              close={
+                <button className="close" onClick={toggleForm}>
+                  <Icon name="cross" />
+                </button>
+              }
+            >
+              Customer Info
+            </ModalHeader>
+            <ModalBody>
+              <form>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="full-name">
+                    Full Name
+                  </label>
+                  <div className="form-control-wrap">
+                    <input type="text" className="form-control" id="full-name" />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="email">
+                    Email
+                  </label>
+                  <div className="form-control-wrap">
+                    <input type="text" className="form-control" id="email" />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="phone-no">
+                    Phone No
+                  </label>
+                  <div className="form-control-wrap">
+                    <input type="number" className="form-control" id="phone-no" defaultValue="0880" />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Communication</label>
+                  <ul className="custom-control-group g-3 align-center">
+                    <li>
+                      <div className="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          className="form-control custom-control-input"
+                          id="fv-com-email"
+                          name="com"
+                          value="email"
+                        />
+                        <label className="custom-control-label" htmlFor="fv-com-email">
+                          Email
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          className="form-control custom-control-input"
+                          id="fv-com-sms"
+                          name="com"
+                          value="sms"
+                        />
+                        <label className="custom-control-label" htmlFor="fv-com-sms">
+                          SMS
+                        </label>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          className="custom-control-input"
+                          id="fv-com-phone"
+                          name="com"
+                          value="phone"
+                        />
+                        <label className="custom-control-label" htmlFor="fv-com-phone">
+                          {" "}
+                          Phone{" "}
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div className="form-group">
+                  <label className="form-label" htmlFor="amount">
+                    Amount
+                  </label>
+                  <div className="form-control-wrap">
+                    <input type="number" className="form-control" id="amount" />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <Button color="primary" type="submit" onClick={(ev) => ev.preventDefault()} size="lg">
+                    Save Information
+                  </Button>
+                </div>
+              </form>
+            </ModalBody>
+            <ModalFooter className="bg-light">
+              <span className="sub-text">Modal Footer Text</span>
+            </ModalFooter>
+          </Modal>
+        </td>
+      }
+      return value;
+    };
     return <td className="tb-odr-info">{renderContent()}</td>;
   }
 
@@ -496,14 +635,18 @@ function TrcCareer() {
                               />
                             ) : null}
                           </td>
-                          <EditableCell
-                            value={rowData.id}
-                            isEditing={isEditing}
-                            isNew={rowData.isNew}
-                            fieldName="id"
-                            handleInputChange={handleInputChange}
-                            rowIndex={rowIndex}
-                          />
+                          <td className="tb-odr-info">
+                            {rowData.isNew || isEditing ? (
+                              <input
+                                disabled={rowData.isNew}
+                                type="text"
+                                value={rowData.id}
+                                onChange={(e) => handleInputChange(e, rowIndex, "id")}
+                              />
+                            ) : (
+                              rowData.id
+                            )}
+                          </td>
                           <EditableCell
                             value={rowData.careerCode}
                             isEditing={isEditing}
@@ -550,6 +693,22 @@ function TrcCareer() {
                             handleInputChange={handleInputChange}
                             rowIndex={rowIndex}
                           />
+                          {/* <ModalWithForm 
+                            value={rowData.adress}
+                            isEditing={isEditing}
+                            isNew={rowData.isNew}
+                            /> */}
+                          {/* <td className="tb-odr-info">
+                          {rowData.isNew || isEditing ? (
+                            <input
+                              type="text"
+                              value={rowData.address}
+                              onChange={(e) => handleInputChange(e, rowIndex, "address")}
+                            />
+                          ) : (
+                            rowData.address
+                          )}
+                        </td> */}
                           <EditableCell
                             value={rowData.district}
                             isEditing={isEditing}
