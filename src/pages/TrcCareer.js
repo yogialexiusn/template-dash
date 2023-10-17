@@ -34,8 +34,6 @@ function TrcCareer() {
   const [quillJobDescriptionPlain, setQuillJobDescriptionPlain] = useState("");
   const [quillContent, setQuillContent] = useState(""); // State to store Quill content
 
-
-
   const [isChecklistDisable, setChecklistDisable] = useState(true);
   const [newRow, setNewRow] = useState({
     id: "",
@@ -50,30 +48,31 @@ function TrcCareer() {
     updateDate: "",
   });
 
-  const toggleForm = () => {setModalForm(!modalForm);}
+  const toggleForm = () => {
+    setModalForm(!modalForm);
+  };
 
-  const updateData = (text,rowIndex) => {
-    alert("update")
-    console.log("yogi text = " )
-    console.log("yogi rowIndex = " + JSON.stringify(rowIndex))
+  const updateData = (text, rowIndex) => {
+    alert("update");
+    console.log("yogi text = ");
+    console.log("yogi rowIndex = " + JSON.stringify(rowIndex));
     if (modalForm) {
       setModalForm(false);
     }
-    console.log("yogi responseData = " + JSON.stringify(responseData))
+    console.log("yogi responseData = " + JSON.stringify(responseData));
     const updatedData = [...responseData]; // Create a copy of the responseData
-    console.log("yogi updatedData = " + JSON.stringify(updatedData))
-    updatedData[rowIndex].address = 'Nigeria'; // Update the address in the copied data
+    console.log("yogi updatedData = " + JSON.stringify(updatedData));
+    updatedData[rowIndex].address = "Nigeria"; // Update the address in the copied data
     // updatedData[rowIndex].country = 'Mars'; // Update the country in the copied data
     setResponseData(updatedData); // Update the state with the new data
   };
-
 
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
   const handleSaveQuill = () => {
-    setQuillContent("cece")
+    setQuillContent("cece");
     // Handle saving the Quill content (e.g., send it to the server)
     if (modalForm) {
       setModalForm(false);
@@ -301,8 +300,8 @@ function TrcCareer() {
   }
 
   function ModalWithForm({ value, rowIndex }) {
-    console.log("ModalWithForm value =" + value)
-    console.log("ModalWithForm rowIndex =" + rowIndex)
+    console.log("ModalWithForm value =" + value);
+    console.log("ModalWithForm rowIndex =" + rowIndex);
     // setQuillContent(value);
     return (
       <div>
@@ -310,7 +309,7 @@ function TrcCareer() {
           {value}
         </button>
         <form>
-          <QuillComponent value= {value} rowIndex={rowIndex}/>
+          <QuillComponent value={value} rowIndex={rowIndex} />
         </form>
         <Modal isOpen={modalForm} size="lg">
           <ModalHeader
@@ -325,7 +324,7 @@ function TrcCareer() {
           </ModalHeader>
           <ModalBody>
             <form>
-            <QuillComponent value= {value} rowIndex={rowIndex}/>
+              <QuillComponent value={value} rowIndex={rowIndex} />
             </form>
           </ModalBody>
         </Modal>
@@ -333,38 +332,36 @@ function TrcCareer() {
     );
   }
 
-  const QuillComponent = ({value, rowIndex }) => {
-    console.log("QuillComponent rowIndex " + JSON.stringify(rowIndex))
-    console.log("QuillComponent value " + JSON.stringify(value))
-    const [ nilai, setNilai ] = useState("");
+  const QuillComponent = ({ value, rowIndex }) => {
+    console.log("QuillComponent rowIndex " + JSON.stringify(rowIndex));
+    console.log("QuillComponent value " + JSON.stringify(value));
+    const [nilai, setNilai] = useState("");
     const { quill, quillRef } = useQuill();
-  
+
     React.useEffect(() => {
       if (quill) {
         quill.clipboard.dangerouslyPasteHTML(value);
-        setNilai(value)
-        quill.on('text-change', (delta, oldDelta, source) => {
-          console.log('Text change!');
+        setNilai(value);
+        quill.on("text-change", (delta, oldDelta, source) => {
+          console.log("Text change!");
           console.log(quill.getText()); // Get text only
           console.log(quill.getContents()); // Get delta contents
           console.log(quill.root.innerHTML); // Get innerHTML using quill
           console.log(quillRef.current.firstChild.innerHTML); // Get innerHTML using quillRef
-          setNilai(quill.getText())
+          setNilai(quill.getText());
         });
       }
     }, [quill, value]);
-  
+
     return (
       <div style={{ width: "100%", height: "100%" }}>
         <div ref={quillRef} />
-        <button className="bg-white" onClick={() => updateData( quill.getText(), rowIndex)}>
+        <button className="bg-white" onClick={() => updateData(quill.getText(), rowIndex)}>
           Save
         </button>
       </div>
-      
     );
   };
-  
 
   useEffect(() => {
     handleFilterButton();
