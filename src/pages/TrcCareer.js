@@ -6,13 +6,11 @@ import { axiosInstance } from "../config/AxiosInstance";
 import { Link } from "react-router-dom";
 import Icon from "../components/icon/Icon";
 import ReactPaginate from "react-paginate";
-import { Label, Input, Row, Col, Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,} from "reactstrap";
+import { Label, Input, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { Block, BlockHead, BlockHeadContent, BlockTitle, BlockDes, PreviewCard } from "../components/Component";
 import { TRANSACTION_CAREERHEADER_LIST, TRANSACTION_CAREERHEADER_ADD } from "../config/Constants";
-import { QuillComponent } from "../components/partials/rich-editor/QuillComponent";
+import { useQuill } from "react-quilljs";
+// import { QuillComponent } from "../components/partials/rich-editor/QuillComponent";
 
 function TrcCareer() {
   const [responseData, setResponseData] = useState([]);
@@ -30,6 +28,14 @@ function TrcCareer() {
   const [sortField, setSortField] = useState("update_date");
   const [sortOrder, setSortOrder] = useState("asc");
 
+  // const { quill, quillRef } = useQuill();
+  const [quillAddress, setQuillAdress] = useState("cacad");
+  const [quillJobDescription, setQuillJobDescription] = useState("");
+  const [quillJobDescriptionPlain, setQuillJobDescriptionPlain] = useState("");
+  const [quillContent, setQuillContent] = useState(""); // State to store Quill content
+
+
+
   const [isChecklistDisable, setChecklistDisable] = useState(true);
   const [newRow, setNewRow] = useState({
     id: "",
@@ -44,29 +50,60 @@ function TrcCareer() {
     updateDate: "",
   });
 
-  const toggleForm = () => setModalForm(!modalForm);
+  const toggleForm = () => {setModalForm(!modalForm);}
+
+  const updateData = (text,rowIndex) => {
+    alert("update")
+    console.log("yogi text = " )
+    console.log("yogi rowIndex = " + JSON.stringify(rowIndex))
+    if (modalForm) {
+      setModalForm(false);
+    }
+    console.log("yogi responseData = " + JSON.stringify(responseData))
+    const updatedData = [...responseData]; // Create a copy of the responseData
+    console.log("yogi updatedData = " + JSON.stringify(updatedData))
+    updatedData[rowIndex].address = 'Nigeria'; // Update the address in the copied data
+    // updatedData[rowIndex].country = 'Mars'; // Update the country in the copied data
+    setResponseData(updatedData); // Update the state with the new data
+  };
+
 
   const handleEditClick = () => {
     setIsEditing(true);
   };
 
+  const handleSaveQuill = () => {
+    setQuillContent("cece")
+    // Handle saving the Quill content (e.g., send it to the server)
+    if (modalForm) {
+      setModalForm(false);
+    }
+    console.log("Saving Quill content:", quillContent);
+  };
+
   const handleSaveClick = (e) => {
+    e.preventDefault();
+    console.log("cek");
     // Setel atribut isNew menjadi false untuk baris baru yang sudah disimpan
     const updatedData = responseData.map((rowData) => (rowData.isNew ? { ...rowData, isNew: false } : rowData));
+    console.log("cek1 = " + JSON.stringify(updatedData));
     const modifiedInput = updatedData.filter((itemB) => {
       const matchingItemA = editedInput.find((itemA) => itemA.id === itemB.id);
-      return !matchingItemA || matchingItemA.name !== itemB.name || matchingItemA.statusCode !== itemB.statusCode;
+      return (
+        !matchingItemA || matchingItemA.careerCode !== itemB.careerCode || matchingItemA.teamCode !== itemB.teamCode
+      );
     });
+    // console.log("cek2" = + JSON.stringify(modifiedInput));
     // Cek apakah ada nilai yang kosong di baris-baris yang sedang diedit
     const hasEmptyValue = modifiedInput.some((rowData) => rowData.careerCode === "" || rowData.teamCode === "");
+    console.log("cek2 = " + JSON.stringify(modifiedInput));
     if (hasEmptyValue) {
       alert("Tidak dapat menyimpan baris baru dengan nilai kosong.");
       return; // Hentikan penyimpanan jika ada nilai kosong
     } else {
-      console.log(JSON.stringify(modifiedInput))
       handleEdit(modifiedInput);
       setIsEditing(false);
-      setResponseData(modifiedInput);
+      setResponseData(updatedData);
       handleFilterButton();
     }
   };
@@ -191,8 +228,10 @@ function TrcCareer() {
         employmentType: obj.employmentType,
         specializations: obj.specializations,
       };
+      alert("CE");
 
       try {
+        console.log("body =" + JSON.stringify(requestBody));
         let response = await axiosInstance().post(TRANSACTION_CAREERHEADER_ADD, requestBody);
         if (response.status === 200) {
           // Handle success if needed
@@ -261,123 +300,71 @@ function TrcCareer() {
     return <td className="tb-odr-info">{renderContent()}</td>;
   }
 
-  function ModalWithForm({ value, isEditing, isNew}) {
-    const renderContent = () => {
-      if (isNew || isEditing) {
-        <td className="tb-odr-info">
-        <Button color="primary" onClick={toggleForm}>
-          Modal With Form
-        </Button>
-          <Modal isOpen={modalForm} toggle={toggleForm}>
-            <ModalHeader
-              toggle={toggleForm}
-              close={
-                <button className="close" onClick={toggleForm}>
-                  <Icon name="cross" />
-                </button>
-              }
-            >
-              Customer Info
-            </ModalHeader>
-            <ModalBody>
-              <form>
-                <div className="form-group">
-                  <label className="form-label" htmlFor="full-name">
-                    Full Name
-                  </label>
-                  <div className="form-control-wrap">
-                    <input type="text" className="form-control" id="full-name" />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="form-label" htmlFor="email">
-                    Email
-                  </label>
-                  <div className="form-control-wrap">
-                    <input type="text" className="form-control" id="email" />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="form-label" htmlFor="phone-no">
-                    Phone No
-                  </label>
-                  <div className="form-control-wrap">
-                    <input type="number" className="form-control" id="phone-no" defaultValue="0880" />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Communication</label>
-                  <ul className="custom-control-group g-3 align-center">
-                    <li>
-                      <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          className="form-control custom-control-input"
-                          id="fv-com-email"
-                          name="com"
-                          value="email"
-                        />
-                        <label className="custom-control-label" htmlFor="fv-com-email">
-                          Email
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          className="form-control custom-control-input"
-                          id="fv-com-sms"
-                          name="com"
-                          value="sms"
-                        />
-                        <label className="custom-control-label" htmlFor="fv-com-sms">
-                          SMS
-                        </label>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          className="custom-control-input"
-                          id="fv-com-phone"
-                          name="com"
-                          value="phone"
-                        />
-                        <label className="custom-control-label" htmlFor="fv-com-phone">
-                          {" "}
-                          Phone{" "}
-                        </label>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                <div className="form-group">
-                  <label className="form-label" htmlFor="amount">
-                    Amount
-                  </label>
-                  <div className="form-control-wrap">
-                    <input type="number" className="form-control" id="amount" />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <Button color="primary" type="submit" onClick={(ev) => ev.preventDefault()} size="lg">
-                    Save Information
-                  </Button>
-                </div>
-              </form>
-            </ModalBody>
-            <ModalFooter className="bg-light">
-              <span className="sub-text">Modal Footer Text</span>
-            </ModalFooter>
-          </Modal>
-        </td>
-      }
-      return value;
-    };
-    return <td className="tb-odr-info">{renderContent()}</td>;
+  function ModalWithForm({ value, rowIndex }) {
+    console.log("ModalWithForm value =" + value)
+    console.log("ModalWithForm rowIndex =" + rowIndex)
+    // setQuillContent(value);
+    return (
+      <div>
+        <button className="bg-white" onClick={toggleForm}>
+          {value}
+        </button>
+        <form>
+          <QuillComponent value= {value} rowIndex={rowIndex}/>
+        </form>
+        <Modal isOpen={modalForm} size="lg">
+          <ModalHeader
+            toggle={toggleForm}
+            close={
+              <button className="close" onClick={toggleForm}>
+                <Icon name="cross" />
+              </button>
+            }
+          >
+            Customer Info
+          </ModalHeader>
+          <ModalBody>
+            <form>
+            <QuillComponent value= {value} rowIndex={rowIndex}/>
+            </form>
+          </ModalBody>
+        </Modal>
+      </div>
+    );
   }
+
+  const QuillComponent = ({value, rowIndex }) => {
+    console.log("QuillComponent rowIndex " + JSON.stringify(rowIndex))
+    console.log("QuillComponent value " + JSON.stringify(value))
+    const [ nilai, setNilai ] = useState("");
+    const { quill, quillRef } = useQuill();
+  
+    React.useEffect(() => {
+      if (quill) {
+        quill.clipboard.dangerouslyPasteHTML(value);
+        setNilai(value)
+        quill.on('text-change', (delta, oldDelta, source) => {
+          console.log('Text change!');
+          console.log(quill.getText()); // Get text only
+          console.log(quill.getContents()); // Get delta contents
+          console.log(quill.root.innerHTML); // Get innerHTML using quill
+          console.log(quillRef.current.firstChild.innerHTML); // Get innerHTML using quillRef
+          setNilai(quill.getText())
+        });
+      }
+    }, [quill, value]);
+  
+    return (
+      <div style={{ width: "100%", height: "100%" }}>
+        <div ref={quillRef} />
+        <button className="bg-white" onClick={() => updateData( quill.getText(), rowIndex)}>
+          Save
+        </button>
+      </div>
+      
+    );
+  };
+  
 
   useEffect(() => {
     handleFilterButton();
@@ -685,30 +672,13 @@ function TrcCareer() {
                             handleInputChange={handleInputChange}
                             rowIndex={rowIndex}
                           />
-                          <EditableCell
-                            value={rowData.address}
-                            isEditing={isEditing}
-                            isNew={rowData.isNew}
-                            fieldName="address"
-                            handleInputChange={handleInputChange}
-                            rowIndex={rowIndex}
-                          />
-                          {/* <ModalWithForm 
-                            value={rowData.adress}
-                            isEditing={isEditing}
-                            isNew={rowData.isNew}
-                            /> */}
-                          {/* <td className="tb-odr-info">
-                          {rowData.isNew || isEditing ? (
-                            <input
-                              type="text"
-                              value={rowData.address}
-                              onChange={(e) => handleInputChange(e, rowIndex, "address")}
-                            />
-                          ) : (
-                            rowData.address
-                          )}
-                        </td> */}
+                          <td className="tb-odr-info">
+                            {rowData.isNew || isEditing ? (
+                              <ModalWithForm value={rowData.address} rowIndex={rowIndex} />
+                            ) : (
+                              rowData.address
+                            )}
+                          </td>
                           <EditableCell
                             value={rowData.district}
                             isEditing={isEditing}

@@ -18,7 +18,7 @@ const QuillPreview = () => {
     <React.Fragment>
       <Head title="Quill" />
       <Content page="component">
-        <BlockHead size="lg" wide="sm">
+        <BlockHead size="lg" wide="lg">
           <BlockHeadContent>
             <BackTo link="/components" icon="arrow-left">
               Components

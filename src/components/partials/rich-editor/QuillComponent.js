@@ -1,9 +1,25 @@
 import React from "react";
 import { useQuill } from "react-quilljs";
 
-export const QuillComponent = () => {
-  let placeholder = "Hello World!";
-  const { quillRef } = useQuill({ placeholder });
+export const QuillComponent = (value ) => {
+  let value1 = value.value;
+
+  const { quill, quillRef } = useQuill();
+
+  React.useEffect(() => {
+    if (quill) {
+      quill.clipboard.dangerouslyPasteHTML(value1);
+      quill.on('text-change', (delta, oldDelta, source) => {
+        console.log('Text change!');
+        console.log(quill.getText()); // Get text only
+        console.log(quill.getContents()); // Get delta contents
+        console.log(quill.root.innerHTML); // Get innerHTML using quill
+        console.log(quillRef.current.firstChild.innerHTML); // Get innerHTML using quillRef
+        quillRef(quill.getText());
+      });
+    }
+  }, [quill, value1]);
+
   return (
     <div style={{ width: "100%", height: "100%" }}>
       <div ref={quillRef} />
