@@ -6,9 +6,10 @@ import { axiosInstance } from "../config/AxiosInstance";
 import { Link } from "react-router-dom";
 import Icon from "../components/icon/Icon";
 import ReactPaginate from "react-paginate";
-import { Label, Input, Row, Col } from "reactstrap";
+import { Label, Input, Row, Col, Modal, ModalHeader, ModalBody } from "reactstrap";
 import { Block, BlockHead, BlockHeadContent, BlockTitle, BlockDes, PreviewCard } from "../components/Component";
 import { TRANSACTION_NEWS_LIST, TRANSACTION_NEWS_ADD } from "../config/Constants";
+import { useQuill } from "react-quilljs";
 
 function TrcNews() {
   const [responseData, setResponseData] = useState([]);
@@ -24,6 +25,7 @@ function TrcNews() {
   const [page, setPage] = useState(0);
   const [sortField, setSortField] = useState("update_date");
   const [sortOrder, setSortOrder] = useState("desc");
+  const [modalForm, setModalForm] = useState(false);
 
   const [isChecklistDisable, setChecklistDisable] = useState(true);
   const [newRow, setNewRow] = useState({
@@ -198,6 +200,72 @@ function TrcNews() {
     });
   };
 
+  const updateData = (text, rowIndex) => {
+    if (modalForm) {
+      setModalForm(false);
+    }
+    const updatedData = [...responseData]; // Create a copy of the responseData
+    updatedData[rowIndex].content = text; // Update the address in the copied data
+    // updatedData[rowIndex].jobDescriptionPlain = 'Mars'; // Update the country in the copied data
+    setResponseData(updatedData); // Update the state with the new data
+  };
+
+  const QuillComponent = ({ value, rowIndex }) => {
+    const { quill, quillRef } = useQuill();
+
+    React.useEffect(() => {
+      if (quill) {
+        quill.clipboard.dangerouslyPasteHTML(value);
+        quill.on("text-change", (delta, oldDelta, source) => {
+          // console.log("Text change!");
+          // console.log(quill.getText()); // Get text only
+          // console.log(quill.getContents()); // Get delta contents
+          // console.log(quill.root.innerHTML); // Get innerHTML using quill
+          // console.log(quillRef.current.firstChild.innerHTML); // Get innerHTML using quillRef
+        });
+      }
+    }, [quill, value]);
+
+    return (
+      <div style={{ width: "100%", height: "100%" }}>
+        <div ref={quillRef} />
+        <button className="bg-white" onClick={() => updateData(quillRef.current.firstChild.innerHTML, rowIndex)}>
+          Save
+        </button>
+      </div>
+    );
+  };
+
+  function ModalWithForm({ value, rowIndex }) {
+    const [modalForm, setModalForm] = useState(false);
+
+    const toggleForm = () => {
+      setModalForm(!modalForm);
+    };
+    return (
+      <div>
+        <input defaultValue={value} className="bg-white" onClick={toggleForm}></input>
+        <Modal isOpen={modalForm} size="lg">
+          <ModalHeader
+            toggle={toggleForm}
+            close={
+              <button className="close" onClick={toggleForm}>
+                <Icon name="cross" />
+              </button>
+            }
+          >
+            Customer Info
+          </ModalHeader>
+          <ModalBody>
+            <form>
+              <QuillComponent value={value} rowIndex={rowIndex} />
+            </form>
+          </ModalBody>
+        </Modal>
+      </div>
+    );
+  }
+
   useEffect(() => {
     handleFilterButton();
   }, [size, page]);
@@ -281,7 +349,7 @@ function TrcNews() {
                     </a>
                     <div class="toggle-expand-content" data-content="pageMenu">
                       <ul class="nk-block-tools g-3">
-                        <li>
+                        {/* <li> */}
                           <div class="drodown">
                             {isEditing ? (
                               <div class="nk-block-between">
@@ -321,7 +389,7 @@ function TrcNews() {
                               </a>
                             )}
                           </div>
-                        </li>
+                        {/* </li> */}
                         <li class="nk-block-tools-opt d-none d-sm-block">
                           <label>
                             <div class="form-control-select">
@@ -512,11 +580,7 @@ function TrcNews() {
                         </td>
                         <td className="tb-odr-info">
                           {rowData.isNew || isEditing ? (
-                            <input
-                              type="text"
-                              value={rowData.content}
-                              onChange={(e) => handleInputChange(e, rowIndex, "content")}
-                            />
+                            <ModalWithForm value={rowData.content} rowIndex={rowIndex} />
                           ) : (
                             rowData.content
                           )}

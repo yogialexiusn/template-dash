@@ -48,22 +48,13 @@ function TrcCareer() {
     updateDate: "",
   });
 
-  const toggleForm = () => {
-    setModalForm(!modalForm);
-  };
-
   const updateData = (text, rowIndex) => {
-    alert("update");
-    console.log("yogi text = ");
-    console.log("yogi rowIndex = " + JSON.stringify(rowIndex));
     if (modalForm) {
       setModalForm(false);
     }
-    console.log("yogi responseData = " + JSON.stringify(responseData));
     const updatedData = [...responseData]; // Create a copy of the responseData
-    console.log("yogi updatedData = " + JSON.stringify(updatedData));
-    updatedData[rowIndex].address = "Nigeria"; // Update the address in the copied data
-    // updatedData[rowIndex].country = 'Mars'; // Update the country in the copied data
+    updatedData[rowIndex].jobDescription = text; // Update the address in the copied data
+    // updatedData[rowIndex].jobDescriptionPlain = 'Mars'; // Update the country in the copied data
     setResponseData(updatedData); // Update the state with the new data
   };
 
@@ -71,31 +62,39 @@ function TrcCareer() {
     setIsEditing(true);
   };
 
-  const handleSaveQuill = () => {
-    setQuillContent("cece");
-    // Handle saving the Quill content (e.g., send it to the server)
-    if (modalForm) {
-      setModalForm(false);
-    }
-    console.log("Saving Quill content:", quillContent);
-  };
-
   const handleSaveClick = (e) => {
     e.preventDefault();
-    console.log("cek");
     // Setel atribut isNew menjadi false untuk baris baru yang sudah disimpan
     const updatedData = responseData.map((rowData) => (rowData.isNew ? { ...rowData, isNew: false } : rowData));
-    console.log("cek1 = " + JSON.stringify(updatedData));
     const modifiedInput = updatedData.filter((itemB) => {
       const matchingItemA = editedInput.find((itemA) => itemA.id === itemB.id);
       return (
         !matchingItemA || matchingItemA.careerCode !== itemB.careerCode || matchingItemA.teamCode !== itemB.teamCode
       );
     });
-    // console.log("cek2" = + JSON.stringify(modifiedInput));
+    console.log("cek" + JSON.stringify(modifiedInput));
+
     // Cek apakah ada nilai yang kosong di baris-baris yang sedang diedit
-    const hasEmptyValue = modifiedInput.some((rowData) => rowData.careerCode === "" || rowData.teamCode === "");
-    console.log("cek2 = " + JSON.stringify(modifiedInput));
+    const hasEmptyValue = modifiedInput.some(
+      (rowData) =>
+        rowData.careerCode === "" ||
+        rowData.teamCode === "" ||
+        rowData.statusCode === "" ||
+        rowData.workPlace === "" ||
+        rowData.address === "" ||
+        rowData.district === "" ||
+        rowData.region === "" ||
+        rowData.city === "" ||
+        rowData.country === "" ||
+        rowData.jobDescription === "" ||
+        rowData.jobDescriptionPlain === "" ||
+        rowData.positionLevel === "" ||
+        rowData.qualification === "" ||
+        rowData.yearsOfExperience === "" ||
+        rowData.employmentType === "" ||
+        rowData.specializations === "",
+    );
+
     if (hasEmptyValue) {
       alert("Tidak dapat menyimpan baris baru dengan nilai kosong.");
       return; // Hentikan penyimpanan jika ada nilai kosong
@@ -227,10 +226,10 @@ function TrcCareer() {
         employmentType: obj.employmentType,
         specializations: obj.specializations,
       };
-      alert("CE");
+
+      console.log(JSON.stringify(requestBody));
 
       try {
-        console.log("body =" + JSON.stringify(requestBody));
         let response = await axiosInstance().post(TRANSACTION_CAREERHEADER_ADD, requestBody);
         if (response.status === 200) {
           // Handle success if needed
@@ -250,7 +249,7 @@ function TrcCareer() {
       // Add a delay of 1000ms before the next iteration
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-    window.location.reload();
+    // window.location.reload();
 
     // After all iterations are done, you can call handleFilterButton
     handleFilterButton();
@@ -300,17 +299,14 @@ function TrcCareer() {
   }
 
   function ModalWithForm({ value, rowIndex }) {
-    console.log("ModalWithForm value =" + value);
-    console.log("ModalWithForm rowIndex =" + rowIndex);
-    // setQuillContent(value);
+    const [modalForm, setModalForm] = useState(false);
+
+    const toggleForm = () => {
+      setModalForm(!modalForm);
+    };
     return (
       <div>
-        <button className="bg-white" onClick={toggleForm}>
-          {value}
-        </button>
-        <form>
-          <QuillComponent value={value} rowIndex={rowIndex} />
-        </form>
+        <input defaultValue={value} className="bg-white" onClick={toggleForm}></input>
         <Modal isOpen={modalForm} size="lg">
           <ModalHeader
             toggle={toggleForm}
@@ -333,22 +329,17 @@ function TrcCareer() {
   }
 
   const QuillComponent = ({ value, rowIndex }) => {
-    console.log("QuillComponent rowIndex " + JSON.stringify(rowIndex));
-    console.log("QuillComponent value " + JSON.stringify(value));
-    const [nilai, setNilai] = useState("");
     const { quill, quillRef } = useQuill();
 
     React.useEffect(() => {
       if (quill) {
         quill.clipboard.dangerouslyPasteHTML(value);
-        setNilai(value);
         quill.on("text-change", (delta, oldDelta, source) => {
-          console.log("Text change!");
-          console.log(quill.getText()); // Get text only
-          console.log(quill.getContents()); // Get delta contents
-          console.log(quill.root.innerHTML); // Get innerHTML using quill
-          console.log(quillRef.current.firstChild.innerHTML); // Get innerHTML using quillRef
-          setNilai(quill.getText());
+          // console.log("Text change!");
+          // console.log(quill.getText()); // Get text only
+          // console.log(quill.getContents()); // Get delta contents
+          // console.log(quill.root.innerHTML); // Get innerHTML using quill
+          // console.log(quillRef.current.firstChild.innerHTML); // Get innerHTML using quillRef
         });
       }
     }, [quill, value]);
@@ -356,7 +347,7 @@ function TrcCareer() {
     return (
       <div style={{ width: "100%", height: "100%" }}>
         <div ref={quillRef} />
-        <button className="bg-white" onClick={() => updateData(quill.getText(), rowIndex)}>
+        <button className="bg-white" onClick={() => updateData(quill.root.innerHTML, rowIndex)}>
           Save
         </button>
       </div>
@@ -421,8 +412,8 @@ function TrcCareer() {
                 </div>
               </div>
             </Col>
-            <Col sm="6">
-              <div className="form-group d-flex flex-row-reverse mt-5">
+            <Col>
+              <div className="form-group d-flex flex-row-reverse mt-1">
                 <Button color="btn-round btn-primary " onClick={(e) => handleFilterButton()}>
                   Filter
                   <Icon name="sort" />
@@ -431,7 +422,8 @@ function TrcCareer() {
               </div>
             </Col>
           </Row>
-          <PreviewCard className="mt-5 border">
+          <br></br>
+          <PreviewCard className="border ">
             {dataNotFound ? null : (
               <div class="nk-block-between">
                 <div class="nk-block-head-content">
@@ -526,7 +518,7 @@ function TrcCareer() {
                 <div className="p-2 center shadow border">There are no records found</div>
               ) : (
                 <div scrolling="yes">
-                  <table className="table table-orders">
+                  <table className="table table-orders ">
                     <thead className="tb-odr-head">
                       <tr className="tb-odr-item">
                         <th className="tb-odr-info">&nbsp;</th>
@@ -669,13 +661,14 @@ function TrcCareer() {
                             handleInputChange={handleInputChange}
                             rowIndex={rowIndex}
                           />
-                          <td className="tb-odr-info">
-                            {rowData.isNew || isEditing ? (
-                              <ModalWithForm value={rowData.address} rowIndex={rowIndex} />
-                            ) : (
-                              rowData.address
-                            )}
-                          </td>
+                          <EditableCell
+                            value={rowData.address}
+                            isEditing={isEditing}
+                            isNew={rowData.isNew}
+                            fieldName="address"
+                            handleInputChange={handleInputChange}
+                            rowIndex={rowIndex}
+                          />
                           <EditableCell
                             value={rowData.district}
                             isEditing={isEditing}
@@ -708,14 +701,13 @@ function TrcCareer() {
                             handleInputChange={handleInputChange}
                             rowIndex={rowIndex}
                           />
-                          <EditableCell
-                            value={rowData.jobDescription}
-                            isEditing={isEditing}
-                            isNew={rowData.isNew}
-                            fieldName="jobDescription"
-                            handleInputChange={handleInputChange}
-                            rowIndex={rowIndex}
-                          />
+                          <td className="tb-odr-info">
+                            {rowData.isNew || isEditing ? (
+                              <ModalWithForm value={rowData.jobDescription} rowIndex={rowIndex} />
+                            ) : (
+                              rowData.jobDescription
+                            )}
+                          </td>
                           <EditableCell
                             value={rowData.jobDescriptionPlain}
                             isEditing={isEditing}
