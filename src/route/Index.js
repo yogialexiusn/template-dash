@@ -182,7 +182,7 @@ const Router = () => {
         <Route exact path={`${process.env.PUBLIC_URL}/ecommerce/settings`} component={EcomSettings}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/ecommerce/integration`} component={EcomIntegration}></Route> */}
 
-      <Route path={`${process.env.PUBLIC_URL}`} element={<Layout />}>
+      <Route path={`/`} element={<Layout />}>
         {/*Dashboards*/}
         <Route index element={<MasterRole />}></Route>
         <Route path="masterrole" element={<MasterRole />}></Route>
