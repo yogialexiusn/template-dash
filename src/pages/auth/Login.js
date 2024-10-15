@@ -141,7 +141,7 @@ const Login = (props) => {
                 <label className="form-label" htmlFor="password" value="Password">
                   Password
                 </label>
-                <Link className="link link-primary link-sm" to={`${process.env.PUBLIC_URL}/auth-reset`}>
+                <Link className="link link-primary link-sm" to={`/auth-reset`}>
                   Forgot Code?
                 </Link>
               </div>
