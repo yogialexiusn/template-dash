@@ -271,8 +271,13 @@ function TrcCareer() {
   };
 
   function SortableTableHeader({ columnName, label, handleSorting }) {
+    const thStyle = {
+      width: '1000px', // Adjust the width as needed
+      whiteSpace: 'nowrap', // Prevent text wrapping
+    };
+
     return (
-      <th className="tb-odr-info">
+      <th className="tb-odr-info" style={thStyle}>
         {label}
         <Link
           to="#"
@@ -359,9 +364,12 @@ function TrcCareer() {
   }, [size, page]);
 
   return (
-    <React.Fragment>
+    <div>
+      
       <Head title="Basic Tables" />
+      
       <Content page="component">
+      
         <BlockHead>
           <BlockHeadContent>
             <BlockTitle>Transaction Career</BlockTitle>
@@ -422,8 +430,9 @@ function TrcCareer() {
               </div>
             </Col>
           </Row>
+  
           <br></br>
-          <PreviewCard className="border ">
+          
             {dataNotFound ? null : (
               <div class="nk-block-between">
                 <div class="nk-block-head-content">
@@ -517,8 +526,8 @@ function TrcCareer() {
               {dataNotFound ? (
                 <div className="p-2 center shadow border">There are no records found</div>
               ) : (
-                <div scrolling="yes">
-                  <table className="table table-orders ">
+                <div scrolling="yes" >
+                  <table className="table table-orders">
                     <thead className="tb-odr-head">
                       <tr className="tb-odr-item">
                         <th className="tb-odr-info">&nbsp;</th>
@@ -812,8 +821,52 @@ function TrcCareer() {
                     </tbody>
                   </table>
                 </div>
+                
               )}
             </div>
+ 
+
+
+            <div>
+		<table className="table table-orders">
+			<thead className="tb-odr-head">
+			<tr className="tb-odr-item">
+			  <th className="tb-odr-info" style={{ width: '1000px' }}>id</th>
+			  <th className="tb-odr-info" style={{ width: '1000px' }}>name</th>
+			  <th className="tb-odr-info" style={{ width: '1000px' }}>address</th>
+			  <th className="tb-odr-info" style={{ width: '1000px' }}>id</th>
+			  <th className="tb-odr-info" style={{ width: '1000px' }}>name</th>
+			  <th className="tb-odr-info" style={{ width: '1000px' }}>address</th>
+        <th className="tb-odr-info" style={{ width: '1000px' }}>id</th>
+			  <th className="tb-odr-info" style={{ width: '1000px' }}>name</th>
+			  <th className="tb-odr-info" style={{ width: '1000px' }}>address</th>
+			  <th className="tb-odr-info" style={{ width: '1000px' }}>id</th>
+			  <th className="tb-odr-info" style={{ width: '1000px' }}>name</th>
+			  <th className="tb-odr-info" style={{ width: '1000px' }}>address</th>
+		
+			</tr>
+			</thead>
+			<tbody className="tb-odr-body">
+			<tr>
+			  <td className="tb-odr-info">// id here</td>
+			   <td className="tb-odr-info">// name here</td>
+			   <td className="tb-odr-info">// address here</td>
+         <td className="tb-odr-info">// id here</td>
+			   <td className="tb-odr-info">// name here</td>
+			   <td className="tb-odr-info">// address here</td>
+         <td className="tb-odr-info">// id here</td>
+			   <td className="tb-odr-info">// name here</td>
+			   <td className="tb-odr-info">// address here</td>
+         <td className="tb-odr-info">// id here</td>
+			   <td className="tb-odr-info">// name here</td>
+			   <td className="tb-odr-info">// address here</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+
             <div className="center mt-5">
               <ReactPaginate
                 previousLabel={<Icon name="caret-left" />}
@@ -835,10 +888,10 @@ function TrcCareer() {
                 activeClassName={"active"}
               />
             </div>
-          </PreviewCard>
+         
         </Block>
       </Content>
-    </React.Fragment>
+    </div>
   );
 }
 
