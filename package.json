@@ -1,6 +1,7 @@
 {
   "name": "DashliteReact-Demo2",
   "version": "1.6.2",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",

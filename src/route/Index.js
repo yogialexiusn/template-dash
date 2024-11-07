@@ -51,7 +51,9 @@ const Router = () => {
         <Route exact path={`${process.env.PUBLIC_URL}/ecommerce/settings`} component={EcomSettings}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/ecommerce/integration`} component={EcomIntegration}></Route> */}
 
-        <Route path={`${process.env.PUBLIC_URL}`} element={<Layout />}>
+        {/* <Route path={`${process.env.PUBLIC_URL}`} element={<Layout />}> */}
+        <Route path={`/`} element={<Layout />}>
+
           
           {/*Dashboards*/}
           <Route index element={<Homepage />}></Route>
@@ -63,7 +65,7 @@ const Router = () => {
           </Route>
         </Route>
 
-        <Route path={`${process.env.PUBLIC_URL}`} element={<LayoutNoSidebar />}>
+        <Route path={`/`} element={<LayoutNoSidebar />}>
           <Route path="auth-success" element={<Success />}></Route>
             <Route path="auth-reset" element={<ForgotPassword />}></Route>
             <Route path="auth-register" element={<Register />}></Route>
