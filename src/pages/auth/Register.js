@@ -17,17 +17,25 @@ import {
 import { Spinner } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { createUser } from '../../api/UserApi';
 
 const Register = () => {
   const [passState, setPassState] = useState(false);
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async (formData) => {
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const response = await createUser(formData);
+      console.log("User created:", response);
+
       navigate(`${process.env.PUBLIC_URL}/auth-success`);
-    }, 1000);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setLoading(false);
+    }
   };
   return <>
     <Head title="Register" />
