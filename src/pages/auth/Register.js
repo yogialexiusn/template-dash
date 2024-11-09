@@ -28,8 +28,6 @@ const Register = () => {
     setLoading(true);
     try {
       const response = await createUser(formData);
-      console.log("User created:", response);
-
       navigate(`${process.env.PUBLIC_URL}/auth-success`);
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -71,26 +69,38 @@ const Register = () => {
               </div>
             </div>
             <div className="form-group">
+              <label className="form-label" htmlFor="username">
+                Username
+              </label>
+              <div className="form-control-wrap">
+                <input
+                  type="text"
+                  id="username"
+                  {...register('username', { required: true })}
+                  placeholder="Enter your username"
+                  className="form-control-lg form-control" />
+                {errors.username && <p className="invalid">This field is required</p>}
+              </div>
+            </div>
+            <div className="form-group">
               <div className="form-label-group">
                 <label className="form-label" htmlFor="default-01">
-                  Email or Username
+                  Email
                 </label>
               </div>
               <div className="form-control-wrap">
                 <input
                   type="text"
-                  bssize="lg"
-                  id="default-01"
                   {...register('email', { required: true })}
                   className="form-control-lg form-control"
-                  placeholder="Enter your email address or username" />
+                  placeholder="Enter your email address" />
                 {errors.email && <p className="invalid">This field is required</p>}
               </div>
             </div>
             <div className="form-group">
               <div className="form-label-group">
                 <label className="form-label" htmlFor="password">
-                  Passcode
+                  Password
                 </label>
               </div>
               <div className="form-control-wrap">
@@ -103,7 +113,6 @@ const Register = () => {
                   className={`form-icon lg form-icon-right passcode-switch ${passState ? "is-hidden" : "is-shown"}`}
                 >
                   <Icon name="eye" className="passcode-icon icon-show"></Icon>
-
                   <Icon name="eye-off" className="passcode-icon icon-hide"></Icon>
                 </a>
                 <input

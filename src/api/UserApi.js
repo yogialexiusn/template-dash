@@ -1,9 +1,13 @@
 import axiosInstance from './AxiosInstance';
 
 // Fungsi untuk login
-export const login = async (credentials) => {
+export const loginUser = async (userData) => {
   try {
-    const response = await axiosInstance.post('/auth/login', credentials);
+    const response = await axiosInstance.post('http://localhost:8080/api/users/login', {
+      username: userData.name,
+      email: userData.email,
+      password: userData.passcode
+    });
     return response.data;
   } catch (error) {
     console.error("Error during login:", error);
@@ -15,9 +19,11 @@ export const login = async (credentials) => {
 export const createUser = async (userData) => {
   try {
     const response = await axiosInstance.post('http://localhost:8080/api/users/', {
+      username: userData.username,
+      role: "VIEWER",
       name: userData.name,
-      email: userData.email,
-      passcode: userData.passcode
+      password: userData.passcode,
+      email: userData.email
     });
     return response.data;
   } catch (error) {

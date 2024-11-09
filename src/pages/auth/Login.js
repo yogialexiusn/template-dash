@@ -16,31 +16,35 @@ import {
 import { Form, Spinner, Alert } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { loginUser } from '../../api/UserApi';
+
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
 
-  const onFormSubmit = (formData) => {
+  const onFormSubmit = async (formData) => {
     setLoading(true);
-    const loginName = "info@softnio.com";
-    const pass = "123456";
-    if (formData.name === loginName && formData.passcode === pass) {
-      localStorage.setItem("accessToken", "token");
-      setTimeout(() => {
-        window.history.pushState(
-          `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`,
-          "auth-login",
-          `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`
-        );
-        window.location.reload();
-      }, 1000);
-    } else {
-      setTimeout(() => {
-        setError("Cannot login with credentials");
-        setLoading(false);
-      }, 1000);
+    try {
+      // localStorage.setItem("accessToken", "token");
+      const response = await loginUser(formData);
+      if(response.response.responseCode === "000"){
+        setTimeout(() => {
+          window.history.pushState(
+            `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`,
+            "auth-login",
+            `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/"}`
+          );
+          window.location.reload();
+        }, 1000);
+        // navigate(`${process.env.PUBLIC_URL}/auth-success`);
+      }
+      
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -84,7 +88,7 @@ const Login = () => {
                   type="text"
                   id="default-01"
                   {...register('name', { required: "This field is required" })}
-                  defaultValue="info@softnio.com"
+                  // defaultValue="info@softnio.com"
                   placeholder="Enter your email address or username"
                   className="form-control-lg form-control" />
                 {errors.name && <span className="invalid">{errors.name.message}</span>}
@@ -116,7 +120,7 @@ const Login = () => {
                   type={passState ? "text" : "password"}
                   id="password"
                   {...register('passcode', { required: "This field is required" })}
-                  defaultValue="123456"
+                  // defaultValue="123456"
                   placeholder="Enter your passcode"
                   className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`} />
                 {errors.passcode && <span className="invalid">{errors.passcode.message}</span>}
