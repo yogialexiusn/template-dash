@@ -4,7 +4,6 @@ import SimpleBar from "simplebar-react";
 import Logo from "../logo/Logo";
 import Menu from "../menu/Menu";
 import Toggle from "./Toggle";
-import EcommerceMenu from "../menu/EcommerceMenu";
 
 import { useTheme, useThemeUpdate } from '../provider/Theme';
 
@@ -50,11 +49,7 @@ const Sidebar = ({ fixed, className, ...props }) => {
         </div>
         <div className="nk-sidebar-content" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <SimpleBar className="nk-sidebar-menu">
-            {window.location.pathname.split("/")[2] === "ecommerce" ? (
-              <EcommerceMenu />
-            ) : (
-              <Menu />
-            )}
+            <Menu />
           </SimpleBar>
         </div>
       </div>
