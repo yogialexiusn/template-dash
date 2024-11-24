@@ -3,6 +3,7 @@ import menu from "./MenuData";
 import { NavLink, Link } from "react-router-dom";
 import Icon from "../../components/icon/Icon";
 import classNames from "classnames";
+import { userAccess } from '../../api/UserApi';
 
 const MenuHeading = ({ heading }) => {
   return (
@@ -242,7 +243,24 @@ const MenuSub = ({ icon, link, text, sub, sidebarToggle, mobileView, ...props })
 };
 
 const Menu = ({ sidebarToggle, mobileView }) => {
-  const [data, setMenuData] = useState(menu);
+  const [data, setMenuData] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
+
+  useEffect(() => {
+    // Fetch menu data from the API
+    const fetchMenuData = async () => {
+      try {
+        const response = await userAccess();        
+        setMenuData(response.data);
+      } catch (error) {
+        console.error("Error fetching menu data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMenuData();
+  }, []);
 
   useEffect(() => {
     data.forEach((item, index) => {
