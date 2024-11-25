@@ -251,7 +251,7 @@ const Menu = ({ sidebarToggle, mobileView }) => {
     const fetchMenuData = async () => {
       try {
         const response = await userAccess();        
-        setMenuData(response.data);
+        setMenuData(response.data.detail.userAccessList);
       } catch (error) {
         console.error("Error fetching menu data:", error);
       } finally {
