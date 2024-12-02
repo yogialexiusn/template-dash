@@ -16,7 +16,7 @@ import {
 import { Form, Spinner, Alert } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { loginUser } from '../../api/UserApi';
+import { loginUser } from '../../api/UserLoginRegister';
 
 
 const Login = () => {

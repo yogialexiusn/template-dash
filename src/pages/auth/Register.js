@@ -17,7 +17,7 @@ import {
 import { Spinner } from "reactstrap";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { createUser } from '../../api/UserApi';
+import { createUser } from '../../api/UserLoginRegister';
 
 const Register = () => {
   const [passState, setPassState] = useState(false);

@@ -3,7 +3,7 @@ import menu from "./MenuData";
 import { NavLink, Link } from "react-router-dom";
 import Icon from "../../components/icon/Icon";
 import classNames from "classnames";
-import { userAccess } from '../../api/UserApi';
+import { userAccess } from '../../api/UserAccess';
 
 const MenuHeading = ({ heading }) => {
   return (
