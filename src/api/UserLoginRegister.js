@@ -29,7 +29,7 @@ export const createUser = async (userData) => {
   try {
     const response = await axiosInstance.post('http://localhost:8080/api/users', {
       username: userData.username,
-      role: "VIEWER",
+      role: "User",
       name: userData.name,
       password: userData.passcode,
       email: userData.email

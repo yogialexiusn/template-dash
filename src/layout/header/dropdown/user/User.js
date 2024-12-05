@@ -1,16 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DropdownToggle, DropdownMenu, Dropdown } from "reactstrap";
 import { Icon } from "../../../../components/Component";
 import { LinkList, LinkItem } from "../../../../components/links/Links";
 import UserAvatar from "../../../../components/user/UserAvatar";
+import { getUser } from '../../../../api/UserAccess';
+
 
 const User = () => {
   const [open, setOpen] = useState(false);
+  const [userData, setUserData] = useState({ name: "", email: "" });
   const toggle = () => setOpen((prevState) => !prevState);
 
   const handleSignout = () => {
-    localStorage.removeItem("accessToken");
+    window.localStorage.removeItem("auth_token");
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await getUser();
+        setUserData({
+          name: response.data.detail.name,
+          email: response.data.detail.email,
+        });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+  }, []); // Dipanggil sekali setelah komponen dirender
 
   return (
     <Dropdown isOpen={open} className="user-dropdown" toggle={toggle}>
@@ -26,19 +45,22 @@ const User = () => {
           <UserAvatar icon="user-alt" className="sm" />
           <div className="user-info d-none d-md-block">
             <div className="user-status">Administrator</div>
-            <div className="user-name dropdown-indicator">Abu Bin Ishityak</div>
-          </div>
+            <div className="user-name dropdown-indicator">{userData.name || "Loading..."}</div>          </div>
         </div>
       </DropdownToggle>
       <DropdownMenu end className="dropdown-menu-md dropdown-menu-s1">
         <div className="dropdown-inner user-card-wrap bg-lighter d-none d-md-block">
           <div className="user-card sm">
             <div className="user-avatar">
-              <span>AB</span>
+              <span>
+                {userData.name 
+                  ? (userData.name[0] + userData.name[1]).toUpperCase() 
+                  : "?"}
+              </span>
             </div>
             <div className="user-info">
-              <span className="lead-text">Abu Bin Ishtiyak</span>
-              <span className="sub-text">info@softnio.com</span>
+              <span className="lead-text">{userData.name || "Loading..."}</span>
+              <span className="sub-text">{userData.email || "Loading..."}</span>
             </div>
           </div>
         </div>
